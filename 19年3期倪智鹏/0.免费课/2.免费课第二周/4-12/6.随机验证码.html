@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <button id="btn">生成验证码</button>
+  <script>
+    var btn = document.getElementById('btn')
+
+    btn.onclick = function () {
+      // this => btn
+      this.innerHTML = codeStr()
+    }
+
+    function codeStr(len) {
+      len = len || 4
+      var code = ''
+      var str ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      
+      while (code.length < len) {
+        var ind = Math.round(Math.random() * (str.length - 1))
+        var char = str[ind] // str[2]
+        // 如果code中还没有char这个字符 再进行拼接
+        if (code.indexOf(char) === -1) {
+          code += char
+        }
+      }
+      return code
+    }
+
+    // function codeStr(len) {
+    //   len = len || 4
+    //   var code = ''
+    //   var str ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      
+    //   while (code.length < len) {
+    //     var ind = Math.round(Math.random() * (str.length - 1))
+    //     var char = str[ind]
+    //     // 如果code中还没有char这个字符 再进行拼接
+    //     if (code.indexOf(char) === -1) {
+    //       code += char
+    //     }
+    //   }
+    //   return code
+    // }
+
+    // 循环语句 for循环 while循环
+    // while(循环条件) {
+    //   // 只要循环条件为true 就会一直循环下去 
+    // }
+
+    // function codeStr(len) {
+    //   // 默认参数处理
+    //   len = len || 4
+    //   var code = '' // 拼接的验证码
+    //   var str ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      
+    //   // 只要拼接的验证码个数 不够 len个 就一直循环下去
+    //   while (code.length < len) {
+    //     var ind = Math.round(Math.random() * (str.length - 1))
+    //     code += str[ind]
+    //   }
+    //   return code
+    // }
+
+    // function codeStr(len) {
+    //   // 默认参数处理
+    //   len = len || 4
+    //   var code = ''
+    //   // 索引范围 0 ~ (str.length - 1)
+    //   var str ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    //   for (var i = 0; i < len; i++) {
+    //     // 随机索引
+    //     var ind = Math.round(Math.random() * (str.length - 1))
+    //     // 把每次循环时，得到的随机字符累加起来
+    //     code += str[ind]
+    //   }
+    //   return code
+    // }
+
+  </script>
+</body>
+</html>

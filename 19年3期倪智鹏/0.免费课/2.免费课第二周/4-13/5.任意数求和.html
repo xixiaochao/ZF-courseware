@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function sum() {
+      console.log(arguments) // 实参集合
+      let total = 0
+      for (let i = 0; i < arguments.length; i++) {
+        var n = Number(arguments[i])
+        if (!isNaN(n)) {
+          total += n
+        }
+      }
+      return total
+    }
+    
+    // console.log(sum(1, 2, 3))
+    console.log(sum(1, '12', 10, NaN, undefined))
+  </script>
+</body>
+</html>

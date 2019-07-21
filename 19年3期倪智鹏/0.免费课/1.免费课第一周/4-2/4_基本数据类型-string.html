@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id='inp'>
+    <button id='btn'>按钮</button>
+    <div id="oDiv">
+        
+    </div>
+</body>
+</html>
+<script>
+    // //   字符串  用单引或者双引号或者反引号包含的部分
+    // //   双引号不能包含双引号， 单引号不能包含单引号
+    // var str = "qwer";
+    // var str2 = "as\"df"; // 把中间的双引号转译成了 双引号本身
+    // var str3 = `珠峰`;
+
+    // var oDiv = document.getElementsByTagName('div')[0];
+    // // 给 oDiv设置内容为 str3
+    // // oDiv.innerHTML = 'str3';// 给的就是字符串  ‘str3’
+    // // oDiv.innerHTML = str;// 给的是变量 str3对应的值
+    // // oDiv.innerHTML = str+str3+str2;// 字符串的拼接
+    // // oDiv.innerHTML = '<h1>'+
+    // //         '<div>'+
+    // //             '珠峰'+
+    // //         '</div>'+
+    // //     '</h1>';
+
+    // // 模板字符串
+    // // oDiv.innerHTML = `<h1>
+    // //         <div>
+    // //             珠峰
+    // //         </div>
+    // //     </h1>
+    // // `
+
+    // // oDiv.innerHTML = '<h1>'+
+    // //         '<div>'+
+    // //             str3+
+    // //         '</div>'+
+    // //     '</h1>';
+
+    // oDiv.innerHTML = `<h1>
+    //         <div>
+    //             str3
+    //             ${str3+str2+str}
+    //         </div>
+    //     </h1>
+    // `; 
+    // // 反引号包含的字符串， 我们想用变量时， 需要使用 ${变量} 的语法
+    
+    // // 1、写法  引号(单双反)包含   有 “\”  代表转义
+    // // 2、字符串拼接 一种是直接+ ；若是 反引号 还可以通过 ${}
+
+    var oDiv = document.getElementById('oDiv'),
+        btn = document.getElementById('btn'),
+        inp = document.getElementById('inp');
+    // var a = 12,b = 13, c = 14;
+    // var a = 12;
+    // var b = 13;
+    // var c = 14; 
+    btn.onclick = function(){
+        // 目的是 设置 oDiv 的内容
+        // 内容设置成 "我是" 后边跟的是  inp 的 value
+        var val = inp.value;
+        // oDiv.innerHTML = '我是'+val;
+        // oDiv.innerHTML = `我是${val}`;
+        oDiv.innerHTML = `我是${inp.value}`;
+        inp.value = '';// 清空inp 
+    }   
+
+    // var str = '我是',
+    //     str2 = inp.value;
+    // btn.onclick = function () {
+    //     oDiv.innerHTML = str + str2;// 空
+    // }    
+
+
+</script>

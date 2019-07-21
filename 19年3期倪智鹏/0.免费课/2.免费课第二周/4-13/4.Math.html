@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // Math方法
+    // Math.round() 四舍五入
+    // Math.random() 随机数 [0, 1)
+    // Math.ceil() 向上取整
+    // Math.floor() 向下取整
+    // Math.max() 最大值
+    // Math.min() 最小值
+
+    // n到m之间随机整数
+    // Math.round(Math.random() * (m - n) + n)
+   
+    // 0到m之间随机整数
+    // Math.round(Math.random() * m)
+
+    // 随机验证码（不重复）
+    function codeStr(len) {
+      len = len || 4
+      // 索引范围 0 ~ (str.length - 1)
+      var str ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      var code = ''
+      while(code.length < len) {
+        // 获取一个随机索引
+        var idx = Math.round(Math.random() * (str.length - 1))
+        // 根据随机索引 获取相应字符
+        var char = str[idx]
+        // 避免重复拼接字符
+        if (code.indexOf(char) === -1) {
+          code += char
+        }
+      }
+      return code
+    }
+    codeStr(6)
+  </script>
+</body>
+</html>

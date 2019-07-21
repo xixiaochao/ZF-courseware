@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>防抖</title>
+</head>
+<body style="height:3000px">
+    <script>
+    /*
+        防抖:
+        当用户频繁触发某个事件的时候就不执行函数，当用于停下来的时候在执行函数
+    */
+    let timer = null;
+    window.onscroll = function(){
+        clearInterval(timer);
+        timer = setTimeout(()=>{
+            console.log(1);
+        },100);
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    /*万能的清除浮动的样式：
+            调用的格式：<div class="clear"></div>
+    * */
+                
+                html body div.clear,
+                html body span.clear {
+                     background: none;
+                     border: 0;
+                     clear: both;
+                     float: none;
+                     font-size: 0;
+                     margin: 0;
+                     padding: 0;
+                     overflow: hidden;
+                     visibility: hidden;
+                     width: 0;
+                     height: 0;
+
+                }
+
+使用方式：
+
+<div class="clear"></div>
+
+对父级元素使用 ：after伪类                
+                .clear:after {
+                     content: "020";
+                     display: block;
+                     height: 0;
+                     clear: both;
+                }
+
+                
+</body>
+</html>

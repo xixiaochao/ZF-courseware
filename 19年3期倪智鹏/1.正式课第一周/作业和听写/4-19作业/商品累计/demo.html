@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body,
+        ul,
+        li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="price.css" />
+</head>
+
+<body onselectstart="return false;">
+    <div class="wrap">
+        <div class="box">
+            <ul class="list">
+                <li class="li">
+                    <i class="less"></i>
+                    <em>0</em>
+                    <i class="more"></i>
+                    <span>
+                        单价：<strong class="p">12.5元</strong> 小计：<strong class="m">0元</strong>
+                    </span>
+                </li>
+                <li class="li">
+                    <i class="less"></i>
+                    <em>0</em>
+                    <i class="more"></i>
+                    <span>
+                        单价：<strong class="p">10.5元</strong> 小计：<strong class="m">0元</strong>
+                    </span>
+                </li>
+                <li class="li">
+                    <i class="less"></i>
+                    <em>0</em>
+                    <i class="more"></i>
+                    <span>
+                        单价：<strong class="p">8.5元</strong> 小计：<strong class="m">0元</strong>
+                    </span>
+                </li>
+                <li class="li">
+                    <i class="less"></i>
+                    <em>0</em>
+                    <i class="more"></i>
+                    <span>
+                        单价：<strong class="p">8元</strong> 小计：<strong class="m">0元</strong>
+                    </span>
+                </li>
+                <li class="li">
+                    <i class="less"></i>
+                    <em>0</em>
+                    <i class="more"></i>
+                    <span>
+                        单价：<strong class="p">14.5元</strong> 小计：<strong class="m">0元</strong>
+                    </span>
+                </li>
+            </ul>
+            <div class="info">
+                <span>商品总合计：<em class="total">0</em>件</span>
+                <span>共花费了：<em class="total_money">0</em>元</span>
+                <br />
+                <br />
+                <span>其中最贵的商品单价是：<em>0</em>元</span>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    let is = document.getElementsByTagName('i');
+    let strongs = document.querySelectorAll('strong');
+    // let ems = document.querySelectorAll('span em');
+    // var sum = 0;
+    for (let i = 0; i < is.length; i++) {
+        let num = 0;
+        if (i % 2 === 0) {
+            // 减事件
+            is[i].onclick = function () {
+                num = Number(is[i].nextElementSibling.innerText);
+                if (num > 0) {
+                    num -= 1;
+                    this.nextElementSibling.innerText = '' + num;
+                    strongs[i].nextElementSibling.innerHTML = parseFloat(strongs[i].innerText) * num + '元';
+                }
+            }
+        } else {
+            // 加事件
+            is[i].onclick = function () {
+                num = Number(is[i].previousElementSibling.innerText);
+                num += 1;
+                this.previousElementSibling.innerText = '' + num;
+                strongs[i].innerHTML = parseFloat(strongs[i].previousElementSibling.innerText) * num + '元';
+            }
+        }
+    }
+</script>
+
+
+</html>

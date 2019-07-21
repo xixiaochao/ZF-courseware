@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // var arr = [1, 1, 1, 2, 2, 2, 3, 3, 3] 
+    
+    // var obj = {} // 记账本
+    // var ary = [] // 存储去重后的数组内容
+
+    // i = 0  1 cur = 1
+    // for (var i = 0; i < arr.length; i++) {
+    //   var cur = arr[i] // 1
+    //   if (!obj[cur]) { // !obj[1] => !undefined
+    //     ary.push(cur) // ary.push(1) [1]
+    //     obj[cur] = true // obj[1] = true
+    //   } // [1] {1: true}
+    // }
+
+
+    // var arr = [1, 1, 2, 2, 2, 3, 3, 3] 
+    
+    // var obj = {} // 记账本
+    // var ary = [] // 存储去重后的数组内容
+
+    // // [1] {1: true}
+    // // i = 2 2
+    // for (var i = 0; i < arr.length; i++) {
+    //   var cur = arr[i] // arr[2] => 2
+    //   if (!obj[cur]) { // !obj[2] => !undefined => true
+    //     ary.push(cur) // [1].push(2) => [1, 2]
+    //     obj[cur] = true // obj[2] = true
+    //   }
+    // } // [1, 2] {1: true, 2: true}
+
+    var arr = [1, 1, 2, 2, 2, 3, 3, 3] 
+    var obj = {} // 记录push过的内容 标记为true
+    var ary = [] // 去重后的新数组
+    for (var i = 0; i < arr.length; i++) {
+      var cur = arr[i]
+      if (!obj[cur]) { // 如果对象里还没有标记过cur 就进行push
+        ary.push(cur) // 将cur push到数组
+        obj[cur] = true // 将push的内容 存到对象里标记为true
+      }
+    }
+    // ary => [1, 2, 3] obj => {1: true, 2: true, 3: true}
+    console.log(ary) // [1, 2, 3]
+    console.log(obj) // {1: true, 2: true, 3: true}
+    // 通常会将 没用的对象 赋值为null 释放内存的
+    obj = null
+  </script>
+</body>
+</html>

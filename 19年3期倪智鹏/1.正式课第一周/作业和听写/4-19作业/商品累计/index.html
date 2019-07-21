@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		body,
+		ul,
+		li {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="price.css" />
+</head>
+
+<body onselectstart="return false;">
+	<div class="wrap">
+		<div class="box">
+			<ul class="list">
+				<li class="li">
+					<i class="less"></i>
+					<em>0</em>
+					<i class="more"></i>
+					<span>
+						单价：<strong class="p">12.5元</strong> 小计：<strong class="m">0元</strong>
+					</span>
+				</li>
+				<li class="li">
+					<i class="less"></i>
+					<em>0</em>
+					<i class="more"></i>
+					<span>
+						单价：<strong class="p">10.5元</strong> 小计：<strong class="m">0元</strong>
+					</span>
+				</li>
+				<li class="li">
+					<i class="less"></i>
+					<em>0</em>
+					<i class="more"></i>
+					<span>
+						单价：<strong class="p">8.5元</strong> 小计：<strong class="m">0元</strong>
+					</span>
+				</li>
+				<li class="li">
+					<i class="less"></i>
+					<em>0</em>
+					<i class="more"></i>
+					<span>
+						单价：<strong class="p">8元</strong> 小计：<strong class="m">0元</strong>
+					</span>
+				</li>
+				<li class="li">
+					<i class="less"></i>
+					<em>0</em>
+					<i class="more"></i>
+					<span>
+						单价：<strong class="p">14.5元</strong> 小计：<strong class="m">0元</strong>
+					</span>
+				</li>
+			</ul>
+			<div class="info">
+				<span>商品总合计：<em class="total">0</em>件</span>
+				<span>共花费了：<em class="total_money">0</em>元</span>
+				<br />
+				<br />
+				<span>其中最贵的商品单价是：<em>0</em>元</span>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	let ul = document.getElementsByClassName("list");
+	let lis = document.getElementsByTagName("li");
+	let more = document.getElementsByClassName("more");
+	let less = document.getElementsByClassName("less");
+	let ems = document.getElementsByTagName("em");
+	let unit_price = document.getElementsByClassName("p");//单价
+	let subtotal = document.getElementsByClassName("m"); //小计
+	let total = document.getElementsByClassName("total")[0];//商品总计
+	let total_money = document.getElementsByClassName("total_money")[0];//总花费
+
+	for (let i = 0; i < lis.length; i++) {
+		more[i].onclick = function () {
+			let m = Number(ems[i].innerHTML) + 1; //件数
+			let e = `${m}`
+			ems[i].innerHTML = m;
+			price(m, i);
+			all();
+		}
+		less[i].onclick = function () {
+			let m = Number(ems[i].innerHTML);
+			if (m > 0) {
+				m -= 1;
+			} else {
+				alert("购物车中没有此商品");
+			}
+			ems[i].innerHTML = m;
+			price(m, i);
+			all();
+		}
+	}
+	function change(str) {
+		var reg = /[\u4e00-\u9fa5]/g;
+		str = str.replace(reg, "")
+		return str;
+	}
+	function price(m, i) {
+		let unit = unit_price[i].innerText; //获取单价
+		unit = change(unit);
+		let sub = m * Number(unit);  //小计钱数量
+		subtotal[i].innerHTML = sub + "元";  //小计
+		return unit;
+	}
+	function all() {
+		let total_price = 0;
+		let allMoney = 0;
+		for (let i = 0; i < lis.length; i++) {
+			let amount = Number(ems[i].innerHTML);    //数量
+			let money = Number(change(subtotal[i].innerHTML));
+
+			total_price += amount;
+			allMoney += money
+		}
+		total.innerHTML = total_price.toString();
+		total_money.innerHTML = allMoney;
+	}
+</script>
+
+</html>

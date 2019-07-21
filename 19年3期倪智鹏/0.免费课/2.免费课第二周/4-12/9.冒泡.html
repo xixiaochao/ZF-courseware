@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 排序-扩展内容
+    // 冒泡排序：当前项和后一项进行比较，
+    // 如果当前项大于后一项则交换位置
+
+  function bubleSort(arr) {
+    for (let i = 0; i < arr.length - 1; i++) {
+      for (let j = 0; j < arr.length - 1 - i; j++) {
+        if (arr[j] > arr[j + 1]) {
+          let t = arr[j]
+          arr[j] = arr[j + 1]
+          arr[j + 1] = t
+        }
+      }
+    }
+  }
+
+  var ary1 = [29, 10, 16, 37, 14]
+  bubleSort(ary1)
+  console.log(ary1)
+
+  var ary2 = [5, 19, 2, 30]
+  bubleSort(ary2)
+  console.log(ary2)
+
+  // 快速排序
+
+  // Math
+  // 随机验证码（不重复的验证码）
+  // 数组去重-双循环去重
+  // 数组排序（扩展）
+  </script>
+</body>
+</html>

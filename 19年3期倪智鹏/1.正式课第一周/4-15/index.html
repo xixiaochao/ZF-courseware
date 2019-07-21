@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+    function constant (){
+        return () => arguments[0]
+    }
+    var result =constant(1);
+    console.log(result); //()=>arguments[0]
+    console.log(result()); //1
+    
+    function fn (a,b){
+        arguments[0]=100;
+        arguments[1]=200;
+        console.log(a,b);
+    }
+    fn(1)
+
+
+    let age = 10;
+    let obj = {
+        age:'珠峰',
+        fn:function(){
+            console.log(this.age)
+        }
+    };
+    let obj2 = {
+        f2:obj.fn,
+        age:100
+    }
+    let f = obj.fn;
+    f();//珠峰
+    obj.fn();
+    obj2.f2();
+
+    //作用域销毁：
+    // 函数执行：返回值是一个引用数据类型，并且该引用数据类型被外界占用，
+    // 那么，该函数执行形成的作用域就不会被销毁
+
+    </script>
+</body>
+</html>

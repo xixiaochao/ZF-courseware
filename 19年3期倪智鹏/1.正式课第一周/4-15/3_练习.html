@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    // 函数执行的过程
+    // 形成一个私有作用域，形参赋值，变量提升，代码执行
+
+    // var ary = [1, 2, 3];
+
+    // function sum(arr) {
+    //     // arr 私有变量，值是 ary 的地址； arr和ary是同一个地址
+    //     arr[0] = 10; // ary [10,2,3]
+    //     console.log(arr); // 10 2 3 
+    //     arr = [2, 2, 3]; // 给 arr 了 一个新的地址；ary 还是原来的地址
+    //     return arr // 返出去的是一个新的地址
+    // }
+    // console.log(sum(ary)); // [2,2,3]
+    // console.log(ary); // [10,2,3];
+
+
+
+    // var a = {
+    //     x: 1
+    // };
+    // var b = a;
+    // // 点的优先级 比 赋值 要高
+    // b.c = a = {
+    //     y: 1
+    // };
+    // console.log(a.c, b.c); // undefined  {y:1}
+
+
+    // 第三题
+    // var foo = 0;
+
+    // function bar() {
+    //     if (!foo) {
+    //         // var foo = 10;
+    //         // foo = 10;
+    //         let foo = 10;
+    //     }
+    //     console.log(foo); //；
+    // }
+    // bar();
+
+
+    // var n = 13;
+
+    // function fn(n) {
+    //     console.log(n);
+    //     var n = 14;
+    //     console.log(n);
+    // }
+    // fn(n);
+    // console.log(n);
+
+
+    // 第四题；
+    // var n = 10;
+
+    // function outer() {
+    //     let n = 15;
+
+    //     function inner() {
+    //         function center() {
+    //             alert(n);
+    //         }
+    //         center();
+    //     }
+    //     inner();
+    // }
+    // outer()
+
+
+
+    // var n = 0;
+
+    // function b() {
+    //     // n++;
+    //     // alert(n)
+    //     console.log(++n);
+    // }
+
+    // function a() {
+    //     var n = 10;
+    //     b();
+    // }
+    // a();
+    // console.log(n);
+
+
+    console.log(num, str);
+    var num = 18;
+    var str = "lily";
+
+    function fn2() {
+        console.log(str, num);
+        num = 19;
+        str = "candy";
+        var num = 14;
+        console.log(str, num);
+    }
+    fn2();
+    console.log(str, num);
+
+
+    alert(a); // undefined
+    console.log("a" in window); // true
+    if (!("a" in window)) {
+        var a = 10;
+    }
+    alert(a); // undefined
+
+
+    var obj = {
+        name: 1,
+        age: 2
+    };
+    // 'age' in obj // 返回值是个 布尔 
+
+
+    f = function () {
+        return 1
+    };
+    g = function () {
+        return 2
+    };
+    (function () {
+        console.log(g);
+        if (f() && []==![]) {
+            f = function f() {
+                return 3
+            };
+            g = function g() {
+                return 4
+            };
+        }
+    })();
+    alert(f());
+    alert(g())
+</script>

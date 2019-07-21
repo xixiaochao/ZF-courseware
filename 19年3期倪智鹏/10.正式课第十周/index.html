@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="/public/css/weibo.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="nArea">
+        <!--留言-->
+        <div class="takeComment">
+            <textarea name="textarea" class="takeTextField" id="text"></textarea>
+            <div class="takeSbmComment">
+                <input type="button" id="submit" class="inputs" value="" />
+                <span>(可按 Enter 回复)</span>
+            </div>
+        </div>
+        <!--已留-->
+        <div class="commentOn">
+            <div class="messList" id="div1" style="height:502px">
+                <!-- <div class="reply">
+<p class="replyContent">卫士，新款卫士将推出总共14种车身式样。其中， XS旅行款车型售价为32295英镑(约33.6万元)。</p >
+<p class="operation">
+<span class="replyTime">2018-09-08 16:37:60</span>
+<span class="handle">
+< a href=" " class="top">0</ a>
+< a href="javascript:;" class="down_icon">0</ a>
+< a href="javascript:;" class="cut">删除</ a>
+</span>
+</p >
+</div> -->
+            </div>
+            <div class="page" id="page">
+                <!-- < a href="#" class="active">1</ a>
+< a href="#" >2</ a> -->
+            </div>
+        </div>
+    </div>
+    <script src="./backup/axios_dev.js"></script>
+    <script>
+        function fnPage() {
+            axios.get('/api/weibo?act=get_page_count')
+                .then((data) => JSON.parse(data))
+                .then(d => {
+                    console.log(d.count)
+                    let str = '';
+                    if (d.code === 0) {
+                        for (let i = 1; i <= d.count; i++) {
+                            str += `< a href="#" class="active">${i}</ a>`
+                        }
+                        page.innerHTML = str
+                    }
+                })
+        }
+        fnPage()
+        let yeshu = 1
+        function fn() {
+            axios.get('/api/weibo?act=get&page=' + yeshu)
+                .then((data) => JSON.parse(data))
+                .then(d => {
+
+                    render(d)
+                    // console.log(d)
+                })
+        }
+        fn()
+
+        /////////添加
+        submit.onclick = function () {
+            axios.get('/api/weibo?act=add&content=' + text.value)
+                .then((data) => JSON.parse(data))
+                .then(d => {
+                    console.log(d)
+                    if (d.code === 0) {
+                        axios.get('/api/weibo?act=add&content=' + text.value)
+                            .then((data) => JSON.parse(data))
+                            .then(d => {
+                                fn()
+
+                            })
+                    }
+
+                })
+            text.innerHTML = ''
+        }
+
+        /////////回车功能
+        text.onkeyup = function (ev) {
+            if (ev.keyCode === 13) {
+                submit.onclick()
+            }
+        }
+
+        /////////刷新页面
+        function render(data) {
+            let html = ''
+            let str = ''
+
+            data.forEach(e => {
+                html += `
+<div class="reply" >
+<p class="replyContent">${e.content}</p >
+`;
+            })
+        };
+
+        //点赞
+        div1.onclick = function(ev){
+            if(ev.target.classList.contains('top')){
+                
+            }
+        }
+    </script>
+</body>
+
+</html>

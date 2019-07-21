@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="oDiv" class='qqq'>
+        <h1>珠峰培训</h1>
+    </div>
+    <div class="qqq"></div>
+    <div class="qqq"></div>
+    
+    <input id='inp' value = '123456'/>
+</body>
+</html>
+<script>
+    // console.log()  console.dir()   alert() 
+    // debugger 
+    // 变量 var  let 
+    var a = 2;// $ jQuery zepto
+    // 获取元素 
+    // console.log(oDiv) // 在高版本 可以直接用ID 表示元素
+
+    var oDiv1 = document.getElementById('oDiv');
+    var oDiv2 = document.getElementsByClassName('qqq')[0];
+    //  通过类名获取元素，我们得到的是一个集合，想要获取某个元素 需要用对应的索引来获取
+    //  索引都是从0开始的
+    var oDiv3 = document.getElementsByClassName('qqq');
+    // console.log(oDiv1,oDiv2,oDiv3[2])
+
+    // 通过标签名获取元素，得到的结果跟 通过类名得到的结果一致
+    var oDiv4 = document.getElementsByTagName('div')[0];
+    console.log(oDiv4);
+
+    //
+    var str = oDiv4.innerHTML;
+    var str2 = oDiv4.innerText;
+    console.log(str,str2)
+    // oDiv4.innerHTML = '<h1>珠峰</h1>';  好使
+    // str = '<h1>珠峰</h1>';  不好使
+    oDiv4.innerText = '<h1>珠峰</h1>'
+    // innerHTML 可以识别html结构； innerText 不能识别html结构
+    oDiv4.className = 'www';
+    var var1 = 12;
+
+</script>

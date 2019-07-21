@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    // 变量提升(声) ；在代码执行之前，把其中带var 和 function 关键
+    // 字的 先提前声明；
+    // var ：只声明 不定义 ； 默认值 undefined
+    // function： 声明加定义
+
+    // var a; var fn2;  function fn
+    // console.log(a,fn2);
+    // fn();
+    // // fn2();
+    // var a = 12;
+    // function fn(){
+    //     console.log(1)
+    // }
+    // var fn2 = function(){
+    //     console.log(2)
+    // }
+    // fn2();
+    
+    // console.log(a);
+    // console.log(a,fn);
+    // 在条件句中， 带var 也是会提前声明；
+    // 但是对于 function  高版本浏览器 是 只声明不定义
+    //                    IE低版本 是 声明+定义
+    // if(false){
+    //     var a = 12;
+    //     function fn() {
+    //         console.log(100)
+    //     }
+    // }
+    // fn();
+
+    // function fn(a,b) {
+    //     // 在函数执行之前， 多了一个 形参赋值，然后再去变量提升
+    //     console.log(a,b,c)
+    //     var c = 12;
+    //     console.log(a,b,c)
+    // }
+    // fn(1)
+
+    // let const var 
+    // console.log(a)
+    // var a = 12;
+    // console.log(a)
+    // var a = 13;
+    // console.log(a)
+
+
+    // var 可以重复声明 ； let 不可以
+    // var 可以变量提升 ； let 不可以
+    // var 可以成为window属性； let 不可以
+    // const 声明就是一个 常量；不能重新赋值；
+
+    // console.log(a)
+    // const a = 12;
+    // a = 13;
+    // console.log(a)
+    // // let a = 13;
+    // console.log(a)
+
+    // var a = 12;
+    // let a ;
+    let c = 13;
+    function fn(a,b) {
+        let c = 12;
+        console.log(a);
+    }
+    fn(1);
+
+    // 全局  看var 和 function
+    // 函数内部  先形参赋值  再看var 和 function
+
+
+</script>

@@ -1,0 +1,270 @@
+﻿<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="/public/css/weibo.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="nArea">
+        <!--留言-->
+        <div class="takeComment">
+            <textarea name="textarea" class="takeTextField" id="text"></textarea>
+            <div class="takeSbmComment">
+                <input type="button" id="submit" class="inputs" value="" />
+                <span>(可按 Enter 回复)</span>
+            </div>
+        </div>
+        <!--已留-->
+        <div class="commentOn">
+            <div class="messList" id="div1" style="height:502px">
+                <!--<div class="reply">
+                <p class="replyContent">卫士，新款卫士将推出总共14种车身式样。其中， XS旅行款车型售价为32295英镑(约33.6万元)。</p>
+                <p class="operation">
+                    <span class="replyTime">2018-09-08 16:37:60</span>
+                    <span class="handle">
+                        <a href="javascript:;" class="top">0</a>
+                        <a href="javascript:;" class="down_icon">0</a>
+                        <a href="javascript:;" class="cut">删除</a>
+                    </span>
+                </p>
+            </div>-->
+            </div>
+            <div class="page" id="page">
+                <!-- <a href="#" class="active">1</a>
+            <a href="#" >2</a> -->
+            </div>
+        </div>
+    </div>
+    <script src="./backup/axios_dev.js"></script>
+    <script>
+
+
+        // 页面获取数据
+        function getDate(num = 1) {
+            fetch('http://localhost:88/api/weibo?act=get&page=' + num)
+                .then(e => e.json())
+                .then(d => {
+                    // console.log(d,44,typeof d)
+                    render(d);
+                });
+        }
+
+        getDate();
+
+
+        //点击添加
+        submit.onclick = function () {
+            fetch('http://localhost:88/api/weibo?act=add&content=' + text.value)
+                .then(e => {
+                    return e.json()
+                })
+                .then(d => {
+                    console.log(d, 222);
+                    if (d.code == 0) {
+                        getDate();
+                     }
+                    }
+                )
+        }
+
+
+
+//渲染
+        function render(arr) {
+            // console.log(typeof arr,11,arr);
+            // console.log(arr, 1)
+            let html = ''
+            arr.forEach(ele => {
+                html += `
+        <div class="reply" data-id=${ele.id}>
+                <p class="replyContent">${ele.content}</p>
+                <p class="operation">
+                    <span class="replyTime">2018-09-08 16:37:60</span>
+                    <span class="handle">
+                        <a href="javascript:;" class="top">${ele.like}</a>
+                        <a href="javascript:;" class="down_icon">${ele.dislike}</a>
+                        <a href="javascript:;" class="cut">删除</a>
+                    </span>
+                </p>
+            </div>
+        `
+            });
+            div1.innerHTML = html;
+            getPageNum();
+            // console.log(div1)
+        }
+
+        //  like dislike  remove
+
+        div1.onclick = function (ev) {
+            //点赞
+            if (ev.target.classList.contains('top')) {
+                console.log(ev.target, 1);
+                let id = ev.target.parentNode.parentNode.parentNode.dataset.id;
+                console.log(id)
+                fetch('http://localhost:88/api/weibo?act=like&id=' + id)    //点赞时 当前点赞数传给数据，下载渲染时就是页面点赞数
+                    .then(e => e.json())
+                    .then(d => {
+                        console.log(d);
+                        ev.target.innerHTML = ++ev.target.innerHTML;   //点赞同时让页面的点赞数修改
+                    })
+            }
+            //踩
+            if (ev.target.classList.contains('down_icon')) {
+                let id = ev.target.parentNode.parentNode.parentNode.dataset.id;
+                console.log(id)
+                fetch('http://localhost:88/api/weibo?act=dislike&id=' + id)    //
+                    .then(e => e.json())
+                    .then(d => {
+                        console.log(d);
+                        ev.target.innerHTML = ++ev.target.innerHTML;   //
+                    })
+            }
+            //删除
+            if (ev.target.classList.contains('cut')) {
+                let id = ev.target.parentNode.parentNode.parentNode.dataset.id;
+                console.log(id)
+                fetch('http://localhost:88/api/weibo?act=del&id=' + id)    //
+                    .then(e => e.json())
+                    .then(d => {
+                        console.log(d, 22);
+                        ev.target.innerHTML = ++ev.target.innerHTML;   //
+                        //  render(d);
+                        getDate();
+
+                    })
+            }
+        }
+
+
+
+//f分页
+let pageIndex = 0; //当前页
+
+        function getPageNum(){
+            fetch('http://localhost:88/api/weibo?act=get_page_count')
+            .then(e=>e.json())
+            .then(d=>{
+                console.log(d);
+                if(d.code === 0){
+                    page.innerHTML = '';
+                    for(let i=0; i<d.count ; i++){
+                        let a = document.createElement('a');
+                        if(i === pageIndex){
+                            a.className = 'active';
+                        }
+                        a.href = 'javascript:;';
+                        a.innerHTML = i+1;
+                        a.onclick = function(){
+                            getDate(i+1);
+                            pageIndex = i ;
+                        }
+                        page.appendChild(a);
+                    }
+                }
+
+            //     if(code === 0){
+            //     page.innerHTML = '';
+            //     for(let i=0;i<count;i++){
+            //         let a = document.createElement('a');
+            //         if(i === pageIndex){
+            //             a.className = 'active';
+            //         }
+            //         a.href = 'javascript:;';
+            //         a.innerHTML = i+1;
+            //         a.onclick = function(){
+            //             getDate(i+1);
+            //             pageIndex = i;
+            //         }
+            //         page.appendChild(a);
+            //     }
+            // }
+            // console.log(code,count);
+            })
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// let val = 0;
+
+//点赞
+
+
+
+
+// function tooop (){
+// let toop = document.querySelectorAll('.top');
+// console.log(toop,11)
+// for(let i=0 ;i< toop.length ; i++){
+// toop[i].onclick = function (){
+//     console.log(222)
+//                     fetch('http://localhost:88/api/weibo?act=get&page=1')
+//                     .then(e=> e.json())
+//                     .then(d =>{
+//                         // val +=1;
+//                         // console.log(d,11,d[i])
+//                         // render(d)
+//                         // d[i].dislike = val;
+//                         let val = d[i].dislike;
+//                         val +=1;
+//                         d[i].dislike = val;
+//                         console.log(val,d[i],11111111)
+//                         fetch('http://localhost:88/api/weibo?act=like&id='+d[i].id)
+//                         .then(ee=> ee.json())
+//                         .then(dd =>{
+//                             console.log(dd,22,i);
+//                             console.log(toop[i],33);
+
+//                             if(dd.code == 0){
+//                                 // console.log(dd,333);
+//                                 fetch('http://localhost:88/api/weibo?act=get&page=1')
+//                                     .then(e=> e.json())
+//                                     .then(d =>{
+//                                         console.log(d[i],222222)
+//                                         // toop[i].inneHTML = 55;
+//                                         console.log(toop[i].innerText , d[i].like,55)
+//                                         render(d);
+//                                     })
+//                                 // val +=1;
+//                                 // toop[i].innerText =val;
+//                             }
+//             // render(d);
+//         })
+
+//                     })
+
+// }
+// }
+// }
+
+
+
+
+    </script>
+</body>
+
+</html>

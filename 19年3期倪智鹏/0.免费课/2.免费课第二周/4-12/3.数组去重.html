@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // [1, 2, 3]
+    // var arr = [1, 1, 1, 2, 2, 2, 3, 3, 3]  
+    // console.log(arr)
+    // 准备一个新空数组
+    // var ary = []
+    // indexOf() 查找某个值 在数组中 首次出现的索引位置
+    // console.log(arr.indexOf(2)) // 3
+    // console.log(arr.indexOf(6)) // -1
+
+    // 0 ~ (arr.length - 1)
+    // var arr = [1, 1, 1, 2, 2, 2, 3, 3, 3]
+    // var ary = [] // 新数组
+    // for (var i = 0; i < arr.length; i++) {
+    //   var cur = arr[i] // 1 1 2
+    //   // 如果这个新数组中 还不存在cur这个值 再往里push
+    //   // [1].indexOf(2) === -1
+    //   if (ary.indexOf(cur) === -1) {
+    //     ary.push(cur) // [1, 2]
+    //   }
+    // }
+    // console.log(ary) // [1, 2, 3]
+   
+    //1.利用indexOf()方式 
+    // var arr = [1, 1, 1, 2, 2, 2, 3, 3, 3]
+    // var ary = []
+    // // 1.通过for循环 依次将arr数组中 每一项取出来
+    // for (var i = 0; i < arr.length; i++) {
+    //   // 2.将每次取出的值 暂存变量cur
+    //   var cur = arr[i]
+
+    //   // 3.判断新数组中 是否已经存在cur这个值，
+    //   // 如果不存在 就执行判断条件里的 push方法
+    //   if (ary.indexOf(cur) === -1) {
+    //     ary.push(cur)
+    //   }
+
+    // }
+    // // 去重后新数组
+    // console.log(ary) // [1, 2, 3]
+
+    // 2.includes() 判断一个数组中是否包含这一项 
+    // 返回值：true 包含、false 不包含
+    // var arr = [1, 1, 1, 2, 2, 2, 3, 3, 3]
+    // var ary = []
+
+    // for (var i = 0; i < arr.length; i++) {
+    //   var cur = arr[i]
+    //   // includes返回false的时候 再往里push
+    //   if (!ary.includes(cur)) {
+    //     ary.push(cur)
+    //   }
+    // }
+    // console.log(ary)
+
+    // var obj = {
+    //   id: 1
+    // }
+    // console.log(obj.id)
+    // console.log(obj['id'])
+    // console.log(obj['age'])
+
+    // 0 '' NaN null undefined 这五个值 转换为Boolean值都是false
+    // 其余都是true
+
+    // ! 先转换成Boolean值 再取反 （true false）
+    // !undefined // true
+    </script>
+</body>
+</html>

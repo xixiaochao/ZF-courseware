@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button id='btn'>按钮</button>
+    <div id="oDiv">
+        珠峰
+    </div>
+</body>
+</html>
+<script>
+    // 点  从属关系  翻译成汉语 就是 "的"
+    // 用 点 的地方我们都可以使用中括号 []
+    var oDiv = document.getElementById('oDiv')
+    var oDiv2 = document['getElementById']('oDiv');
+    // debugger;
+    // 小需求  把oDiv设置成白色字体 宽200px 高200px;背景黑色
+    // style
+    btn.onclick = function () {
+        oDiv.style.color = '#fff';
+        oDiv['style']['width'] = '200px';
+        oDiv.style.height = '200px';
+        oDiv.style.background = '#000';
+    }
+    
+</script>

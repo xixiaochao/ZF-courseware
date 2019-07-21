@@ -1,0 +1,9 @@
+folders.js  获取数据显示文件夹
+crumbsMenu.js 面包屑
+
+btnEvent -> create.js 新建文件夹
+btnEvent -> move.js 移动文件夹
+btnEvent -> rename.js 重命名文件夹
+btnEvent -> delete.js 删除文件夹
+
+dragSelect ->  dragSelect.js   选框碰撞

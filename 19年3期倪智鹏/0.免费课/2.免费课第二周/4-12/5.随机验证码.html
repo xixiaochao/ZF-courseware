@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 如果没有给len传参 默认生成四位验证码
+      function codeStr(len) {
+        var str =
+          "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        len = len || 4
+        var code = "";
+
+        for (var i = 0; i < len; i++) {
+          var ind = Math.round(Math.random() * (str.length - 1));
+          code += str[ind];
+        }
+
+        return code;
+      }
+      codeStr();
+
+      // // 如果没有给len传参 默认生成四位验证码
+      // function codeStr(len) {
+      //   var str =
+      //     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+      //   // 默认参数处理
+      //   // if(!len) { 
+      //   //   len = 4
+      //   // }
+      //   // 默认参数处理
+      //   len = len || 4 // 6 || 4
+
+      //   var code = "";
+      //   for (var i = 0; i < len; i++) {
+      //     // 每次循环 得到 0 到length-1之间的随机索引
+      //     var ind = Math.round(Math.random() * (str.length - 1));
+      //     // 根据随机的索引 得到对应的字符str[ind]
+      //     code += str[ind];
+      //   }
+      //   return code;
+      // }
+      // codeStr();
+
+      // 1.利用传参 生成指定长度的验证码
+      // function codeStr(len) {
+      //   var str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+
+      //   var code = ''
+      //   for (var i = 0; i < len; i++) {
+      //     // 每次循环 得到 0 到length-1之间的随机索引
+      //     var ind = Math.round(Math.random() * (str.length - 1))
+      //     // 根据随机的索引 得到对应的字符str[ind]
+      //     code += str[ind]
+      //   }
+      //   return code
+      // }
+      // codeStr(6)
+      // console.log(codeStr())
+
+      // 索引范围 0 ~ (str.length - 1)
+      // var str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+
+      // 0 到 (str.length - 1) 随机整数（随机索引）
+      // 0 ~ 61 随机整数
+      // Math.round(Math.random() * (str.length - 1))
+
+      // var str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+      // var len = 4 // 验证码长度
+      // var code = ''
+
+      // for (var i = 0; i < len; i++) {
+      //   // 每次循环 得到 0 到length-1之间的随机索引
+      //   var ind = Math.round(Math.random() * (str.length - 1))
+      //   // 根据随机的索引 得到对应的字符str[ind]
+      //   code += str[ind]
+      // }
+      // console.log(code)
+
+      // var len = 4
+      // var str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+      // var codeStr = ''
+      // for (var i = 0; i < len; i++) {
+      //   var ind = Math.round(Math.random() * (str.length - 1))
+      //   codeStr += str[ind]
+      // }
+      // console.log(codeStr)
+    </script>
+  </body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // var arr = [1, 1, 1, 1] 
+
+    // // 数组塌陷的问题
+    // // 数组中前面一项被删除，后面每一项都会往前移一位
+    // for (var i = 0; i < arr.length; i++) {
+    //   var cur = arr[i]
+    //   for (var j = i + 1; j < arr.length;) {
+    //     var last = arr[j]
+    //     cur === last ? arr.splice(j, 1) : j++
+    //     // if (cur === last) {
+    //     //   arr.splice(j, 1) // splice() 发生数组塌陷
+    //     // } else {
+    //     //   j++
+    //     // }
+    //   }
+    // }
+    // console.log(arr)
+     
+    // 用当前项 依次和后一项进行比较
+    // 外层循环 取出当前项
+    // for (var i = 0; i < arr.length; i++) {
+    //   // 当前项
+    //   var cur = arr[i]
+    //   // 内层循环 取出 当前项后面的每一项
+    //   for (var j = i + 1; j < arr.length; j++) {
+    //     var last = arr[j] // 后一项
+    //     if (cur === last) { // 如果当前项和后一项相等
+    //       arr.splice(j, 1) // 将后一项从arr中删除
+    //     }
+    //   }
+    // }
+    // console.log(arr) // [1, 2, 3]
+
+    // 数组去重三种方式
+    // indexOf()/includes()
+    // 利用object
+    // 双循环去重
+    var arr = [1, 1, 1, 1] 
+
+    // // 外层循环负责取出当前项 cur
+    // for (let i = 0; i < arr.length; i++) {
+    //   // let cur = arr[i] // 当前项
+
+    //   // 内层循环负责取出 当前项cur 后面的每一项
+    //   for (let j = i + 1; j < arr.length; ) {
+    //     // let last = arr[j] // 后一项
+    //     arr[i] === arr[j] ? arr.splice(j, 1) : j++
+    //   }
+    // }
+    // console.log(arr)
+
+    // for (let i = 0; i < arr.length; i++) {
+    //   for (let j = i + 1; j < arr.length; ) {
+    //     arr[i] === arr[j] ? arr.splice(j, 1) : j++
+    //   }
+    // }
+    // console.log(arr)
+
+    // let a = 0
+    // for (let i = 0; i < 10; i++) { // 10
+    //   for (let j = 0; j < 10; j++) { // 10 * 10
+    //     for (let k = 0; k < 10; k++) { // 10 * 10 * 10
+    //       console.log(++a)
+    //     }
+    //   }
+    // }
+  </script>
+</body>
+</html>

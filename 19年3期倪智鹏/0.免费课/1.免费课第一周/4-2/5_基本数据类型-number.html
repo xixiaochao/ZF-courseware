@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    // number 整数  小数   NaN(not a number)
+    var n = 1;
+    var n2 = '1' + 2 ; // 字符串的 12
+    var n3 = 1 + 2 ; // 数字的 3
+    console.log(n2,n3);// 12   3
+    
+    var n4 = '1' + 2 + 3; // '12' + 3 '123'
+    var n5 = 1 + 2 + 3; // 3 + 3 6
+    // 对于 +  号； 两边 只要有一个 是字符串  那么就是字符串拼接；
+
+    var n6 = 1 + 2 + 3 + '4' + 5; 
+    // 3 + 3 + '4' + 5 // 6 + '4' + 5 // '64' + 5 // '645'
+
+    var n7 = '12' - "2"; // 先把两边的 内容转成(Number) 数字； 再去进行运算
+    var n8 = 12 - 2;
+    console.log(n7,n8);
+
+    var m1 = Number('');// 0
+    var m2 = Number('12q'); // NaN
+    // Number 转化的时候， 字符串中有非数字(不含小数点)， 结果就是 NaN
+    console.log(m1,m2)
+
+    // 四则运算 + - * / %  除了+ ;其他的都会把符号两边转成数字再去运算
+    var m3 = '12q' + 3;
+    var m4 = '12q' - 3; // NaN - 3  --> NaN
+    
+    // 一个 = 是赋值； 俩 == 是相对比较； 仨 === 是绝对比较 
+    // '1' == 1;/// true
+    // '1' === 1;// false
+    // NaN == NaN    false   NaN 和谁 都不想等
+    // 'NaN' == NaN  false 
+    // 'NaN' == 'NaN'  true
+
+    isNaN(Number('1q23w')) // isNaN(NaN)  // true
+    // 
+    NaN + 1 + '2' // NaN + '2' 
+    // NaN 和 任何数字做运算 结果都是 NaN
+    console.log('1' === 1);
+
+    var m5 = Number('1.2q');
+    console.log(m5+'' === "NaN")
+
+    //parseInt  parseFloat
+    parseInt('12.3') // 12
+    parseInt('12.3q')// 12
+    // 从左向右查看 遇到非数字(包含小数点)即停，获取到的是前边的数字部分
+    // 若第一位就是非数字，则结果是 NaN
+
+    // Number('     ') 0
+    // parseInt('   ')  NaN
+    // parseInt(' 123  ')  123
+
+    // parseFloat('12.3q')
+    // parseFloat('1q2.3q')
+    // 从左向右查看 遇到非数字(不包含小数点)即停，获取到的是前边的数字部分
+    // 若第一位就是非数字，则结果是 NaN
+    // 0.1 + 0.2 == 0.3   false 
+
+    // Number('12.3q') 
+    // Number() Number(' ') Number([]) Number(null)  0
+    // Number({})  Number(undefined)  NaN
+    // isNaN('12.3q') //先用Number处理 括号内的参数
+    // parseInt()
+    // parseFloat()
+
+    var a = 12;
+    
+
+
+
+
+</script>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style></style>
+</head>
+
+<body>
+    <div style=""></div>
+    <script>
+        //快速排序：
+        //每次从数组中取出一个基准值mid，
+        //比它小的放在左边数组中 var left =[];
+        //比它大的放在左边数组中 var right =[];
+        //在继续对left数组和right数组 重复上述操作
+
+        //获取中间项
+        //midIdx = Math.floor(arr.length/2)
+        //mid =  arr.splice(midIdx,1)[0];
+
+        //递归 
+        //一定要有结束条件
+        //确定它的核心功能
+        function quiclkSort(ary) {
+            console.log(ary);
+            if (ary.length <= 1) {
+                return ary;
+            }
+            var midIdx = Math.floor(ary.length / 2);
+            var mid = ary.splice(midIdx, 1)[0];
+            var left = [];
+            var right = [];
+            for (let i = 0; i < ary.length; i++) {
+                ary[i] < mid ? left.push(ary[i]) : right.push(ary[i])
+            }
+            return quiclkSort(left).concat(mid, quiclkSort(right));
+        }
+        var ary = [15, 2, 6, 12, 11, 38, 19];
+        console.log(quiclkSort(ary));
+
+        quiclkSort(ary)
+
+        function quick(arr) {
+            if (arr.length <= 1) return arr; //判断数组长度小于等于1时返回
+            var midIdx = Math.floor(arr.length / 2); //取数组中间值并且向下取整
+            var mid = arr.splice(midIdx, 1)[0]; //截取基准值
+            var left = [];
+            var right = [];
+            for (let i = 0; i < arr.length; i++) {
+                arr[i] < mid ? left.push(arr[i]) : right.push(arr[i]);
+            }
+            return quick(left).concat(mid, quick(right));
+        }
+        console.log(quick([5]));
+        quick([5])
+
+        //获取1~100之间，所有既能被5整除，也能被3整除的数组，相加的和。
+        var a =[];
+        function sum(num) {
+            if (num === 0) {
+                return num;
+            }
+            if (num % 3 === 0 && num % 5 === 0) {
+                a.push(num)
+                return num + sum(num - 1);
+            }else{
+                return sum(num - 1);
+            }
+        }
+        sum(100)
+        console.log(a);
+        console.log(sum(100));
+        
+        //console.log(sum(200));
+
+         function num(){
+            var total = 0;
+            for(let i=0;i<arguments.length;i++){
+                var n = Number(arguments[i]);
+                if(!isNaN(n)){
+                    total += n
+                }
+            }
+            return total;
+        }
+        console.log(num(1, '12', 10, NaN, undefined))
+
+    </script>
+</body>
+
+</html>

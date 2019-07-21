@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    // true  false
+    Number()   // 把其他数据类型转化成 数字类型
+    Boolean()  // 把其他数据类型转化成 布尔类型
+    console.log(Boolean(1)) // 
+    // 数字类型中  只有 0  和  NaN 转成布尔类型是false; 其他都是true
+    // 字符串  中  只有空字符串 转成布尔是 false ; 其他都是true
+    // 两个特殊的  null  和 undefined  是false;
+
+    // 值类型  基本数据类型
+    // 除了 0  NaN  ''  null  undefined 这五个值 是false; 其他的都是true
+
+    // ! 取非、取反  先把感叹号后边的 内容转成boolean类型；然后再去取反
+    // !! 取反再取反，结果相当于用了一个 Boolean
+    var bol = !1;   // false
+    var bol2 = !''; // true
+    var bol3 = ![]; // false
+    console.log(bol) // false
+</script>

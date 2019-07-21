@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        input {
+            width: 100%;
+            height: 30px;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            display: none;
+        }
+
+        li {
+            list-style: none;
+            background-color: #009999;
+            margin-top: 3px;
+            line-height: 30px;
+            width: 100%;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            width: 100%;
+        }
+
+        a:hover,
+        .hover {
+            background-color: #00FF99;
+        }
+
+        #box {
+            width: 500px;
+            margin: 100px auto 0;
+        }
+
+        .select {
+            background-color: #60625b;
+        }
+    </style>
+    <script>
+    </script>
+</head>
+
+<body>
+    <div id="box">
+        <input type="text" id="s" />
+        <ul id="list">
+            <li><a href="javascript:;">《第七个读者》</a></li>
+            <li><a href="javascript:;">《 心理罪 画像》</a></li>
+            <li><a href="javascript:;">《 心理罪 教化场》</a></li>
+            <li><a href="javascript:;">《 心理罪 暗河》</a></li>
+            <li><a href="javascript:;">《 心理罪 城市之光》</a></li>
+            <li><a href="javascript:;">《地球往事》</a></li>
+            <li><a href="javascript:;">《黑暗森林》</a></li>
+            <li><a href="javascript:;">《死神永生》</a></li>
+            <li><a href="javascript:;">《乡村教师》</a></li>
+            <li><a href="javascript:;">《地球大炮》</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>
+
+
+<script>
+    document.onclick = function (event) {
+        // console.log(event.target.id);
+        if (event.target.id == 's') {
+            return
+        }
+        list.style.display = 'none';
+        // console.log(11);
+
+    }
+
+
+    let lis = document.querySelectorAll('li')
+    let num = 0;
+    //获取焦点
+    s.onfocus = function (e) {
+        list.style.display = 'block';
+        //上下键事件
+        s.onkeydown = function (e) {
+            if (e.keyCode == 38) {
+                for (let i = 0; i < lis.length; i++) {
+                    lis[i].style.background = ' #009999'
+                }
+                num--;
+                if (num == 0) { num = 10 }
+                console.log(num);
+                lis[num - 1].style.background = '#00FF99';
+
+            }
+            if (e.keyCode == 40) {
+                for (let i = 0; i < lis.length; i++) {
+                    lis[i].style.background = ' #009999'
+                }
+                lis[num].style.background = '#00FF99';
+                num++;
+                if (num == 10) { num = 0; }
+            }
+        }
+
+
+    }
+    let noOff = false;
+    // //点击事件
+    list.onclick = function (e) {
+
+        let ev = e;
+        // e.stopPropagation();//==========阻止冒泡1
+        // console.log(e.keyCode);
+        //失去焦点
+        //  e.preventDefault();
+        //获取点击的值给input
+        // console.log(e.target.tagName );
+        console.log(noOff);
+
+        if (e.target.tagName == 'A' && !noOff) {
+            s.value = e.target.innerText;
+            list.style.display = 'none';
+
+        }
+        //ctrl 加上鼠标点击
+
+        document.onkeydown = function (e) {
+            if (e.keyCode == 17) {
+                list.style.display = 'block';
+
+                list.onclick = function (ev) {
+                    console.log(777);
+                    noOff = true;
+                    ev.target.style.background = '#00FF99';
+                    s.value += ev.target.innerText;
+                    e.stopPropagation();
+
+                }
+            }
+
+        }
+
+    }
+
+    // document.onclick = (e)=>{
+    //     console.log(e.button);
+    // }
+    document.onkeyup = function (e) {
+        noOff = false;
+        document.onkeydown = null
+        // console.log(e.keyCode);
+
+    }
+
+
+
+
+
+
+
+
+</script>

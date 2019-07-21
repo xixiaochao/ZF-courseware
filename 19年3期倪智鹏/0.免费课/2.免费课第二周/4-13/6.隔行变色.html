@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+   .c0 {
+     background-color: aqua
+   }
+
+   .c1 {
+     background-color: antiquewhite
+   }
+  </style>
+</head>
+<body>
+  <ul id="list">
+    <li>item1</li>
+    <li>item2</li>
+    <li>item3</li>
+    <li>item4</li>
+    <li>item5</li>
+    <li>item6</li>
+    <li>item7</li>
+    <li>item8</li>
+    <li>item9</li>
+    <li>item10</li>
+  </ul>
+  <script>
+    let list = document.querySelectorAll('#list>li')
+    // i % 2 0 1   'c' + i % 2 'c0' 'c1'
+    for (let i = 0; i < list.length; i++) {
+      list[i].className = 'c' + (i % 2) // 'c0' 'c1'
+
+      list[i].onmouseover = function () {
+        this.style.backgroundColor = 'red'
+      }
+
+      list[i].onmouseout = function () {
+        this.style.backgroundColor = ''
+      }
+    }
+
+    // for (let i = 0; i < list.length; i++) {
+    //   list[i].style.backgroundColor = i % 2 ? 'red' : 'pink'
+
+    //   list[i].onmouseover = function () {
+    //     this.style.backgroundColor = 'green'
+    //   }
+
+    //   list[i].onmouseout = function () {
+    //     this.style.backgroundColor = i % 2 ? 'red' : 'pink'
+    //   }
+    // }
+  </script>
+</body>
+</html>

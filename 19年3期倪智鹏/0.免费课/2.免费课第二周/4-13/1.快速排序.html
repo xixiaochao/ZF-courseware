@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 快速排序：
+    // 1.每次从数组中取出一个基准值mid，
+    // 2.比它小的放在左边的数组中 var left = []
+    // 3.比它大的放在右边的数组中 var right = []
+    // 再继续对 left数组和right数组 重复上述操作
+
+    // splice(x,n)
+    // 从索引x处开始，删除n个
+    // 返回值：删除后的内容 组成的新数组
+    // 修改原数组
+    
+    // 获取中间项
+    // midIdx = Math.floor(arr.length / 2 )
+    // mid = arr.splice(midIdx, 1)[0]
+    // arr.splice(3, 1) => [12] => 12
+    // var arr = [15, 3, 6, 12, 11, 38, 19]
+
+
+    // 递归 
+    // 一定要有结束条件
+    // 确定它的核心功能
+
+    // 快速排序：
+    // 1.每次从数组中取出一个基准值mid，
+    // 2.比它小的放在左边的数组中 var left = []
+    // 3.比它大的放在右边的数组中 var right = []
+    // 4.最后通过concat将最终结果连接到一起
+    function quickSort(ary) {
+       // 结束条件
+       if (ary.length <= 1) {
+         return ary
+       }
+       // 从数组中获取基准值
+       var midIdx = Math.floor(ary.length / 2)
+       var mid = ary.splice(midIdx, 1)[0] // [12]
+
+       var left = []
+       var right = []
+       // 比基准值小的放在left里面，大的放在right里面
+       for (let i = 0; i < ary.length; i++) {
+         ary[i] < mid ? left.push(ary[i]) : right.push(ary[i])
+       }
+       return quickSort(left).concat(mid, quickSort(right))
+    }
+    var arr = [15, 3, 6, 12, 11, 38, 19]
+   
+    console.log(quickSort(arr))
+  </script>
+</body>
+</html>

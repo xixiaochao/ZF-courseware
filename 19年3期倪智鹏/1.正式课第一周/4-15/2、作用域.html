@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button class="btn">按钮1</button>
+    <button class="btn">按钮2</button>
+    <button class="btn">按钮3</button>
+</body>
+</html>
+<script>
+    // 全局作用域  和  局部作用域/私有作用域(函数形成的)
+    // es6 多了 块级作用域
+    // var a = 12;
+
+    // function fn(b) {
+    //     var a = 13;
+    //     console.log(a);
+    // };
+    // fn();// 先形参赋值， 然后变量提升
+    // fn 执行 会形成一个 私有作用域
+    // console.log(a)
+
+    // 全局变量   在全局作用域声明的变量 是  全局变量
+    // 私有变量   在私有作用域声明的变量 是  私有变量 
+    //            形参都是私有变量
+
+    // var a = 12;
+    // if(true){
+    //     var a = 13
+    // }
+    // console.log(a)
+
+
+    // let b = 12;
+    // if(true){
+    //     // 会有一个 块级作用域
+    //     // let const 会识别 块级作用域
+    //     let b = 13
+    //     // b  是属于  块级作用域的私有变量
+    // }
+    // console.log(b);
+
+    // let oBtns = document.querySelectorAll('.btn');
+    // for(var i = 0; i < 3; i++){
+    //     oBtns[i].onclick = (function(i){
+    //         return function(){
+    //             console.log(i)
+    //         }
+    //     })(i)
+    // }
+
+
+
+
+    // var a = 12;    
+    // function fn() {
+    //     console.log(a);
+    //     a = 13;
+    // }
+    // fn(); // fn执行时，上级作用域 是 全局作用域；因为fn是在全局定义的；
+    // console.log(a);
+
+
+    // var a = 12;    
+    // function fn() {
+    //     console.log(a);
+    //     var a = 13;
+    // }
+    // fn();// 私有作用域； 形参赋值，变量提升 a undefined;a是私有的
+    // console.log(a);
+
+    // var a = 12;    
+    // function fn() {
+    //     // console.log(a);// 暂时性死区
+    //     let a = 13;
+    //     console.log(a);
+    // }
+    // fn();// 
+    // console.log(a);
+
+    // 作用域链 ： 变量的查找机制，先在本级私有作用域查找某个变量，
+    //            若有没有，则去**上级作用域**查找，。。。，一直查找到window,
+    //            若 window里也没有该变量，则就报错
+
+    var a = 12;    
+    function fn() {
+        console.log(a);
+        a = 13;
+    }
+    function fn2(){
+        let a = 100; // fn2执行时的私有变量
+        fn();// 上级作用域是 全局；fn是在全局定义的；
+    }
+    fn2();
+    console.log(a);
+
+</script>

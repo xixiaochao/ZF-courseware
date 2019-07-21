@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>增加减少</title>
+    <style>
+        body {
+            background: #f1f1f1;
+            font-family: "微软雅黑";
+        }
+
+        ul {
+            margin: 5px 0 0 0;
+            padding: 0;
+            list-style: none;
+            width: 300px;
+            background: #f1f1f1;
+        }
+
+        li {
+            border-left: 1px solid #fff;
+            border-bottom: 1px solid #999;
+            border-top: 1px solid #fff;
+            border-right: 1px solid #ccc;
+            line-height: 28px;
+            text-indent: 20px;
+            font-family: arial;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 3px;
+            color: #6f6f7a;
+            transition: 0.3s;
+        }
+
+        li:hover {
+            border-right: 1px solid #fff;
+            border-top: 1px solid #999;
+            border-bottom: 1px solid #fff;
+            border-left: 1px solid #999;
+            background: #6e697a;
+            color: #fff;
+        }
+
+        img {
+            width: 400px;
+            position: absolute;
+            top: 33px;
+            left: 309px;
+            display: none;
+            border-radius: 8px;
+        }
+
+        .show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <input id="btn1" type="button" value="添加" />
+    <input id="btn2" type="button" value="减少" />
+    不需要使用DOM创建、删除方法，不需要使用索引值，完成练习。
+    <ul id="ul1"></ul>
+    <img id="img1" src="img/mm1.jpg" />
+</body>
+<script>
+    let arr = ['img/mm1.jpg', 'img/mm2.jpg', 'img/zs1.jpg', 'img/zs2.jpg', 'img/zs3.jpg', 'img/zs4.jpg']
+    var ary = [];
+    var src = '';
+    var html = '';
+    function fn() {
+        ul1.innerHTML = html;
+        var lis = document.getElementsByTagName('li');
+        for (let i = 0; i < lis.length; i++) {
+            lis[i].onclick = function () {
+                src = lis[i].innerText;
+                img1.src = src;
+                img1.style.display = 'block';
+            }
+        }
+    }
+    btn1.onclick = function () {
+        if (ary.length < 6) {
+            let a = arr.shift();
+            ary.push(a);
+            html = '';
+            for (let i = 0; i < ary.length; i++) {
+                html += `<li>${ary[i]}</li>`
+            }
+        }
+        fn();
+    }
+    btn2.onclick = function () {
+        if (ary[ary.length - 1] == src) {
+            img1.src = ary[ary.length - 2];
+        }
+        if (ary.length > 0) {
+            let a = ary.pop();
+            arr.unshift(a);
+            html = '';
+            for (let i = 0; i < ary.length; i++) {
+                html += `<li>${ary[i]}</li>`
+            }
+        }
+        fn();
+    }
+</script>
+
+</html>

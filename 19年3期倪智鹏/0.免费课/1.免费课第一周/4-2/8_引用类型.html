@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="oDiv">
+        珠峰
+    </div>
+</body>
+</html>
+<script>
+    // 普通对象   {}
+    // 键值对 --> 属性名:属性值
+    // 属性值 可以是  任意数据类型
+    // 属性名  都是字符串类型
+    var obj = {
+        name:"小红",
+        age:9,
+        1:2,
+        _:2,
+        $:3,
+    };
+    // var 1 = 2;
+    var _ = 1234;
+    var $ = 123;
+    console.log(obj[1])
+    // 获取属性值 有两种方式 
+    // 一种是打点的方式，另一种是 [] 的方式
+    // 若属性名是 数字； 那么我们只能使用[]的方式
+    // obj.1 错误
+    // 打点的方式  完全等价于  [字符串]
+    console.log(obj.age)
+    console.log(obj['age']);
+
+    var age = 'name';
+    console.log(obj[age]);// obj['name'] '小红'
+    console.log(obj['age']) // obj.age 9
+    console.log(obj[obj[age]])//obj['小红']
+    // 对象中， 若没有对应的属性时，获取到的就是一个 undefined
+    var qqq = obj.qqq;
+    qqq === undefined
+    console.log(qqq+'');
+
+    var a = 12;
+    var b = a;
+    b = 13;
+    console.log(a);// 12
+
+    var o = {任: '珠峰'};
+    var o2 = o;
+    o2.任 = '哈哈';
+    console.log(o.任);
+
+
+    var oDiv = document.getElementById('oDiv');
+    // oDiv.style.color = 'red';
+    var style = oDiv.style; // style 是个引用数据类型
+    // style.color = 'red';
+
+    var color = oDiv.style.color; // 值类型 字符串
+    color = 'red';
+</script>
