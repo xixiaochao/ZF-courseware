@@ -1,0 +1,65 @@
+/*
+Created by xixiaochao on 2018/8/9.微博轮播图
+*/
+#carousel_outer{
+    margin:50px auto;
+    width: 660px;
+    height:280px;
+    overflow: hidden;
+    /*border-right: 3px solid black;*/
+    position: relative;
+    /*background: url("../img/default.gif") no-repeat center center;*/
+}
+#carousel_swiper{
+    width:3960px;
+    height: 280px;
+    position: absolute;
+    left:0;
+}
+#carousel_swiper a{
+    /*display: block;*/
+    width: 660px;
+    height:280px;
+    float: left;
+}
+#carousel_swiper img{
+    width: 660px;
+    height:280px;
+    position: absolute;
+}
+#carousel_swiper span{
+    width:660px;
+    height:60px;
+    position: absolute;
+    padding-top: 10px;
+    padding-left: 15px;
+    top:240px;
+    color: gainsboro;
+    font-weight: bold;
+    display: none;
+    background: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,1));
+
+}
+#carousel_swiper .spanSelect{
+    display: block;
+}
+#carousel_focus{
+    position: absolute;
+    bottom: 25px;
+    width:125px;
+    height:25px;
+    left:85%;
+}
+#carousel_focus li{
+    width: 10px;
+    height:10px;
+    border-radius: 50%;
+    margin-right:5px;
+    background: white;
+    float:left;
+    margin-top:25px;
+}
+#carousel_focus .select{
+    background: #ffb23f;
+    /*display: block;*/
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        input {
+            outline: none;
+            display: block;
+        }
+
+        ul, li {
+            list-style: none;
+        }
+
+        html, body {
+            color: #000;
+            font-size: 14px;
+            font-family: \5FAE\8F6F\96C5\9ED1, Helvetica, sans-serif;
+        }
+
+        .box {
+            margin: 50px auto;
+            width: 300px;
+        }
+
+        .box input {
+            padding: 0 10px;
+            width: 278px;
+            height: 30px;
+            border: 1px solid green;
+        }
+
+        .box ul {
+            border: 1px solid green;
+            border-top: none;
+        }
+
+        .box ul li {
+            height: 30px;
+            padding: 0 10px;
+            line-height: 30px;
+            cursor: pointer;
+        }
+
+        .box ul li:hover {
+            background: #EEE;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <input type="text" id="searchInp"/>
+    <ul id="searchBox">
+        <!--<li>珠峰培训</li>
+        <li>珠峰培训怎么样？</li>
+        <li>珠峰培训地址在哪？</li>
+        <li>珠峰培训就业怎么样？</li>-->
+    </ul>
+</div>
+<script charset="utf-8" type="text/javascript" src="js/jquery-1.11.3.js"></script>
+<script charset="utf-8" type="text/javascript">
+    let searchModule = (function () {
+        let $searchInp = $("#searchInp"),
+            $searchBox = $("#searchBox"),
+            interval = 100;
+
+        function bindHTML() {
+            let searchKey = $searchInp.val();
+
+            function callback(data) {
+                data = data["s"];
+                let str = '';
+                $.each(data, function (index, item) {
+                    if (index <= 3) {
+                        str += '<li>' + item + '</li>';
+                    }
+                });
+                $searchBox.html(str).stop().slideDown(interval);
+            }
+            $.ajax({
+               url:"https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=" + searchKey,
+                dataType:"jsonp",
+                jsonp:"cb",
+                success:callback
+            });
+        }
+
+        function init() {
+            $(document).on("click",function (e) {
+               var tar=e.target,
+                   tarTag=tar.tagName.toUpperCase(),
+                   $tar=$(tar);
+               if(tarTag ==="LI" && tar.parentNode.id === "searchBox"){
+                   $searchInp.val($tar.html());
+                   $searchBox.stop().slideUp(interval);
+                   return;
+               }
+               if(tar.id==="searchInp"){
+                   return;
+               }
+               $searchBox.stop().slideUp(interval);
+            });
+
+            $searchInp.on("focus keyup",function () {
+                var val=$(this).val();
+                if(val.length>0){
+                    bindHTML();
+                    return;
+                }
+                $searchBox.stop().slideUp(interval);
+            }).on("blur",function () {
+                window.setTimeout(function () {
+                    $searchBox.stop().slideUp(interval);
+                },interval);
+            });
+        }
+        return {init:init};
+    })();
+    searchModule.init();
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+/*页面*/
+* {
+    padding: 0;
+    margin: 0;
+    user-select: none; /*不能选中*/
+}
+
+ul {
+    list-style: none;
+}
+
+html, boby {
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    font-size: 20px;
+}
+/*商城*/
+.shopping {
+    width: 1200px;
+    margin: 20px auto;
+}
+
+.shopping .header {
+    height: 50px;
+    background-color: #fffac7;
+}
+
+.shopping .header span {
+    float: left;
+    line-height: 50px;
+    width: 100px;
+}
+
+.shopping .header a {
+    padding: 0 15px;
+    line-height: 50px;
+    position: relative;
+    text-decoration: none;
+    color: #807c7f;
+}
+
+.shopping .header a:hover {
+    color: red; /*鼠标滑过字体变红*/
+}
+
+/*头部箭头部分*/
+.header i{
+    width:0;
+    height:0;
+    top:50%;
+    margin-top:-4px;
+    border:4px solid transparent;
+    right:3px;
+    position: absolute;
+}
+.header i.up{
+    border-bottom-color: #666;
+}
+.header i.up.bg{
+    border-bottom-color: red;
+}
+.header i.down{
+    border-top-color: #666;
+    margin-top: 6px;
+}
+.header i.down.bg{
+    border-top-color: red;
+}
+
+/*商品列表*/
+.shopList{
+    margin:20px auto;/*上下20px，左右居中*/
+}
+.shopList li{
+    width:210px;
+    padding:0 10px;
+    margin:0 10px 10px 0;
+    float: left;
+    background: #fff6f8;
+}
+.shopList li img{
+    width:100%;
+    margin-top:10px;
+}
+.shopList li p{
+    line-height: 30px;
+    color: #a2a2aa;
+}
+del{
+color: red;
+}
