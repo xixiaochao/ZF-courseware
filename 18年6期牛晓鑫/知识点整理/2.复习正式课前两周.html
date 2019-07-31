@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // 理解阶段
+    // 代码的执行过程；
+
+    // 正式课第一周： 变量提升 作用域  this  面向对象
+    // 变量提升 ：
+    /*console.log(a);// undefined
+    var  a =1;
+    console.log(a);
+    console.log(f)// 整个函数
+    function f() {
+
+    }
+    var  obj = {
+        fn : function () {
+
+        }
+    }*/
+
+    // 变量提升特殊情况
+    // 1. 等号的右边不进行变量提升
+    // 2. return 后面的不进行提升；下面的要进行提升
+    // 3. 如果变量名字重复，只定义，不再重复声明
+    // 4. 匿名函数是不进行变量提升的；
+    // 5. let const  不进行变量提升；
+    // 6. 不管条件是否成立，都要进行变量提升；
+    /*console.log(fn);// undefined
+    if(1==1){
+        fn();
+        function fn() {
+
+        }
+    }*/
+    /*console.log(a);
+    if(!("a" in  window)){
+        var  a = 100;
+    }
+    console.log(a);*/// undefined
+
+    // 全局作用域和私有作用域；
+    
+
+    // 作用域：给代码提供运行环境的；
+    // 私有变量: 1.形参  2.变量在作用域下被定义过
+    var b = 99;
+    function a(c) {
+       let  c = 100;
+       console.log(b)
+    };
+    a();
+
+    // 查找上一级作用域；跟函数在哪执行没有关系，只跟函数在哪定义有关；
+    let a = 88;
+    function  total(){
+        let a = 100;
+        return function () {
+            console.log(a)
+        }
+    }
+    let  f = total();
+    f();// 100
+
+    // this  : 关键字；在特殊的场景有特殊的意义；
+    // 1. 全局下的this指向window
+    // 2. 回调函数、定时器中的this指向window
+    // 3. 函数执行前有没有点，点前面是谁，this就是谁
+    // 4.构造函数中的this执行实例
+    // 5.call apply  bind 改变this指向；
+    //console.log(this);// window
+
+    let  obj = {
+        num:10,
+        fn:function () {
+            console.log(this.num);
+        }
+    }
+    obj.fn();// this---> obj;
+    let y = obj.fn;
+    y();  // this --> window
+
+
+    // 面向对象；是一种编程思想；
+    // 实例  类  对象；
+    // 构造函数：
+    // 函数执行： 形成作用域-->形参赋值-->变量提升-->代码运行-->作用域销毁；
+    function rr() {
+        // this  : this 指向实例
+        // let  obj = {};
+        // this = obj;
+        this.a = 88;
+        this.b = 66;
+        // return  this;
+    }
+    rr();
+    new rr;
+
+    // 构造函数就是一个自定义的类；
+    // 类： 内置类 和自定义类；
+    // 1.是一个函数  2.会产生一个实例；
+    // 对象===>类 ===>实例
+
+    // 单例模式 -->工厂模式--->构造函数模式--->原型模式；
+    //  不干扰   批量、封装  解决了私有属性问题  解决了公有属性
+
+    let  arr1 = [12,3,5];
+    //把函数fn放在公有的位置，Array这个类的原型上；
+    Array.prototype.fn = function(){
+        this.length--;
+    };
+    let  arr2 = [12,6,99,99,0];
+    arr1.fn();
+    arr2.fn();
+    // Object 有没有__proto__这个属性
+    // Object.prototype有没有__proto__ 这个属性；
+    console.log(typeof Object);// "function"
+    console.log(typeof Object.prototype);//"object"
+    console.log(obj.j);
+
+    // 函数三种角色
+    // 函数  对象  类；
+    // call apply  bind;
+    // JSON :
+    // JSON.stringify  JSON.parse  eval
+    // 商品排序；按数据排   按DOM排；
+    // DOM 的映射和回流；
+    // 1. 性能优化问题：
+        // 1) : 减少http请求
+        // 2) ： 延迟加载
+        // 3) ：雪碧图
+        // 4) ：尽可能减少回流
+        // 5) ： 减少代码
+        // 6) : 压缩文件；
+        // 7) : 图片采用base64
+    // 数据绑定；
+
+
+</script>
+</body>
+</html>

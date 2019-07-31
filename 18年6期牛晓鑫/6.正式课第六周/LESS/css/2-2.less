@@ -1,0 +1,45 @@
+/*
+*  在LESS中只要设置了一个样式类，我们就可以把它称之为一个方法，其它地方需要用到这些样式，直接“.[类名]”调用即可（原理：把当前样式类中的代码原封不动的copy一份过去）
+*  不加括号即是普通样式类，也是封装的一个函数，编译的时候，这个样式类中的代码依然跟着编译
+*  加括号仅仅是封装的函数，编译的时候是不编译函数的
+*
+* 函数
+* .xxx(@xxx:xxx,@xxx){
+    @arguments
+  }
+*/
+
+/*1、*/
+.pub(){
+  width: 100px;
+  height: 100px;
+  background: green;
+}
+
+.box {
+  .pub();
+  background: red;
+}
+
+/*2、*/
+.transition(@property:all,@duration,@timing:linear,@delay:0s){
+  transition:@arguments;
+  /*transition:@property  @duration  @timing  @delay; */
+}
+.box{
+  .transition(all,1s,linear,0s);
+  transition(@timing:ease,@duration:1s);
+}
+
+/*3、*/
+.sum(@n,@m;0){
+  @result:@n+@m;
+}
+.box{
+  .sum(10,20);
+  width:unit(@result,px);
+  /*unit是less提供的方法
+  * unit（[value],'px'） 给value值设置单位（但是如果之前已经有单位了，此处是把原有单位去掉）
+  */
+}
+

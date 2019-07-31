@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // 免费课 ：记
+    // 正式课前两周：理解
+    // 正式课三周以后：练
+
+    // 免费课第一周 ： 数据类型  变量    操作语句   function
+    // 数据类型 ： number  string  boolean   null  undefined symbol
+    //  Number   parseInt  parseFloat   toFixed
+    //  string ：
+    // boolean  : true  \ false
+    // 0  null  ""  undefined  NaN
+    // 数据类型的转换：Boolean
+    // 数据类型的比较
+    //Boolean(Boolean)
+    // ==  ===
+    //[] == []  ![] == 0   [] !== []
+    // ! : 放到等号的前面是不等于；
+    // ! : 放到值的前面是取反；
+    if(parseInt(NaN)){
+
+    }
+    // null  undefined ;
+
+    // 对象 函数 数组  正则 Math  Date的实例  ..
+
+    //  对象 ：
+    // {a:100}
+    // obj.a   obj["a"]
+    let   g = obj["a"];
+    obj["a"] = 199;
+    // in  :  校验是否是这个对象的一个属性；
+    // previousElementSibling ;
+    function getBrother(curEle) {
+        /*if(curEle.previousElementSibling){
+            pre = curEle.previousElementSibling
+        }*/
+        if("previousElementSibling" in  curEle){
+
+        }
+    }
+    // 堆内存；
+    // let obj = {a:100,a:200}
+    // 数组的去重：
+    // indexOf
+    // 对象的属性名不能重复
+    // 排序： 相邻两项重复会删除
+    // es6  set
+    // Array.from :
+    let  ary = [10,188,28,10];
+
+    // 数组：
+    //  filter   every   some    forEach   map     find   reduce
+    ary.reduce(function (item,index) {
+
+    },0);
+    // 改变原有数组的方法
+    // push  pop  shift  unshift  splice  reverse  sort
+
+
+    // Date  : new Date  Date.now   getTime
+
+    // function
+    // 封装    形参  实参   arguments  return  函数核心原理；
+
+
+    // 操作语句
+    // 三个循环 三个判断；
+    // for(let i =0;i<10;i++){}
+   /* //  continue  break;
+    for (let  i = 0; i < 10; i++) {
+
+
+    }
+    console.log(window.i);// 10*/
+
+    // while  : 不知道循环多少次；
+    //        阻塞主线程；写一个同步的定时器；
+    // 事件循环机制；eventLoop:  浏览器运行提供两个队列，一个是主任务队列，一个是等待任务队列，如果是异步的会把该任务放到等待队列中；同步的在注任务队列执行；当主任务队列执行完毕，会把等到任务队列中符合条件的任务拿到主任务队列执行；
+    // 微任务和宏任务；
+    // 微任务： promise  async  await  process.nextTick...
+    // 宏任务： setTimeout  setInterval...
+
+   /* setTimeout(function () {
+        console.log("该学习了")
+    },5000);*/
+/*    setTimeout(function () {
+        console.log("该找工作了")
+    },5000);*/
+    let curTime = new Date();
+    while(new Date()- curTime<5000){
+
+    }
+    console.log("该学习了");
+    console.log(1);
+    // for in  : 循环对象；
+    // for  of
+
+    // 三个判断 ；
+    //if  else  switch  case  三元运算符；
+
+    //  DOM  :
+    // 1.获取元素
+    // 2.节点和节点属性
+    //  元素节点   文本节点 注释节点  document
+    // 3.动态操作DOM；
+
+    // createElement   appendChild  removeChild  insertBefore replaceChild  set/get/removeAttribute  classList (add  remove replace)
+
+    // 项目 框架；
+</script>
+</body>
+</html>

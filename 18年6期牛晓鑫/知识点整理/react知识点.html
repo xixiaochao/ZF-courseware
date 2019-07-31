@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+<script>
+//1. 认识react (1个)
+//1) 一款基于MVC(一定要由数据来影响视图)模式的JS框架
+
+//2.  MVC (3个)
+//1) M: model 数据层
+//2) V: view 视图层
+//3) C: controller 控制器
+
+//3. react脚手架：create-react-app (3个)
+//1) 安装到全局： npm install create-react-app -g;
+//2) 基于脚手架创建一个项目： create-react-app 项目名称
+//3) 项目名称要求：
+//3.1) 不能有大写字母
+//3.2) 不能有中文
+//3.3) 不能用特殊的符号等
+
+//4. 跑通react (5个)
+//1) 打开相应的文件夹：cd 文件夹名
+//2) yarn start; 开发环境下运行，react会自动开启一个本地端口，并且打开浏览器，把页面渲染出来;
+//2.1) 开启的本地端口默认端口号为3000，如果该端口被占用，会自动打开3000以后的端口
+//2.2) 如果要手动修改端口号，需要在start.js文件中进行修改，将const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000; 中的3000修改为想要的端口号
+//3) yarn build; 项目上线打包;
+//4) yarn test; 测试环境;
+//5) yarn eject; 将隐藏的配置文件暴露出来, 此命令是不可逆的;
+
+//5. 组件化开发的好处 (3个)
+//1) 可组合 ：每个组件都可以和其他组件组合使用，还可以嵌套使用
+//2) 可复用 ：一个组件可以应用在多个场景中
+//3) 可维护 ：每个组件都有自己的逻辑，方便维护；
+
+//6. JSX (2个)
+//1) JS和HTML的混合结构，把JS和HTML写在一起，还可以写样式
+//2) REACT的JSX(javascript and xml[html])语法：独有的语法，浏览器不能直接识别，需要经过一系列的解析=> "JSX的渲染原理(虚拟DOM的渲染原理)"
+//2.1) 首先基于babel-preset-react-app把JSX语法编译为React.createElement(...)的形式
+//2.2) 然后把React下的createElement方法执行，返回的结果是：虚拟DOM对象
+//2.3) ReactDOM.render(JSX对象，容器)，基于render把JSX对象变为真实的DOM元素，插入到页面指定容器中
+
+//7. 导入React相关模块 (5个)
+//1) import React from "react";
+//2) import ReactDOM from "react-dom";
+//3) import {createStore} from 'redux';
+//4) import {Provider} from 'react-redux';
+//5) import {connect} from 'react-redux'
+
+//8. {}的用法 (5个)
+//1)取值时，可以放数字，字符串，js代码，js表达式(必有返回结果)，三元运算符等
+//2)取值时，里面放true/false/null/undefined，页面不会显示{}里面的内容
+//3)取值时，不可以放对象，不可以放函数，
+//4)取值时，可以放数组，不会解析出中括号，但会解析出数组中的每一项
+//5)用在给元素设置属性时，里面可以放对象
+
+
+//9. react元素 (5个)
+//1) 在JSX下，一个html元素就是一个react元素，react元素中可以写结构，样式和js代码
+//2) react元素不是一个真正的DOM元素，只是一个虚拟的DOM元素
+//3) react元素最外层只能有一个元素
+//4) react元素在行间写style样式，要写成style={{}}的形式
+//5) react元素的行间属性中，class要写成className; for要写成htmlFor
+
+//10. ReactDOM.render函数 (4个)
+//1) 作用：渲染元素，将虚拟的DOM转化为真实的DOM，并将真实的DOM插入到指定的容器中
+//2) 传参情况，参数1为react元素，参数2为指定元素(容器)(不能是body)，参数3为回调函数，可有可无
+//3) 函数执行过程:
+//3.1)将react元素转换为真实的DOM元素;
+//3.2)将真实的DOM元素插入到指定的元素(容器)中;
+//3.3)执行回调函数，可以在回调函数中操作真实的DOM
+//4) 如果执行多次ReactDOM.render，把不同的react元素插入到同一个指定的元素(容器)中, 那么后面插入的react元素会把前面的覆盖掉
+
+//11. 循环绑定元素 (2个)
+//1) 利用了数组的map方法的映射机制，返回一个映射后的数组
+//2) 需要给每一个循环的元素设置唯一的key属性
+/*let arr = [{name:"张志玲",age:13},{name:"尚晓琳",age:13.5}];
+let div1 = <ul>
+    {/!*{[<li>标题</li>,<li>内容</li>]}*!/}
+    {
+        arr.map((item,index)=>{
+            // return <li key={index}>{item.name},{item.age}</li>
+            let {name,age}=item;  //用解构赋值的方式取值
+            return <li key={index}>{name},{age}</li>
+        })
+    }
+</ul>*/
+
+//12. React.createElement函数(2个)
+//1)作用：创建出一个react元素(虚拟的DOM)
+//2)传参情况：至少传两个参数
+//2.1)第一个参数：TYPE（元素标签名）
+//2.2)第二个参数：PROPS（标签的属性集合，是个对象，没有属性就是null）
+//2.3)第三个参数及往后：子节点（元素节点、文本节点、注释节点等），每当遇到一个元素标签都要调用createElement函数
+/*let w = <h1>
+    hello
+    <span>1</span>
+    <span>2</span>
+</h1>
+let wc = React.createElement(
+    "h1",
+    null,
+    "hello",
+    React.createElement("span",null,1),
+    React.createElement("span",null,2),
+)  */
+
+//13. 创建文本节点 (1个)
+//1) document.createTextNode("文本内容");
+
+//14. toString() 方法 (6个)
+//1)把new Date()对象转换为字符串，并返回结果。
+// {new Date().toString()}  -->  Thu Sep 13 2018 06:23:59 GMT+0800 (中国标准时间)
+//2)把new Date()对象的时间部分转换为字符串，并返回结果。
+// {new Date().toTimeString()} -->  06:23:59 GMT+0800 (中国标准时间)
+//3)把new Date()对象的日期部分转换为字符串，并返回结果。
+// {new Date().toDateString()} -->  Thu Sep 13 2018
+//4) toLocaleString() 把new Date()对象转换为字符串，并返回结果。以本地时间区表示，并根据本地规则格式化。
+// {new Date().toLocaleString()} --> 2018/9/13 上午06:23:59
+//5) toLocaleTimeString() 把new Date()对象的时间部分转换为字符串，并返回结果。
+// {new Date().toLocaleTimeString()} -->  上午06:23:59
+//6) toLocaleDateString() 把new Date()对象的日期部分转换为字符串，并返回结果。
+// {new Date().toLocaleDateString()}  --> 2018/9/13
+
+//15. react中的组件(5个)
+//1) 定义方式：
+//1.1) 函数声明
+//1.2) 类声明
+//2) 组件的名字首字母必须大写； 为了和react元素进行区分;
+//3) 组件定义，必须要return一个react元素，而且最外层只能有一个元素
+//4) 在react中，组件分为自定义组件和内置组件(div  h1  ul  span...)，定义一个自定义组件需要返回一个内置组件
+//5) 组件定义后，可以像一个react元素使用;
+
+// 16. 函数定义组件 (8个)
+/*function Welcome(props) {
+    console.log(props);
+    // props  是个对象，{data: {…}, age: "100"}
+    return <div>1234
+        <p>456</p>
+        <p>{props.data.hh}</p>
+    </div>
+}
+ReactDOM.render(<Welcome data={{name:1,hh:2}} age="100"/>,document.getElementById("root"));*/
+//1) ReactDOM.render会根据第一个参数的类型执行不同的操作
+//2) 当ReactDOM.render执行时，如果第一个参数是函数定义的组件类型的，首先会把当前组件的行间属性进行打包封装成一个对象，并且把这个对象传递给对应的函数(组件)
+//3) 给函数手动设置形参props，props会接收到组件的行间属性，是个对象
+//4) 让这个组件对应的函数执行，会返回一个react元素，即虚拟的DOM
+//5) ReactDOM.render得到react元素后，会把其转换成真实的DOM元素，再把它插入到指定的元素中
+//6) 这个组件对应的函数中的this指向undefined
+//7) 组件标签及组件标签的行间属性不会显示出来  ？？
+//8) 此种方式只能有传递的属性，没有状态和生命周期函数，组件一旦创建调用，组件呈现的内容将不能发生改变，所以称为静态的组件（操作简单性能高）
+
+//17. class定义组件 (10个)
+//1) 通过class来定义一个组件，需要继承React上的Component这个类
+//2) 在类(定义组件)的原型上必须有一个render函数，而且这个函数必须return一个顶级的react元素
+//3) ReactDOM.render执行，首先找到组件对应的这个类，并且new一下这个类，会返回一个实例;
+//4) 通过这个实例又去找当前类的原型上的render函数，并且让render函数执行; render函数执行会返回一个react元素，即虚拟的DOM
+//5) ReactDOM.render接收到这个虚拟的DOM，将其转换为真实的DOM，并插入到指定的元素中
+//6) 在当前的实例上有一个props属性，属性值是一个对象，该属性拿到了组件中的行间属性
+//7) 在constructor函数中，不能使用this.props中的数据，因为this.props的值是undefined
+//8) 在render函数中，能使用this.props中的数据
+//7) 如果手动给constructor函数设置形参props，props能拿到组件的行间属性
+//8) 如果手动给render函数设置形参props，props的值是undefined，即拿不到组件的行间属性
+//9) 组件标签及组件标签的行间属性不会显示出来
+//10)最常用的创建组件方式，动态组件，可以有属性、状态、生命周期等，组件呈现的内容可全面灵活的操作（可以基于REDUX/REACT-REDUX进行信息管理等）
+/*class Header extends React.Component{
+    render(){
+        return <p>{this.props.data}</p>
+    }
+}
+class Hello extends React.Component{
+    constructor(){
+        super()
+        console.log(this);
+    };
+    render(){
+        console.log(this);
+        console.log(this.props);
+        return <div>{this.props.class} <Header data={1}/></div>
+    }
+}
+ReactDOM.render(<Hello class="a" style={{color:"red"}}/>, document.querySelector("#root"));*/
+
+//18. constructor函数 (2个)
+//1) 调取组件的时候，首先会把constructor执行，把属性或者上下文传递进来，但是此时并未把这些信息挂载到实例上，所以在constructor中不能基于this.props/this.context获取信息，在其它生命周期函数中就可以了
+//2) 一般在consstructor函数中初始化状态信息 this.state={}
+
+//19. class定义一个组件和函数定义一个组件有什么区别？(3个)
+//1) class定义组件具有this，状态，还有生命周期; 而函数定义组件没有
+//2) 传参情况不同
+//3) 在ReactDOM.render函数中的执行过程不同
+
+//20. 属性变视图变 (2个)
+//1) 属性可以影响视图，属性变视图变
+//2) 可以通过...展开运算符，把数据直接绑定给props，再通过props直接获取其中的属性
+/*function Welcome(props){
+    console.log(props);   //{time: Thu Sep 13 2018 08:56:18 GMT+0800 (中国标准时间), name: "zf", age: 9}
+    return <div>
+        <p>{props.time.toLocaleString()}</p>
+        <p>{props.name}</p>
+        <p>{props.age}</p>
+    </div>
+}
+let school = {
+    name:"zf",
+    age:9
+}
+setInterval(function () {
+    ReactDOM.render(<Welcome time={new Date()} {...school}/>, document.getElementById("root"))
+},1000);*/
+
+//21. 在类上定义默认属性 (3个)
+//1) static defaultProps={} ; 在类上定义默认的属性
+//2) 这种语法需要BABEL编译才支持：给传递的属性设置默认值或者规则，这个操作优先于constructor，把经过此步骤处理后的结果传递给constructor中的props
+//3) 如果组件设置了行间属性，那么行间属性会把默认属性中属性名相同的属性值进行替换
+/*class Welcome extends Component{
+    static defaultProps = {
+        name:"京东",
+        age:16,
+        value:8,
+    }
+     constructor(props){
+        super();
+        console.log(props);
+      //  props.age=666;  报错 TypeError: Cannot assign to read only property 'age' of object '#<Object>'
+    }
+    render(){
+        return <div>
+            <p>{this.props.name}</p>
+            <p>{this.props.age}</p>
+            <p>{this.props.value}</p>
+        </div>
+    }
+}
+let person = {name:"zf",age:9};
+ReactDOM.render(<Welcome {...person}/>,document.getElementById("root"))*/
+
+//22. 属性校验 (4个)
+//1) 要引入第三方模块 import PropTypes from "prop-types";
+//2) static propTypes = {}
+//3) 要校验的属性可以去prop-types模块中readME文件中去查看
+//4) 这种语法需要BABEL编译才支持：给传递的属性设置默认值或者规则，这个操作优先于constructor，把经过此步骤处理后的结果传递给constructor中的props
+/*class Head extends Component{
+    static propTypes = {
+        //要求是一个数字类型的
+        age:PropTypes.number
+        //要求是一个数字类型的，并且是必传的
+        age:PropTypes.number.isRequired
+    }
+    static defaultProps = {
+        name:"京东",
+        age:"16"
+        //Warning: Failed prop type: Invalid prop `age` of type `string` supplied to `Head`, expected `number`.
+    }
+    render(){
+        return <div>
+            <p>{this.props.name}</p>
+            <p>{this.props.age}</p>
+        </div>
+    }
+}
+let person = {name:"回龙观"};
+ReactDOM.render(<Head {...person}/>,document.getElementById("root"));*/
+
+//23. 状态state (4个)
+//1) 在constructor函数中定义一个状态，是一个空间地址类型  this.state={}
+//2) 一般在constructor函数中初始化自己的状态
+//3) 即给当前类的实例增加了一个属性state
+//4) 状态是属于组件自己的，这个状态可以自己进行修改
+
+//24. setState (8个)
+//1) 在react中，提供了专门用来修改状态的方法setState， 是Component.prototype上的方法
+//2) setState函数是在当前实例的原型链上
+//3) setState函数的参数可以是一个对象   this.setState({num:5})
+//4) setState函数的参数可以是一个回调函数，回调函数的参数会接收到之前的state的空间地址，并且回调函数需要return一个最新的state对象   this.setState((prevState)=>{return {num:prevState.num+1}})
+//5) setState函数可以传两个参数，分别是一个对象和一个函数
+/*this.setState({num:this.state.num+1},function () {
+    this.setState({num:this.state.num+1});  //函数中的this执行指向实例
+});*/
+//6) setState方法在执行时，改变了回调函数中的this指向，使其指向当前的实例；
+//7) 当调用setSate方法时，会默认调用render方法，让当前的DOM重新渲染； 浏览器会根据DOM-diff算法进行计算，把修改的那部分重新渲染；
+//8) 如果写了多个setState方法，在调用setState方法时，setState方法会进行合并，只会执行最后一个setState方法
+
+//25. 组件的属性 (4个)
+//1) 一般情况下，当前组件可能会被多次调用，我们想区分不同的效果，则可以在调取组件的时候基于属性传递不同的值进来，从而达到呈现不同的效果和内容
+//2) 在复合组件中，父组件想把信息传递给子组件，也可能会用到属性
+//3) 属性是调取的时候传递进来的信息，组件内部无法修改其值，也就是“只读”的；
+//4) 但是可以给传递进来的属性设置默认值和默认规则等；
+
+//26. 组件的状态 (3个)
+//1) 状态是组件内部自己设定的，不是调取时候传递进来的
+//2) 基于setState修改组件的状态，组件会重新的渲染（如果JSX结构中用到了状态信息作为呈现，那么页面内容也会跟着改变），基于状态实现 M=>V；
+//3) 凡是组件中的内容根据某些操作或者条件，需要后期改变的，一般都是基于状态的更新来通知视图的改变；
+
+//27. 绑定事件 (3个)
+//1) 在react中，给元素绑定一个事件行为，那么这个行为的命名遵循驼峰命名
+//2) 在定义事件行为的函数时，一般都放在当前类的原型上，此时函数中的this是undefined，需要将函数写成箭头函数的形式，函数中的this才指向当前类的实例
+//3) 绑定事件时，需要通过this去找到这个函数;
+
+//28. 父传子 (2个)
+//1) 通过属性进行传递，父组件把接收到的数据基于属性传递给子组件
+//2) react中需要将属性一层一层向下传递，而且是单向数据流
+
+//29. 子传父 (4个)
+//1) 子组件改变父组件中的状态，需要在父组件中订阅一个方法
+//2) 把父组件的某一个方法当做属性传递给子组件
+//3) 子组件通过属性调用父组件的方法，并且将值传递给父组件
+//4) 父组件更新值，刷新视图
+
+//30. 受控组件 (3个)
+//1) 受状态控制的组件
+//2) 受控组件必须要有onChange方法，否则不能使用
+//3) onChange绑定的方法中，参数e是事件对象，e.target是事件源
+
+//31. 非受控组件 (1个)
+//1)  不受状态控制的组件
+
+//32. this.refs (4个)
+//1) 给元素设置ref属性
+//2) 通过ref设置的属性，可以通过this.refs获取到对应的dom元素
+//3) ref属性的属性值是字符串时，可以通过this.refs.ref属性值获取到dom元素
+//4) ref属性的属性值是函数时，需要给这个函数传递一个参数，这个参数会接收到当前的dom元素，并且需要在函数体中把这个参数赋值给当前实例的某个属性，在组件中就可以用当前实例的这个属性获取到dom元素
+
+//33. 受控组件与非受控组件的区别(1个)
+//1) 受控组件是通过状态来管理，非受控组件是通过DOM来操作，ref就是来获取DOM元素
+
+//34. react中的生命周期 (4个)
+//1) 初始化组件时: 组件开始 --> static defaultProps --> constructor(内部可以声明状态，获取属性) --> componentWillMount(组件将要挂载),只执行一次 --> render(渲染) --> componentDidMount(组件挂载完成),只执行一次
+//2) 组件状态改变时：shouldComponentUpdate(组件是否更新)[会接收两个参数，分别是nextProps和nextState，存储最新的信息，如果此函数返回了false，就不会调用render方法了，如果此函数返回了true，会继续往下走] --> componentWillUpdate(组件将要更新)[会接收两个参数，分别是nextProps和nextState，存储最新的信息] --> render(渲染) --> componentDidUpdate(组件完成更新)[会接收两个参数，分别是nextProps和nextState，存储最新的信息]
+//3) 属性props变化：componentWillReceiveProps(newProps(参数是最新的属性))[属性更新时才会执行][会接收两个参数，分别是nextProps和nextState，存储最新的信息] --> shouldComponentUpdate(组件是否更新)[会接收两个参数，分别是nextProps和nextState，存储最新的信息，如果此函数返回了false，就不会调用render方法了，如果此函数返回了true，会继续往下走] --> componentWillUpdate(组件将要更新)[会接收两个参数，分别是nextProps和nextState，存储最新的信息] --> render(渲染) --> componentDidUpdate(组件完成更新)[会接收两个参数，分别是nextProps和nextState，存储最新的信息]
+//4) 组件卸载: componentWillUnmount(用于移除定时器，移除事件监听) -->  组件销毁
+
+//35. forceUpdate函数 (2个)
+//1) Component.prototype上的方法，用来进行强制渲染
+//2) 用class定义的组件的实例可以调用该方法
+
+//36. 用上下文传递信息
+//1) 在祖先组件中设置后代组件中需要的上下文信息的类型，它在constructor函数执行前执行
+/*static childContextTypes = {
+    //=>设置后代元素中需要的上下文信息的类型
+    tt: PropTypes.string,
+    n: PropTypes.number,
+    m: PropTypes.number,
+    change: PropTypes.func
+};*/
+//2) 在祖先组件中设置后代组件的上下文属性信息，设置函数getChildContext(){}，需要return一个对象，函数中返回的是啥，后代组件中就可以用哪些属性值，并且此函数会在每一次render函数执行之前执行
+/*getChildContext() {
+    //=>生命周期函数：设置后代需要使用上下文的具体值，并且此生命周期函数会在每一次RENDER执行之前执行（第一次加载或者组件重新渲染，它都会执行）；并且它RETURN的是什么，后代能用的上下文信息就是什么
+    return {
+        tt: this.props.title,
+        n: this.n,
+        m: this.m,
+        change: flag => {
+            flag ? this.n++ : this.m++;
+            this.forceUpdate();
+        }
+    };
+}*/
+//3) 在后代组件中需要设置使用的上下文属性值的类型，指定的上下文属性类型需要和祖先组件中指定的类型保持一致，否则会报错，它也是在constructor函数执行之前执行；然后在子组件中可以通过this.context拿到需要的属性值
+/*static contextTypes = {
+    n: PropTypes.number,
+    m: PropTypes.number
+};*/
+
+//37. 属性传递信息和上下文传递信息的比较
+//1) 属性操作起来简单，子组件是被动接收传递的值(组件内的属性是不允许修改的)，只能父传子，子传父不行，不能隔级传递，只能按照级别依次传递，例如：爷爷传递给父亲，父亲传递给儿子，以此类推下去
+//2) 上下文操作起来相对复杂一些，子组件是主动获取信息使用的(子组件是可以修改获取到的上下文信息的，但是不会影响到父组件中的信息，其他组件不受影响)，一旦父组件设置了上下文信息，后代组件都可以直接拿来用，不需要一层层的传递
+
+//38. 子组件也能修改父组件中的信息
+//1) 利用回调函数机制：父组件把一个函数通过属性或者上下文的方式传递给子组件，子组件中只要把这个方法执行即可（也就是子组件中执行了父组件方法，还可以传递一些值过去），这样父组件在这个方法中，想把自己的信息改成啥就改成啥
+
+//39. redux
+//1) 进行状态统一管理的类库(适用于任何技术体系的项目)
+//2) 只要两个或者多个组件之间想要实现信息的共享，都可以基于redux解决，把共享的信息存储到redux容器中进行管理
+//3) 还可以使用redux做临时存储，页面加载的时候，把从服务器获取的数据信息存储到redux中，组件渲染需要的数据，从redux中获取，这样只要页面不刷新，路由切换的时候，再次渲染组件不需要重新从服务器拉取数据，直接从redux中获取即可; 页面如果刷新，从头开始.
+
+//40. 使用redux (4个)
+//1) 从redux中引入createStore
+//2) 创建一个存储状态的容器(createStore), let store = createStore(reducer)
+//2.1) 作用: 存储各个组件的状态信息
+//2.2) 参数:1)reducer函数：修改容器状态信息的管理员
+//2.3) 返回值: 执行createStore会返回几个方法：getState，subscribe，dispatch，即创建的store中提供了三个方法，getState,subscribe,dispatch,
+//2.3.1)getState函数，能获取容器中的最新状态信息
+//2.3.2)subscribe函数，往事件池中追加方法； 把subscribe函数执行后再执行，相当于把当前追加的方法移除
+//2.3.3)dispatch函数，派发任务，传一个行为对象，对象里面有一个type属性，根据传递的行为标识，通知reducer中对应的修改状态任务执行；即执行dispatch的时候，会通知reducer执行，把dispatch的行为对象传给reducer的action
+//3) 事件池，当容器中的状态改变，通知事件池中的方法依次执行
+//4) reducer状态管理员，管理容器中状态的，容器中的状态信息改变，必须在reducer中有所记录
+//4.1) 作用：1)记录了所有状态修改的信息(根据行为标识走不同的修改任务)；2)修改容器中的状态信息
+//4.2) 参数：1)state，容器中原有的状态信息；2)action，派发的任务，dispatch任务派发的时候，传递的行为对象，这个对象中必有一个type属性，是操作的行为标识，reducer就是根据这个行为标识来识别该如何修改状态信息
+//4.3) 返回值：只有把最新的state返回，原有的状态才会被修改 return state
+
+//41. combineReducers
+//1) 把每一个模块单独设定的reducer函数最后合并成为总的reducer
+//2) 从redux中引入combineReducers
+//3) 执行combineReducers，需要传一个对象，对象里面放每个模块的reducer;  let reducer = combineReducers({})
+//4) 为了保证合并reducer过程中，每个模块管理的状态信息不会相互冲突，redux在合并的时候把容器中的状态进行分开管理，以合并reducer时候设置的属性名作为状态划分的属性名，把各个板块管理的状态放到自己的属性下即可；即redux存储状态的容器中把每一个板块需要管理的状态都以当前板块的名字作为属性名单独分开管理，  此时state={vote:{n:0,m:0},person:{n:1,baseInfo:{}}}
+//5) 以后通过getState获取状态信息的时候也需要把板块名也加上
+
+//42. react-redux
+//1) 从react-redux中引入Provider;  import {Provider} from 'react-redux';
+//2) 将Provider作为最外层的标签，并且在行间属性引入store;
+/*ReactDOM.render(
+    <Provider store={store}>
+        <div> </div>
+    </Provider>,window.root);*/
+//3) 从react-redux中引入connect; import {connect} from "react-redux";
+//4) react-redux 需要导出一个链接后的组件; export default connect((state)=>({...state}),action)(组件名);
+//5) connect会把全局的状态和dispatch这些方法遍历到当前组件的props属性上
+
+//43. 路由
+//1) 配置路由； import {HashRouter as Router,Route} from 'react-router-dom'
+//2) 把Router作为最外层的标签；
+/*ReactDOM.render(
+    <Router>
+        <div>
+            {/!*路由是从上到下进行匹配*!/}
+            {/!*exact: 设置属性值是true，那么和当前路径完全相同，才显示*!/}
+            <Route path ='路径' component={组件名}/>
+        </div>
+    </Router>,window.root)*/
+//3) 导入Link;   import {Link} from "react-router-dom"
+//4) <Link to={"要跳转的路径"}></Link>
+
+
+
+
+
+</script>

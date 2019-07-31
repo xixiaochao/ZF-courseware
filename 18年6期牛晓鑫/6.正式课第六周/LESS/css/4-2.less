@@ -1,0 +1,18 @@
+.pub(@x) when(@x<=10){
+  width: 100px;
+  height: 200px;
+}
+.pub(@x) when(@X>10){
+  width: 200px;
+  height: 400px;
+}
+.box{
+  .pub(20);
+  background: green;
+}
+//结果：
+.box{
+  width: 200px;
+  height: 400px;
+  background: green;
+}

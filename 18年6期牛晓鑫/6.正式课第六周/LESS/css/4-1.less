@@ -1,0 +1,25 @@
+.pub{
+  width: 100px;
+  height: 100px;
+  background: red;
+}
+/*
+* LESS中的extend继承并不是copy代码，而是让当前的样式类和继承的样式类公用一套样式（编译为群组选择器的方式）
+*/
+.box:extend(.pub){
+  background: green;
+}
+//或者
+.box{
+  &:extend(.pub);//=>原理是一样的，也是把它放在.box的末尾
+  background: green;
+}
+//结果
+.box
+.pub{
+  width: 100px;
+  height: 100px;
+  background: red;
+}
+
+/*真实项目中，如果想使用extend实现继承，我们一定都把需要继承的样式类写在最外层（而不是里层私有作用域），如果想继承当前私有作用域的某个样式类，需要把前缀都准备好*/

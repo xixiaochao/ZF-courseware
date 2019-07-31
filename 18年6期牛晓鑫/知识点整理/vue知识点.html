@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app"></div>
+</body>
+</html>
+<script>
+//1. VUE (2个)
+//1)构建用户界面的渐进式、声明式(无需关心如何实现)框架
+//2)是MVVM模式的框架
+
+//2. MVC与MVVM的区别(2个)
+//1)MVC: model view controller 数据模型-视图-控制器，数据单向通信，只能通过数据影响视图，不能通过视图影响数据
+//2)MVVM: model view view-model 数据模型(后端返回的数据)-视图-视图模型，数据是响应式的，即数据双向绑定，可以通过数据影响视图(数据绑定)，也可以通过视图影响数据(DOM事件监听)； model和view是不能直接进行通信的，需要通过view-model(虚拟DOM)来进行数据的传递
+x
+//3. 小胡子语法(3个)
+//1) 形式: {{}}
+//2) 两个大括号里面可以取值，可以放运算表达式，三元运算符
+//3) 遇到null,undefined是不显示任何内容的
+
+//4. 创建vue的实例(13个)
+//1) Vue是一个构造函数，new Vue会创建出一个实例，构造函数执行需要传一个参数，该参数是一个对象，在这个对象中，有一些固定的属性名
+//2) 属性名为el的属性值是一个字符串，也是一个选择器，可以选择要获取的元素(即具有vue实例特点的最外层的元素)，如果是id选择器，前面需要加#；如果是class选择器，前面需要加.
+//3) 属性名为data的属性值是一个对象，对象里存放一些公共的属性，这些属性都会放在实例vm上，被实例vm所代理
+//4) 属性名为methods的属性值是一个对象，对象里存放函数和给事件行为绑定的方法，这些函数和方法都会放在实例vm上，被实例vm所代理，并且函数名字不能与data中的属性重名，函数的this指向实例vm
+//5)属性名为filters的属性值是一个对象，对象里存放要过滤的方法，方法中的this指向实例vm，方法和data、methods中的属性没有冲突，可以重名，但方法为当前实例vm的私有方法，不能被其他vue实例调用；
+//6) 对象里面，可以放钩子函数，共8个，会在vue实例的生命周期的不同阶段执行不同的钩子函数，钩子函数中的this指向vue实例
+//7) 属性名为computed的属性值是一个对象，对象里存放计算属性，计算属性是键值对或者函数，如果是键值对，计算属性的属性值中有get函数和set函数，当获取计算属性对应的属性值时，会触发get函数，并且会把get函数的返回值给到获取值；当设置计算属性对应的属性值时，会触发set函数，并且会把设置的属性值值传给set函数；如果是函数，会默认调用get函数，并且把get函数的返回值给这个函数名; computed中的计算属性不能与data、methods中的属性重名
+//8) 属性名为watch的属性值是一个对象，对象里存放监听的函数，该函数名必须是存在的属性，一般是data中有的属性，当监听的属性发生变化后，会触发这个监听的函数，函数中的this指向实例vm，函数会接收两个参数，第一个参数是最新的值，第二个参数是旧的值
+//9) 属性名为directives的属性值是一个对象，对象里存放用来做自定义指令的函数，函数的名字与自定义的指令的名字相同，函数中会传两个参数，第一个参数el为设置了自定义指令的元素，第二个参数a是一个对象，里面有关于自定义指令的一些信息。函数中的this指向window，函数名和data、methods中的属性没有冲突，可以重名
+//10)属性名为components的属性值是一个对象，对象里存放要注册的局部组件
+//11)属性名为props的属性值是一个数组或者一个对象，里面的内容是从父组件中传递过来的数据
+//12)属性名为template的属性值是一个字符串，里面放着组件的模板
+//13)属性名为router的属性值是要引用的router
+
+//5. 什么属性不可以重名(4个)
+//1) data
+//2) methods
+//3) computed
+//4) props
+
+//6. 函数中的this不指向实例的有(1个)
+//1) directives
+
+//7. Object.definedProperty(5个)
+//1)是一个函数，是Object的私有属性，用来监控对象的某个属性
+//2)该函数需要传递三个参数，第一个参数是要监控的对象，第二个参数是要监控的对象的某个属性("对象的属性名")，第三个参数是个对象，里面有get函数和set函数
+//3)当获取这个对象的属性名对应的属性值时，会触发get函数，并且获取的值就是get函数的返回值;
+//4)当设置这个对象的属性名对应的属性值时，会触发set函数，并且设置的属性值会作为参数传给set函数
+//5)在IE8及以下不兼容；所以vue也是不兼容IE8及以下
+
+//8. vue的双向数据绑定原理(vue的数据劫持)(3个)
+//1) vue会遍历data中的所有属性，利用Object.definedProperty这个方法给data中每一个属性增加监听者，即给每一个属性增加get方法和set方法，当数据发生变化时，会触发set方法，当获取数据时，会触发get方法；
+//2) 当data中的数据发生改变，会直接影响虚拟DOM(view-model)，虚拟DOM会影响真实的DOM(虚拟DOM会重新渲染成真实的DOM)，从而视图也随之发生改变;  model ==>view-model==>view
+//3) 当视图发生改变，利用DOM的事件监听，会触发订阅的事件，让订阅的事件的方法执行，会影响虚拟DOM，虚拟DOM会使data中的数据发生改变；view ==> view-model ==>model；
+/*let obj={};
+Object.defineProperty(obj,"name",{
+    get(){  //当获取obj中name属性名的属性值时，会触发get函数；并且获取值就是get函数的返回值
+        console.log(100);
+        return 200;
+    },
+    set(val){
+        //当设置对象的name属性值时，会触发这个函数； 当设置这个值时，会默认给set传一个参数，这个参数是最新设置的那个值；
+        console.log(200);
+        console.log(val);
+    }
+})*/
+
+//9. data中对象的响应(3个)
+//1)直接给对象新增的属性不会有响应式，给对象修改的属性有响应式
+//2)重新设置对象的空间地址，覆盖原有的空间地址，以后的属性都有响应式
+//3)通过vm.$set(obj,'key',value)这个方法给对象设置属性值, 会有响应式
+
+//10. data中数组的响应(5个)
+//1)通过数组的索引操作数组，不会有响应式
+//2)通过数组的length操作数组，不会有响应式
+//3)通过数组的方法操作数组，原有数组改变，会有响应式
+//4)通过数组的方法操作数组，原有数组不变，不会有响应式
+//5)通过数组的方法操作数组，原有数组不变，但对原数组重新赋值为改变后的数组，会有响应式
+
+//11. vue的指令(2个)
+//1) 定义在DOM元素行间的一些特殊属性，在vue的实例被初始化时，vue的compile解析器会对其进行特殊的解析
+//2) 以v-开头，后面的值为变量，不是字符串
+
+//12. v-model(2)
+//1) 把数据绑定到表单元素中，创建双向数据绑定；当数据变化，表单元素的值也发生改变；当表单元素的值发生变化，数据也发生改变
+//2) 一般用于表单元素input，select, textarea
+
+//13. v-text(1个)
+//1) 把数据绑定到DOM元素中，并且会把之前有的内容进行覆盖，创建双向数据绑定；当数据变化，DOM元素中的内容也会发生改变
+
+//14. v-html(2个)
+//1) 可以识别标签
+//2) 把数据绑定到DOM元素中，并且会把之前有的内容进行覆盖，创建双向数据绑定；当数据变化，DOM元素中的内容也会发生改变
+
+//15. v-if/v-else/v-else-if (2个)
+//1) 当v-if属性值为true，v-if中的元素会显示，v-else中的元素不会显示；当v-if属性值为false，v-else中的元素会显示，v-if中的元素不会显示
+//2) 控制的是DOM元素的有无
+
+//16. v-show (3个)
+//1) 当v-show属性为true，显示该元素；当v-show属性值为false，隐藏该元素
+//2) 操作的是样式，即css的display属性
+//3) 如果频繁操作DOM元素，最好使用v-show
+
+//17. v-bind(2个)
+//1) 用于绑定动态的属性，写在要绑定的动态属性的前面
+//2) v-bind: 可以简写为:
+
+//18. v-bind:class(5个)
+//1):class="{}"，属性值可以是一个对象，那么对象属性名是对应的class,属性值是控制该class是否生效，属性值如果不是布尔值，会默认转布尔；如果属性值是true，当前class生效；如果属性值是false，那么class不生效
+//2):class="[]"，属性值可以是一个数组，数组成员是对应的class
+//3)如果:class属性值是数组或对象，都可以通过[]去获取数组或对象中的某一项
+//4):class="class1"，属性值可以是data中的某个值
+//5):class与元素原有的class是没有冲突的，如果都不相同，那么最后class会合并到一起，如果出现相同的，后面的会覆盖前面的
+/*<div class="a" :class="{x:true,y:false}">人</div>
+<div class="a" :class="{x:null,y:false}">人</div>
+<div class="a" :class="{x:flag,y:flag}">人</div>
+<div class="a" :class="{a:class1,y:true}['a']">人</div>  //获取的是class1的属性
+<div class="a" :class="[class1,class2]">人</div>
+<div class="a" :class="[class1,class2][0]">人</div>*/
+/*let vm = new Vue({
+    el: '#app',
+    data: {
+        flag:true,
+        class1:"x",
+        class2:"y"
+    }
+});*/
+
+//19. v-bind:style (4个)
+//1) :style="{height:'200px'}"，属性值可以是一个对象，如果是对象，里面可以写具体的样式
+//2) :style="[bg1,bg2]"，属性值可以是一个数组，数组成员是要显示的样式，一般从data中去获取，还可以通过索引只取其中的某一项
+//3) :style="bg2"，属性值可以是data中的某个值
+//4):style与元素原有的style是没有冲突的，如果都不相同，那么最后style会合并到一起，如果出现相同的，后面的会覆盖前面的
+/*<div style="color:red;width:100px" :style="{height:'200px'}">黄姥姥</div>
+<div style="color:red;width:100px" :style="[bg1,bg2]">黄姥姥</div>
+<div style="color:red;width:100px" :style="[bg1,bg2][1]">黄姥姥</div>
+<div style="color:red;width:100px" :style="bg2">黄姥姥</div>
+let vm = new Vue({
+    el: '#app',
+    data: {
+        bg1:{background:"blue"},
+        bg2:{fontSize:"50px"},
+    }
+});*/
+
+//20. v-for(6个)
+//1) 循环元素，要循环哪个元素，就把v-for放在哪个元素身上
+//2) 可以循环数字，字符串，数组和对象
+//3) v-for="(item,index) in number"; 从1循环到该数字, item为单个数字, index为索引
+//4) v-for="(item,index) in string"; 循环字符串中的每个字符, item为单个字符, index为索引
+//5) v-for="(item,index) in ary"; 循环数组中的每一项, item为每一项数组成员，index为索引
+//6) v-for="(value,key,index) in obj"; 循环对象中的每一个键值对，value为对象中的每个属性值，key为对象中的每个属性名，index为每一个键值对的索引
+
+//21. v-on (7个)
+//1) 给元素的事件行为绑定方法
+//2) 给元素的事件行为绑定方法中的this，指向了vue的实例
+//3) 绑定的函数如果不写小括号，会默认传递事件对象给函数执行时的第一个参数
+//4) 绑定的函数如果写了小括号，那么不会传递事件对象，会把小括号里的参数传递给函数执行时的参数
+//5) 绑定的函数如果写了小括号，并且第一个参数是$event，则会传递事件对象给函数执行时的第一个参数，并且还会接收其他参数
+//6) v-on可以用@来代替； v-on:事件行为 = "事件的方法" ;   ==> @事件行为="事件的方法"
+//7) v-on给事件行为绑定方法，除了写方法名，还可以直接写方法内容
+
+//22. v-once (2个)
+//1) 行间属性只写v-once就行，不用写属性值
+//2) 视图和数据只会绑定一次，然后视图和数据不再有任何的关联;
+
+//23. v-cloak(3个)
+//1) 行间属性只写v-cloak就行，不用写属性值
+//2) 同时要加上样式[v-cloak]{display: none;}
+//3) 用于元素加载数据比较多时，vue解析时间比较长；为了防止{{}}的出现，给该元素加上v-cloak属性，会等到vue把数据插入到真实DOM中时，才让当前的元素显示
+
+//24. 指令中不用写表达式的有(2个)
+//1) v-once;
+//2) v-cloak;
+
+//25. 指令中可以简写的有(2个)
+//1) v-bind:-->:
+//2) v-on:-->@
+
+//26. 指令中可以控制元素显示和隐藏的有(2个)
+//1) v-if/v-else/v-else-if
+//2) v-show
+
+//27. 指令中用来实现双向数据绑定的有(3个)
+//1) v-model
+//2) v-text
+//3) v-html
+
+//28. 事件修饰符(6个)
+//1)放在事件行为的后面，修饰这个事件
+//2).prevent;  阻止事件的默认行为
+//3).stop; 阻止事件的冒泡传播
+//4).capture; 事件行为在捕获阶段执行
+//5).once;  只执行一次
+//6).self;  只有操作自己的事件行为，才会触发
+
+//29. 键盘事件的修饰符(10个)
+//1).enter; 按回车键触发  13
+//2).tab;  按tab键触发
+//3).esc; 按esc退出键触发
+//4).delete; 按退格删除键触发
+//5).space; 按空格键触发
+//6).left; 按左键触发  37
+//7).right; 按右键触发  39
+//8).up; 按上键触发   38
+//9).down; 按下键触发  40
+//10) 支持数字和字母键
+
+//30. 管道符(3个)
+//1) 形式：{{value | fn()}}
+//2) 管道符会把前面的值传给后面函数的第一个参数
+//3) 最后的取值是函数的返回值
+
+//31. filters (4个)
+//1) 局部过滤器，会对管道符前面的值进行过滤
+//2) filters中的方法是当前实例的私有方法，只能在当前的vue实例中使用，其他vue实例不能调用
+//3) filters中的方法的this指向当前实例
+//4) filters中的方法和data、methods中的方法没有冲突，可以重名
+
+//32. 全局过滤器(3个)
+//1) Vue.filter("方法名",函数)
+//2) 可以在任何一个vue的实例中进行调用
+//3) 全局过滤器要放在所有实例的前面
+
+//33. 文本框text(3个)
+//1) 使用v-model，绑定的值为字符串类型
+//2) v-model绑定的值会获取文本框的内容(value值)，与文本框的内容实现双向数据绑定
+//3) 不用写value属性和值
+// <input type="text" v-model="a">在吗
+
+//34. 单选框radio(4个)
+//1) 使用v-model，绑定的值为字符串类型
+//2) 会把v-model绑定的值相同的划分成一组，需要加上value属性和值，才能实现单选效果
+//3) v-model绑定的值会获取单选框的value值
+//4) v-model绑定的值与单选框的value值相同的，会选中该单选框
+<!-- <input type="radio" value="1" v-model="val">男
+    <input type="radio" value="2" v-model="val">女
+    {{val}}-->
+
+//35. 单个复选框checkbox(4个)
+//1) 使用v-model，绑定的值为字符串类型
+//2) 会将v-model绑定的值转为布尔类型
+//3) v-model绑定的值为true时，代表选中; v-model绑定的值为false时，代表不会选中
+//4) 不用写value属性和值
+// <input type="checkbox" v-model="b">吃饭
+//     {{b}}
+
+//36. 多个复选框checkbox(4个)
+//1) 使用v-model，绑定的值为数组类型
+//2) 会把v-model绑定的值相同的划分成一组，需要加上value属性和值
+//3) v-model绑定的值会获取复选框的value值，并且会把选中的复选框的值放进绑定的值(数组)中
+//4) v-model绑定的值(数组)中，有与复选框中的value值相同的数组成员，该复选框为选中状态
+/*<input type="checkbox" v-model="c" value="1">吃饭
+    <input type="checkbox" v-model="c" value="2">睡觉
+        <input type="checkbox" v-model="c" value="3">打豆豆
+            {{c}}*/
+
+//37. 下拉框select(6个)
+//1) v-model写在select标签上
+//2) 给select标签加multiple属性为多选状态，不加为单选状态
+//3) 如果是单选下拉框，v-model绑定的值是一个字符串类型；并且会获取option的value值，如果没有写value属性，会获取option的内容
+//4) 如果是多选下拉框，v-model绑定的值是一个数组类型；并且会获取option的value值，如果没有写value属性，会获取option的内容，把值放在数组中
+//5)给某个option标签加disabled属性，该option标签为不可选状态
+//6)v-model绑定的值与option的value值相同(如果没有写value属性，则与option标签的内容相同时)，该option为选中状态
+/*<select name="" id="" v-model="msg" multiple>
+    <option value="" disabled>篮球</option>
+    <option value="">羽毛球</option>
+    <option value="">乒乓球</option>
+</select>
+{{msg}}*/
+
+//38. 表单元素中，不需要写value属性和值的有(2个)
+//1) 文本框text
+//2) 单个复选框checkbox
+
+//39. 表单元素中，需要写value属性和值的有(2个)
+//1) 单选框radio
+//2) 多个复选框checkbox
+
+//40. 表单元素中，使用v-model绑定的值为字符串类型的有 (4个)
+//1) 文本框
+//2) 单选框
+//3) 单个复选框
+//4) 下拉框单选
+
+//41. 表单元素中，使用v-model绑定的值为数组类型的有(2个)
+//1) 多个复选框
+//2) 下拉框多选
+
+//42. 表单元素中，会把v-model绑定的值转为布尔类型的有(1个)
+//1) 单个复选框
+
+//43. axios (9个)
+//1) 需要引入一个axios.js文件
+//2) 用来请求数据：axios.get("url").then(res=>{res.data},err=>{})
+//3) get中的参数为请求路径
+//4) then中的第一个参数是一个回调函数，当请求数据成功，会执行这个回调函数，并且会把请求到的数据从新组装，传给res，此时的res是一个对象，res中的data才是请求的数据
+//5) then中的第二个参数也是一个回调函数，当请求数据失败，会执行这个回调函数，err代表错误的信息
+//6) axios.defaults.baseURL = "http://localhost:3001"; axios配置默认的请求路径, get中的路径会默认拼到这个地址的后面
+//7) axios拦截：axios.interceptors.response.use(function (res) {return res.data});  当axios数据请求成功之后执行；它可以用来统一处理数据;  每一个请求，都会触发这个中间件中的函数
+//8) axios默认发送的是异步的请求
+//9) axios: get传参直接拼到url的后面;  post：传参作为post的第二个参数
+
+//44. bootstrap(17个)
+//1) 要在最外层包一个类名为container的盒子
+//2) 如果要排列成一行，需要在外面包一个类名为row的盒子
+//3) 采用的是栅格化布局, 把页面宽度分成12份
+//4) 宽度占据8个单元格：col-md-8
+//5) 宽度偏移两个单元格：col-md-offset-2
+//6) 表单元素加上类名form-control后，宽度为100%
+//7) 表格table，需要在talbe的行间属性加一个类名talbe
+//8) 表格中需要出现边框，需要在talbe的行间属性加一个类名table-bordered
+//9) 表格中需要鼠标划上，出现高亮显示，需要在talbe的行间属性加一个类名table-hover
+//10) 表格中需要出现间隔条纹，需要在talbe的行间属性加一个类名table-striped
+//11) 行间属性colspan="6";  合并6个单元格
+//12) caption 表头，只能放在table中使用:
+//13) 类名text-center: 文本居中
+//14) 类名text-primary: 文本蓝色;  text-danger:文本红色;  text-success:文本绿色
+//15) 按钮button，需要在button的行间属性加一个类名btn
+//16) 类名btn-primary按钮蓝色;  btn-danger按钮红色;   btn-success按钮绿色
+//17) 给img标签填加介绍，在img标签添加行内属性title="介绍内容"
+
+//45. input元素的onclick事件和onchange事件的区别(2个)
+//1) onclick:当点击时，会立即触发这个事件，执行事件行为绑定的函数时，这个input的value值是点击之前的value值
+//2) onchange:当input的value发生改变时，会触发这个事件，执行事件行为绑定的函数时，这个input的value值是改变后的value值
+
+//46. computed(8个)
+//1)computed是计算属性，计算属性的结果会被缓存，只有当依赖的响应式属性发生变化才会重新计算
+//2)计算属性是一个键值对或者函数；当计算属性是一个键值对时，计算属性的属性值是一个对象，里面有get函数和set函数，当获取计算属性对应的属性值时，会调用get函数，并且把get函数的返回值给到计算属性；当设置计算属性对应的属性值时，会调用set函数，并且把设置值传给set函数
+//3)get方法和set方法中的this指向实例vm
+//4)当计算属性是一个函数时，会默认调用get函数，并且会把函数的返回值给到计算属性，函数中的this指向实例
+//5)计算属性都会被实例vm所代理，最终放在实例vm上
+//6)computed中的属性不能和data、methods中的属性重名
+//7)computed不支持异步的方法
+//8)computed一般用于一个值依赖于多个值的操作(多对一)
+
+//47. watch(9个)
+//1)监听某个属性，当监听的属性发生改变时，那么会触发监听的这个函数
+//2)监听属性一定是存在的属性，一般是data中的属性
+//3)监听属性是一个函数，函数中的this指向当前实例
+//4)监听的函数的返回值不会给到data中的属性
+//5)监听的函数接收两个参数，第一个参数是最新的值；第二个参数是输入之前的值
+//6)监听属性不会走缓存
+//7)监听属性可以支持异步
+//8)watch一般用于当一个值变化，会引起其他数据的变化(一对多)
+//9)在工作中，能用computed就别用watch; 因为computed会有缓存；
+
+//48. computed与watch的区别(6个)
+//1)从属性名上分析：
+//1.1)computed是一个计算属性，也就是依赖于其它的属性计算所得出的结果
+//1.2)watch是去监听一个值的变化，然后执行相对应的函数
+//2)从实现上分析：
+//2.1)computed的值在get执行后是会缓存的，只有在它依赖的属性值改变之后，下一次获取computed的值时才会重新调用对应的get方法来计算；支持缓存
+//2.2)watch在每次监听的值变化时，都会执行回调函数，不支持缓存
+//3)从场景上分析：
+//3.1)如果一个值依赖多个属性(多对一)，用computed比较合适
+//3.2)如果一个值变化会引起一系列值的变化(一对多)，用watch比较合适
+//4)从计算上分析：
+//4.1) computed就是简单的计算
+//4.2) watch的回调里面会传入监听属性的新旧值，通过这两个值可以做一些特定的操作。
+//5)从数据上分析：
+//5.1) computed是用于定义基于数据之上的数据;
+//5.2) watch是想在某个数据变化时做一些事情；
+//6) 从同异步上分析：
+//6.1) computed不支持异步
+//6.2) watch支持异步
+
+//49. transition(5个)
+//1)哪个元素需要过滤动画，就在哪个元素的外面套一个transition标签
+//2)transition标签中有name属性，用来定义过渡动画的名称
+//3)在进入/离开的过渡中，会有6个class切换: 进入: v-enter --> v-enter-active--> v-enter-to ;  离开: v-leave -->  v-leave-active  -->  v-leave-to
+//4)可以通过以下特性来自定义过渡类名: enter-class --> enter-active-class --> enter-to-class --> leave-class --> leave-active-class --> leave-to-class
+//5)在自定义过渡的类名上加animated，可以引入animated库的动画效果
+
+//50. transition-group (2个)
+//1) 作为多个元素/组件的过渡效果，在多个元素/组件的外面套一个transition-group的标签
+//2) 每个transition-group的子节点必须有独立的key，且key为动态属性，动画才能正常工作
+
+//51. 自定义指令 (5个)
+//1)定义在DOM元素的行间属性，以v-开头;  v-自定义指令名=""
+//2)directives的属性值是一个对象，里面存储函数
+//3)directives中的函数名字和自定义指令名相同
+//4)directives中的函数会接收两个参数，第一个参数el代表有自定义指令的这个元素，第二个参数a是一个对象，对象的value属性的属性值是该自定义指令的属性值
+//5)directives中的方法中的this指向window
+
+//52. hash(3个)
+//1) #后面的值是hash值
+//2) window可以监听当前页面hash值的变化，通过window上的hashchange事件，当页面的hash值变化时，会触发该事件
+//3) 获取当前页面的hash值：window.location.hash;  带有#
+
+//53. 模块(3个)
+//1)一个js就是一个模块
+//2)三个规范(commonjs  cmd  amd)规定了如何定义模块，如何导入模块，如何导出模块;
+//3)script的type类型改成module，可以支持模块，但要谷歌浏览器62版本以上才支持
+
+//54. 导出模块export (2个)
+//1)export let b = 1; export let str ="123"; 会将b和str放到一个对象内导出{b:1,str:"123"}
+//2)let c=1; export default c; 或者export default {c:1};
+
+//55. 导入模块import (5个)
+//1)import {b,str} from "./a.js";
+//2)import * as s from "./a.js";   把所有的东西导入作为一个对象s，存在于当前的js中;
+//3)import命令具有提升效果，会提升到整个模块的头部，首先执行
+//4)import命令放到页面的顶部
+//5)import命令拥有声明功能，可以变量提升
+
+//56. 生产环境，开发环境与测试环境(3个)
+//1)生产环境：服务器的环境；这里面的代码是经过反复测试，没有bug的代码； 为了代码的安全性，一般会将代码进行打包压缩；还需要将es6或es7的代码编译成es5，让更多的浏览器支持；
+//2)开发环境： 开发人员开发时使用的代码
+//3)测试环境： 当前端和后端联调完成之后，开发人员进行测试完成之后，会把项目部署到测试环境上，让测试人员进行测试；
+
+//57. webpack(6个)
+//1)webpack是一款强大的模块加载器兼打包工具，它能把各种资源，例如JS（含JSX）、coffee、样式（含less/sass）、图片等都作为模块来使用和处理
+//2)把所有js整合成一个js文件，减少了http请求，提高了项目的性能; 属于项目优化的一种方式;
+//3)webpack是以commonJS的形式来书写，但对AMD/CMD的支持也很全面,方便旧项目进行代码迁移
+//4)能被模块化的不仅仅是JS,还包括各种资源文件
+//5)开发便捷，能替代部分gulp的工作，比如打包、压缩代码、混淆压缩、图片转base64等
+//6)扩展性强，插件机制完善，特别是支持React热插拔
+
+//58. 安装webpack(4个)
+//1) 初始化npm;   npm init -y
+//2) 安装webpack;  npm install webpack@3.8.1 --save-dev
+//3) 在package.json中配置一个脚本，"build": "webpack"，会去当前的node_modules下找bin对应的webpack名字让其执行，执行的就是bin/webpack.js
+//4) 在当前目录下创建一个名字叫做webpack.config.js的文件，并进行配置
+
+//59. webpack.config.js (9个)
+//1) 引入专门处理路径用的模块;  let path = require('path');
+//2) 导出一个模块;  module.exports = {entry:'',output:{filename:'',path:path.resolve('./dist')}}
+//3) 打包的入口文件;  entry:'';
+//4) 打包的多入口文件; entry:{main:"",main1:""};
+//5) 打包的出口文件;  output:{filename:'',path:path.resolve('./dist')};
+//6) 打包后的文件名字; filename:''
+//7) 打包成多出口文件; filename:'[name].js';
+//8) 打包后的文件夹名字，让打包后的文件放在这个文件夹的下面，必须是一个绝对路径;  path:;
+//9) 以相对路径解析出一个绝对路径; path.resolve('./dist');
+
+//60. babel编译es6成es5 (7个)
+//1) 安装babel; npm install babel --save-dev;
+//2) 安装babel核心包; npm install babel-core --save-dev;
+//3) 安装babel的解析器; npm install babel-loader --save-dev;
+//4) 安装解析es6的工具（让翻译官拥有解析es6语法的功能）; npm install babel-preset-es2015 --save-dev;
+//5) 创建一个.babelrc文件; 文件里面写上： {"presets": ["es2015"]}
+//6) 在module.exports={}里面添加模块解析规则，module:{rules:[{test:/\.js$/,use:'babel-loader',exclude:/node_modules/}]}
+//7) 运行;  npm run build
+
+//61. babel编译es7成es5 (4个)
+//1) 安装相应的模块; npm install babel babel-core babel-loader babel-preset-es2015 babel-preset-stage-0 --save-dev
+//2) 修改.babelrc文件， {"presets": ["es2015","stage-0"]}
+//3) 在module.exports={}里面添加模块解析规则，module:{rules:[{test:/\.js$/,use:'babel-loader',exclude:/node_modules/}]}
+//4) 运行; npm run build
+
+//62. 解析样式 (6个)
+//1) 安装相应的模块; npm install css-loader style-loader--save-dev;
+//2) 将css解析成模块; css-loader
+//3) 将解析的内容插入到style标签内; style-loader
+//4) 在module.exports={}里面添加模块解析规则，module:{rules:[{test:/\.css$/,use:['style-loader','css-loader']}]} ;  use里的读取顺序是从右往左
+//5) 引入css文件;  import './index.css'
+//6) 运行; npm run build
+
+//63. 解析less (4个)
+//1) 安装相应的模块; npm install less less-loader css-loader style-loader--save-dev
+//2) 引入less文件;  import './style.less'
+//3) 在module.exports={}里面添加模块解析规则，module:{rules:[{test:/\.less$/,use:['style-loader','css-loader','less-loader']}]}
+//4) 运行;  npm run build
+
+ //64. 解析图片 (4个)
+ //1) 安装相应的模块; npm install file-loader url-loader --save-dev
+ //2) 在module.exports={}里面添加模块解析规则，module:{rules:[{test:/\.(jpg|png|gif)$/,use:'url-loader'}]} ; (url-loader是依赖于file-loader的)
+ //3) 引入图片文件;   import page from './2.jpg';  let img = new Image();  img.src=page;  document.body.appendchild(img);  page就是打包后图片的路径
+//4) 运行;  npm run build
+
+ //65. 解析html (5个)
+//1) 需要解析html插件，插件的作用是以我们自己的html为模板，将打包后的结果，自动引入到html中并产出到dist目录下
+//2) 安装相应的模块; npm install html-webpack-plugin --save-dev
+//3) 引入第三方模块 let HtmlWebpackPlugin = require('html-webpack-plugin')
+//4) 在webpack.config.js文件中添加插件 plugins:[new HtmlWebpackPlugin({template:'./src/index.html',filename:'index.html'})] ;
+//4.1) template为打包后的文件路径
+//4.2) filename为打包后的文件名称
+//5) 运行; npm run build
+
+//66. webpack-dev-server (4个)
+//1) 这里面内置了服务，可以帮我们启动一个端口号，当代码更新时，可以自动打包，代码有变化就重新执行
+//2) 安装相应的模块;  npm install webpack-dev-server --save-dev
+//3) 在package.json文件的脚本增加一个键值对  "dev":"webpack-dev-server"
+//4) 运行; npm run dev
+
+//67. 常见的loader有：(7个)
+//1) babel-loader
+//2) css-loader
+//3) style-loader
+//4) less-loader
+//5) file-loader
+//6) url-loader
+//7) vue-loader； 解析.vue文件； .vue文件会默认将template中的结构插入到导出的对象中，所以导出的对象中不用再写template属性
+
+ //68. 生命周期 (5)
+//1) vue的实例具有生命周期
+//2) vue实例在生成时，会经历一系列的初始化过程：数据的监听，编译模板，实例挂载DOM元素，或者数据更新，DOM更新
+//3) 同时在这个过程中也会运行一些叫做生命周期钩子的函数，在vue实例生命周期的不同阶段被调用
+//4) 可以通过vm.$mount(el)创建要编译的元素
+//5) vue的生命周期，不会自己结束；需要手动结束vue的生命周期，执行vm.$destroy()
+
+//69. 生命周期的过程 (17)
+//1) new Vue()
+//2) Init Events & Lifecycle; 初始化事件和生命周期钩子函数;
+//3) beforeCreate(){};
+//4) Init injections & reactivity; 注射数据，数据可以实现响应式
+//5) created(){}; 此方法一般用于获取ajax
+//6) Has "el" option?   是否有el这个属性
+//6.1) YES, 如果有进入下一步
+//6.2) No, when vm.$mount(el) is called;  如果没有，看vm.$mount(el)是否执行，是否创建一个要编译的元素
+//7) Has "template" option? 是否有template这个属性
+//7.1) YES, Compile template into render function; 如果有，编译这个模板
+//7.2) NO, Compile el's outerHTML as template; 如果没有，把el外层的元素编译为模板
+//8) beforeMount(){};
+//9) Create vm.$el and replace "el" with it;   把虚拟的DOM挂载到真实的DOM上，此时页面上已经是vue渲染出的真实DOM;
+//10) mounted(){}; 真实dom渲染完了，可以操作dom了
+//11) Mounted
+//12) when data changes;  当数据发生改变
+//12.1) beforeUpdate(){};
+//12.2) Virtual DOM re-render and patch; 虚拟DOM重新渲染和打补丁，这是一个异步的过程
+//12.3) updated(){}
+//13) when vm.$destroy() is called;  vue的生命周期，不会自己结束；需要手动结束这个vue生命周期
+//14) beforeDestroy(){}; 此方法一般用于清除定时器或者清除事件绑定
+//15) Teardown watchers, child components and event listeners; 销毁观察者(数据响应)，子组件和事件监听者
+//16) Destroyed
+//17) destroyed(){};  vue的实例被销毁后，但由vue渲染出的DOM不会销毁，同时vue的数据和视图已经没有响应式了
+
+//70. vm.$mount('el')(2个)
+//1) 创建要编译的元素
+//2) 写在new Vue的外面； 如果vue中没有el属性，此处代码会立即执行
+
+//71. template (5个)
+//1) template标签本身不被页面渲染出来的，只会渲染template标签里面的内容
+//2) 如果vue实例中有template属性，会用template的属性值会把整个外部的div#app元素替换掉，外部的div标签和标签内的所有内容都不会显示
+//3) 组件中的template属性值会替换掉组件标签，组件标签及标签内的内容都不会显示出来
+//4) template的属性值中只能有一个根元素，不能是文本节点
+//5) 两种不同的写法
+//5.1) template:"<div></div>"
+//5.2) template:"#divs";  在html中配合template标签使用，
+
+//72. vm.$destroy() (1个)
+//1) 结束vue实例的生命周期
+
+//73. vm.$data; (2个)
+//1) 属性值是一个对象
+//2) data里面的数据以键值对的形式放在这个对象里面
+
+//74. vm.$el;  (1个)
+//1) 当前具有vue实例的el元素
+
+//75. vm.$set(obj,'key',value); (1个)
+//1) 给对象设置属性值, 会有响应式
+
+//76. vm.$options; (1个)
+//1) vue实例上的所有属性
+
+//77. vm.$nextTick(()=>{});  (1个)
+//1) 等待dom异步渲染完成后执行回调函数
+
+//78. vm.$refs (5个)
+//1) 需要在元素的行间属性写上 ref=""
+//2) 用来获取元素，是一个对象{ref属性值1:元素1,ref属性值2:[元素2 元素3]}
+//3) 如果dom元素不是通过v-for循环出来的，相同的ref属性名只会获取最后一个元素
+//4) 如果dom元素是通过v-for循环出来的，相同的ref属性名可以获取多个元素，并且获取的元素会放在一个数组中
+//5) ref如果放在组件上，$refs获取的是组件的实例，并不是组件的dom元素;
+
+//79. vm.$on(); (2个)
+//1) 订阅方法
+//2) vm.$on('自定义事件','自定义事件绑定的方法')
+
+//80. vm.$emit('自定义事件',value); (2个)
+//1) 发布方法，让订阅的方法执行;
+//2) 可以传值
+
+//81. dom渲染 (3个)
+//1) dom渲染是异步的
+//2) 如果数据变化后想获取真实dom中的内容，需要等待页面渲染完毕后再去获取
+//3) 所有的dom操作，最好放在vm.$nextTick(()=>{})的回调函数中
+
+//82. 组件 (12个)
+//1) 一个自定义标签，vue就会把它看成一个组件，vue可以给这些自定义标签赋予一定意义
+//2) 每个组件都是一个vue的实例，因此每个组件都具有生命周期，并且也有data,methods,computed,watch,filters,directives,components,props这些属性和钩子函数beforeCreate,created,beforeMount,mounted,beforeUpdate,updated,beforeDestroy,detroyed
+//3) 全局组件，在其他各个vue的实例中都可以使用
+//4) 局部组件，只能在注册该组件的实例中使用，在哪里注册就在哪里使用
+//5) 组件使用时，组件名采用短横线隔开命名法，不支持驼峰，js中转驼峰也是可以的
+//6) 组件中data的属性值必须是一个函数，函数里返回一个对象作为组件的数据
+//7) 每个组件都是一个单独的实例，相互之间不能改变对方的数据；
+//8) 子组件不能直接使用父组件的数据，子组件不能改变父组件的数据
+//9) 在各自的组件中，如果return的对象是一个公有的对象，那么其中一个组件影响数据，那么其他组件也会跟着改变
+//10) 组件使用时必须放在vue实例(#app)里面
+//11) 一般情况下，组件及组件中的标签都不会显示，只会显示组件的模板内容；如果需要显示组件中的标签，如果在template中设置插槽slot标签
+//12) 组件循环时，需要给每个组件设置一个独立的key属性
+
+//83. 全局组件 (2个)
+//1) 创建和注册一个全局组件：Vue.component('组件名',{template:''})
+//2) 使用全局组件： <组件名></组件名>
+
+//84. 局部组件 (3个)
+//1) 创建组件
+//1.1) let 组件名 = {template:''}
+//2) 注册组件
+//2.1) components:{组件名1,组件名2}
+//2.2) 在哪个vue实例注册的组件，就只能在哪个vue实例下使用； 在哪里注册，就在哪里使用
+//3) 使用组件 <组件名></组件名>
+
+//85. 组件的嵌套 (3个)
+//1) 先创建子组件
+//2) 把子组件在父组件中进行注册
+//3) 把子组件在父组件的模板中使用
+
+//86. 父传子 (7个)
+//1) 在子组件中添加一个行间属性，属性值是父组件的数据 (即把父组件中的数据绑定给子组件中的一个行间属性)
+//2) 如果是动态绑定的属性，传递的值是变量
+//3) 如果不是动态绑定的属性，传递的值是字符串
+//4) 在子组件中用props去接收这个行间属性
+//5) 可以在子组件中使用这个行间属性，值就是父组件中的数据
+//6) props属性值可以是数组，也可以是对象
+//7) 通过props接收的这个属性会放在当前组件上，所以不能与data/methods/computed中的属性重名
+
+//87. props验证 (6个)
+//1) props的属性是对象时，可以对对象的形式可以进行校验
+//2) type属性校验行间属性的类型, 如果校验的类型不符合，控制台会报警告
+//3) 校验行间属性的类型，如果行间属性不带:号得到的肯定是字符串类型  :m='1'  :m='true'
+//4) 如果在子组件中没有设置这个行间属性，这个行间属性默认会取default的值
+//5) 如果要求在子组件中必须设置这个行间属性，可设置required:true; 但required属性和default属性不能同时使用
+//6) 自定义校验器validator(val){}，第一个参数是当前传递的值，函数中返回true表示通过，返回false表示不通过(控制台会报警告)
+/*props:{
+    m:{
+        type:[String,Function,Object,Array,Number,Boolean],
+        default:0,
+        required:true,
+        validator(val){
+             return val > 300;
+        }
+    }
+}*/
+
+//88. 单向数据流 (3个)
+//1) 数据只能从父组件传递给子组件，不能从子组件传递给父组件
+//2) 所有的props都使得其父子之间形成了一个单向下行绑定：父级数据的更新会向下流动到子组件中，但是反过来则不行
+//3) 如果数据是一个对象或者数组，那么当子组件改变时，也会影响到父组件，因为操作的是同一个空间地址
+
+//89. 子传父 (3个)
+//1) 给子组件绑定自定义事件，然后将父组件中的方法订阅(绑定)到子组件的自定义事件上
+//2) 当触发子组件的某个事件行为时，事件行为绑定的方法执行，在方法里面通过$emit去触发子组件上的自定义事件
+//3) 当触发子组件上的自定义事件时，该自定义事件绑定的父组件中的方法会执行，从而去改变父组件中的数据
+
+//90. 发布订阅的语法糖 (2个)
+//1) 订阅：<child :m.sync="money"></child>
+//2) 发布： this.$emit("update:m", value)
+
+//91. 父子组件的mounted(1个)
+//1) 如果有父子组件，会先触发子组件的mounted函数，然后再触发父组件的mounted函数
+
+//92. vm.$children (1个)
+//1) 属性值是一个类数组，里面放着每一个子组件
+
+//93. vm.$parent (1个)
+//1) 属性值是一个对象，获取的是父组件
+
+//94. slot (7个)
+//1) slot的作用：定制模板
+//2) 一般情况下，组件及组件中的标签都不会显示，只会显示组件的模板内容；如果需要显示组件中的标签，需要在template中设置插槽slot标签。
+//3) template中的slot标签有name属性，用来匹配组件中的标签；如果slot标签没有写name属性，那么该slot标签为默认插槽。
+//4) 当组件中的标签的slot属性的属性值跟slot标签的name属性值相同时，说明两者匹配。
+//5) template中的slot标签可以放置一些默认的内容，如果组件中的标签有匹配上，那么组件中的标签内容将会替换掉slot标签的默认内容；如果没有匹配上，那么slot标签的默认内容会显示在页面中。
+//6) 如果组件中的标签没有slot属性，或者有slot属性但没有设置值，那么组件中的标签会匹配上template中的默认插槽，如果template中没有默认插槽，则该组件中的标签不会被解析出来
+//7) 如果组件中的标签有slot属性，但是slot属性的属性值没有匹配上，那么该组件中的标签将不被解析
+
+//95. 动态组件 (4个)
+//1) 使用component这个自定义标签时，可以动态绑定一个组件，需要在component标签上设置动态属性is
+//2) 当动态属性is的属性值是哪个组件的名称时，就会显示哪个组件，不可以同时显示多个组件
+//3) 动态组件进行切换时，会将上一个组件进行销毁，然后再挂载新的组件
+//4) 如果要保存组件第一次生成时的状态，当动态组件进行切换时，不再执行销毁，挂载，而是可以读取缓存中的组件，需要在component标签的外面再套一个keep-alive标签
+
+//96. 事件车EventBus (4个)
+//1) 每一个vue的实例(组件)都是独立的；相互之间不能直接改变数据
+//2) 给两个不同的组件找一个载体(eventBus)，把共同的方法放在这个载体上(eventBus)
+//3) 创建一个新的vue实例; let eventBus = new Vue;
+//4) 在这个新的实例上，给eventBus订阅方法($on)和发布方法($emit)
+
+//97.路由 (3个)
+//1) 单页Web应用(single page web application, SPA)，就是只有一张Web页面的应用
+//2) 改变hash，实现页面的跳转， 访问不同的路径，就可以返回不同的结果
+//3) 路由要配合组件的使用
+
+//98. vue-router (6个)
+//1) 用来配置组件和路由映射
+//2) 首先要引入vue-router.js文件
+//3) 创建组件
+//4) 配置路由映射表;  let routes = [{path:'',component:组件名}]
+//4.1) 路由映射表：配置路径和组件的关系，一个路径对应一个组件，当访问(跳转到)某个路径时，就显示匹配该路径的组件
+//4.2) 在path中路径必须加上/
+//4.3) path为"*"时，表示可以匹配所有的路径
+//5) 把路由映射表放进VueRouter;  let router = new VueRouter({routes})
+//6) 把这个路由放进vue的实例里面; let vm = new Vue({router})
+
+//99. router-view (2个)
+//1) 让对应路径的组件显示，当路径匹配到后，就会显示对应的组件，即对应的组件会替换掉router-view
+//2) 是一个自定义标签，也是一个全局组件，可以直接使用，不会显示在页面上
+
+//100. router-link (4个)
+//1) 切换路径，用来跳转页面
+//2) 是一个自定义的标签，也是一个全局组件，可以直接使用， 默认解析为a标签，页面中会显示出来
+//3) to是一个router-link必须的一个属性，属性值是要跳转的路径
+//4) 有一个行间属性tag，属性值是要把router-link解析成某个标签的标签名
+
+//101. 组件的属性 (2个)
+//1) 每个组件都有一个名字叫$router的属性，组件的$router属性的属性值是一个对象，对象里面都是一些方法，有r的放的都是方法
+//2) 每个组件都有一个名字叫$route的属性，组件的$route属性的属性值是一个对象，对象里面放了一些键值对，没r的放的都是属性
+
+//102. $router.push('url'); (1个)
+//1) 强制跳转到某个路径
+
+//103. $router.go(-1); (1个)
+//1) 返回上一级
+
+//104. 路由的嵌套 (3个)
+//1) children:[{path:"",component:子路由的名称}] 配置当前路由的子路由，写在父路由的路由映射表里
+//2) children中的路径永远不带/，如果带/，表示是1级路由
+//3) 子路由的跳转router-link和显示router-view要写在父路由的模板里
+
+//105. 路由的参数 (1个)
+//1) $route.params :存储了当前路由的参数
+//<router-link to="/article/1/a"></router-link>
+//let routes = [{path:"/article/:id/:txt",component:article}];
+// this.$route.params ==>{id:"1",txt:'a'}
+
+//106. 什么情况下需要独立的key属性(2个)
+//1) transition-group，需要在每个子节点加一个独立的key属性
+//2) 循环组件时，需要在组件的标签上加一个独立的key属性
+
+//107. 自定义标签不会渲染出来的有(5个)
+//1) template
+//2) 组件标签
+//3) slot
+//4) component;  动态组件
+//5) router-view
+
+//108. 自定义标签中会渲染出来的有(1个)
+//1) router-link标签要设置to属性，会默认解析为a标签, 可以通过router-link标签的tag属性更改为其他类型的标签
+
+//109. vue中的异步过程有(3个)
+//1) DOM的渲染
+//2) $nextTick的回调函数
+//3) axios默认发送的是异步的请求
+
+//110. 脚手架vue-cli
+//1) 是一个命令工具, 用来初始化一个基于webpack的vue项目；
+//2) 有了vue-cli就不用再配置文件webpack.config.js
+//3) 安装到全局;  npm install vue-cli -g;
+//4) vue init webpack + 项目名称;
+//4.1) vue  init  webpack-simple   vue-book(自定义的项目名称)
+//4.2) vue  init  webpack  vue-book(自定义的项目名称)
+//5) npm run dev;   webpack会自动启动一个服务端口，默认是8080; 如果8080被占用，会再生成一个新的端口号
+
+//111.导入vue模块
+//1) import Vue from "Vue";
+//2) vue.js = runtime + compiler
+//3) runtime 相对于 vue.js 少6k; 不能编译template
+//4) import默认导入的是runtime.js;不识别template
+
+
+
+
+
+</script>

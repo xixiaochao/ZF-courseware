@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+      ul{
+          list-style: none;
+      }
+        ul li{
+            /*display: inline-block;
+            vertical-align: top;*/
+            /*float: left;*/
+            float: right;
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+           
+        }
+        ul:after{
+            display: block;
+            content: "";
+            clear: both;
+        }
+        .content{
+            width: 400px;
+        }
+        img{
+            float: left;
+        }
+        div p{
+            text-indent: 10px;
+        }
+    </style>
+</head>
+<body>
+<audio src="" autoplay controls loop></audio>
+<ul>
+    <li>1 <br> 111 </li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+</ul>
+<div style="height: 300px;background: yellow"></div>
+<div class="content">
+    <img src="8.jpg" alt="" style="height: 200px;width: 200px">
+    <p>//1)脱离文档流（父级找不到子级），设置了float属性的元素相当于来到了第二层级，平行于默认的文档流
+        //1.1)文档流：块级元素和行内元素默认的排布顺序
+        //2)所有的元素（包括块级元素和行内元素）都可以设置float属性，设置float属性后，都转为行内块级元素
+        //3)元素设置float属性后，可以设置css盒子模型的所有属性(width/height/padding/border/margin)
+        //4)元素设置float属性后，在不设置宽高时，宽高由内容本身决定
+        //5)图文混编：行内元素、行内块级元素和文字会围绕着浮动元素排布</p>
+</div>
+
+<!--
+<div class="box" style="background: #007aff;position: relative;width: 1000px;height: 100px">
+    <div class="box2">当设置宽高为100%时，继承的是参照物的宽高</div>
+    <div class="box3" style="position: absolute;">dd</div>
+    <div class="box1" style="background: yellow">当不设置四个方向值时）</div>
+
+</div>-->
+<div class="box" style="background: red; position: relative;">
+    <p>p标签</p>
+    <span>span标签</span>
+    <div style="background: blue; position: absolute;">sss</div>
+</div>
+<br>
+<br>
+<br>
+<a href="javaScript:void 0;">再见</a>
+
+<script>
+    //不加班 滴滴
+    //加班  去哪儿  好未来
+    // jquery  zepto   canvas  flex-box   swiper   echart   git  less   es6   h5个人简历  爬山   看文档去实践
+
+    //项目类型： 官网  电子商务网站  系统类(公司内部使用)  投资理财(金融)   echart
+    //移动端app  移动端网站
+
+    //1)订阅：把任务绑定给订阅主体
+    //2)发布：让订阅的任务执行
+    //3)先订阅方法，再发布方法
+
+    //4)严格模式下，对只读属性赋值会报错
+
+    //2) 生产环境：本地开发完成了，需要把代码上传到服务器上，服务器上的环境叫做生产环境
+
+    //1) 每个页面都会产生一个单独的作用域，页面之间是不可以互通访问变量的
+    //2) 每个页面又都是在浏览器中打开的；如果可以把值存储到浏览器中，让浏览器作为中介，那么另一个页面就可以进行访问
+    //3) localStorage: 永久性存储;
+    //5) 如果获取不到属性值，获取的结果是null
+
+   // Object.keys(obj); 将对象obj的key(属性名)作为新的数组
+   /* let obj={a:1,b:2,c:3}
+    console.log(Object.keys(obj));  // ["a","b","c"]*/
+
+
+    //Generator  next     Promise  then      Proxy
+
+    //10)onmousewheel: 鼠标滚轮滚动
+    //7) onmousemove: 鼠标移动，事件对应的方法是每隔一段时间执行一次；事件方法的执行次数跟时间有关，跟盒子移动的距离没有关系
+
+
+    //4) 解除0级事件绑定：元素.type(带on)=null;
+
+
+    //1) 当元素的事件行为被触发，浏览器会默认把当前事件的事件信息传递给事件绑定的方法；事件信息包含了关于这次事件行为的基本信息，这个事件信息就是事件对象
+
+    //2) 事件对象是个对象数据类型
+
+   // 从外向里，依次触发当前元素的祖先元素身上给捕获阶段绑定的方法
+
+    //先绑定谁，就先执行谁；true和false对于目标阶段的元素没有意义;
+
+    //1)把方法绑定给最外层元素的事件，当触发子孙元素的事件行为时，由于冒泡传播的特点，也会触发最外层元素相应的事件行为； 然后根据事件源的不同，执行不同的操作即可；
+
+    //2) src;  img/script/audio/video
+
+
+
+
+
+
+
+
+
+
+    //tap:这个是zepto绑定的点击事件，不存在300ms的延迟
+
+    // SEM: 语义化标签
+    // SEO: 百度竞价
+
+    //webStrom:以本地电脑作为服务器； 服务器不需要联网
+
+    //每个搜索公司都会养一只爬虫，这个虫子每天去各大网站进行搜索，把最火的关键词或者网站上的关键字收录到自己搜索库中；当进行搜索时，会去往自己的引擎库中查找，含有关键字的网站；
+
+    // 接口文档：前后交互的文档： 用来标识请求的url,参数，返回的数据类型；
+    // url:""
+    // type："get" "post";
+    // 参数 ： username:""
+    //        password:""
+    // 返回的数据类型： [{id:"",title:"",link:""},{},{}];
+
+    //前端后端同时进行；
+    //模拟接口 假数据；
+
+    //前后端不分离：后端也可以实现页面的刷新；服务器会把页面进行组装，把组装的代码发送给浏览器； ---> 全局刷新
+    //前后端分离；  ajax: 局部刷新
+
+    //请求头：客户端
+    //响应头：服务器
+    //客户端和服务端都可以向对方传输数据，但是通道是不同的；
+
+    //49.PC端和移动端的区别
+    //1)PC端: 有伪类选择器，谷歌、火狐、IE(7-11) 用**CSS hack** 解决页面的兼容性问题
+    //2)移动端：没有鼠标经过的效果，有滑屏切换的效果，-webkit-内核（高版本浏览器），需要适配所有机型
+
+    //46.移动端产品形态
+    //1)PC端和移动端是分离的，两套项目，两个域名
+    //2)PC端和移动端是共用一套项目，一个域名 （响应式布局）
+    //3)PC端  float+定位+px
+    //4)移动端 流式布局(百分比布局)+rem布局+媒体查询  例如：京东 m.jd.com
+
+    //IE8及以下不兼容的有
+    //1) (context).getElementsByClassName();
+    //2) (context).querySelector();
+    //3) (context).querySelectorAll();
+    //4) children
+    //5) firstElementChild
+    //6) lastElementChild
+    //7) previousElementSibling
+    //8) nextEementSibling
+    //9) addEventListener
+    //10) e
+    //11) e.target
+    //12) e.pageX
+    //13) e.pageY
+    //14) e.preventDefault()
+    //15) e.stopPropagation()
+
+    //  能实现循环效果的有
+    //1) for
+    //2) for in
+    //3) while
+    //4) ary.map(function(item,index,ary){return k})
+    //5) ary.forEach(function(item,index,ary){})
+    //6) ary.filter((item,index,ary)=>{return item>n})
+    //7) ary.some((item,index,ary)=>{return item>n})
+    //8) ary.find((item,index,ary)=>{return item>n})
+    //9) ary.every((item,index,ary)=>{return item>n})
+    //10)ary.reduce((prev,next)=>{})
+
+    //2) (context).querySelector；     没有映射关系
+    //3) (context).querySelectorAll；  没有映射关系
+
+
+        //1. 对象由键值对组成，键值对由属性名(key)和属性值(value)组成，属性名和属性值之间用冒号隔开，键值对之间用逗号隔开
+        //2. 标签属性由标签属性名和标签属性值组成，标签属性名和标签属性值之间用等号隔开，标签属性之间用空格隔开
+        //3. 一个标签属性名可以有多个标签属性值，标签属性值之间用空格隔开  class="a b c"
+        //4. css样式由css属性名和css属性值组成，css属性名和css属性值之间用冒号隔开，css样式之间用分号隔开
+        //5. 一个css属性名可以有多个css属性值，css属性值之间用空格隔开
+
+       //含有标签属性href=""的标签有:
+        //1)<a href=""></a>
+        //2)<link rel="stylesheet" href="" type="text/css"></link>
+
+        //含有标签属性scr=""的标签有：
+        //1)<img src="" alt="">
+        //2)<audio src=""></audio>
+        //3)<video src=""></video>
+       //4)<script src=""></script>
+
+   //一个css属性名有多个css属性值的css属性有：
+    //1) background: color url("") repeat/no-repeat x y;
+    //2) background-position: x轴位置 y轴位置;
+    //3) background-size:x轴方向大小 y轴方向大小
+    //4) padding/border/margin: a b c d;
+    //5) border-width:
+    //6) border-style:
+    //7) border-color:
+    //8) border:width style color
+    //9) border-top:width style color
+    //10)border-bottom:width style color
+    //11)border-left:width style color
+    //12)border-right:width style color
+   //13)transition:transition-property transition-duration transition-timing-function transition-delay
+   //14)transform:translate() scale() rotate() skew()
+   //15)animation:animation-name animation-duration animation-timing-function animation-delay animation-iteration-count
+    //16)box-shadow: h v blur spread color inset
+    //17)text-shadow: h v blur color
+   //18)border-radius:
+
+     //常见的标签
+    //1)html,可告知浏览器其自身是一个 HTML 文档
+    //2)head,
+    //2.1)<head> 标签用于定义文档的头部，它是所有头部元素的容器。<head> 中的元素可以引用脚本、指示浏览器在哪里找到样式表、提供元信息等等。
+    //2.2)文档的头部描述了文档的各种属性和信息，包括文档的标题、在 Web 中的位置以及和其他文档的关系等。绝大多数文档头部包含的数据都不会真正作为内容显示给读者。
+    //2.3)下面这些标签可用在 head 部分： <link>, <meta>, <script>, <style>, 以及 <title>。
+    //2.4)<title> 定义文档的标题，它是 head 部分中唯一必需的元素。
+    //3)<link>, 链接一个外部样式表：<link rel="stylesheet" type="text/css" href="url">,此元素只能存在于 head 部分，不过它可出现任何次数。rel-->规定当前文档与被链接文档之间的关系。
+    //4)<meta>, 可提供有关页面的元信息（meta-information），比如针对搜索引擎和更新频度的描述和关键词。<meta> 标签永远位于 head 元素内部。
+    //5)<script>, 在 HTML 页面中插入一段 JavaScript：
+   //script 元素既可以包含脚本语句，也可以通过 src 属性指向外部脚本文件。
+  //6)<style>用于为 HTML 文档定义样式信息。
+  //6.1)type 属性是必需的，定义 style 元素的内容。唯一可能的值是 "text/css"
+  //6.2)style 元素位于 head 部分中
+  //7)titile, 可定义文档的标题
+    //8)body,定义文档的主体。
+     //8.1)包含文档的所有内容（比如文本、超链接、图像、表格和列表等等。）
+     //8.2)页面的主体部分，所有展示给用户的内容，都写在body元素内
+   //9)del <del></del> 定义文档中已被删除的文本。
+
+
+    //常见的标签属性有
+    //1)id="";
+    //2)class="";
+    //3)src="";
+    //4)alt="";  <img src="" alt="">
+    //5)href="";
+    //6)target="_blank";  跳转到新的窗口中打开，当前的窗口还在
+    //7)type="";  type="text"; type="password" type="button" type="radio" type="checkbox"
+    //8)value="";
+    //9)name="";  <input type="radio" name="">  <meta name="" content="">
+    //10)maxlength="";
+    //11)minlength="";
+    //12)charset="";  charset="UTF-8";
+    //13)content=""
+    //14)style="";           style="color:red"
+    //15)rel="";   rel="stylesheet"
+    //16)href=""
+    //17)type="text/css";
+    //18)<link rel="stylesheet" href="css.css" type="text/css">
+    //19)for=""
+    //20)action="url"
+    //21)max="最大值"
+    //22)min="最小值"
+
+
+     //常见的css属性有
+    //1)vertical-align:top/middle/bottom;
+    //2)list-style:none;
+    //3)text-decoration:none;
+    //4)text-align:   文本的水平对齐方式
+    //5)text-indent:  文本缩进
+    //6)font-weight:normal/bold;
+    //7)font-size:
+    //8)font-family:
+    //9)color:
+    //10)line-height:
+    //11)background:color,url("图片的路径"),repeat/no-repeat,x轴位置,y轴位置
+    //12)background-size:
+    //13)background-color:
+    //14)background-image:
+    //15)background-position:
+    //16)background-repeat:
+    //17)width:
+    //18)height:
+    //19)padding:
+    //20)margin:
+    //21)border-width:
+    //22)border-style:
+    //23)border-color:
+    //24)border:
+    //25)content:
+    //26)overflow:hidden; overflow:auto; overflow:scroll;
+    //27)clear:both;清除浮动带来的影响
+    //28)position:
+    //29)top/left/right/bottom:
+    //30)z-index:
+    //31)white-space: nowrap;
+    //32)text-overflow: ellipsis;
+    //33)cursor: move;  鼠标变成十字箭头
+    //34)cursor: pointer; 鼠标变成小手
+    //35)transform-style:
+    //36)transform-origin:
+    //37)perspective
+
+    //用空格隔开的有：
+    //1)标签属性与标签属性之间用空格隔开
+    //2)一个class标签属性可以有多个标签属性值，多个标签属性值之间用空格隔开
+    //3)后代选择器之间用空格隔开
+   //4)css属性值可以有多个，css属性值之间用空格隔开
+
+    // 产品：市场调研 --> 产品  -->  需求分析师  --> UL  --> 前端 -->  切图(html,css,ps)、前端工程师【估多长时间】；--> 后台写接口；【接口文档】 -->  联调【测试】-->  测试部门  --->  改bug(回滚) -->  上线  --> 维护  --> code review (代码  审查)
+
+  //1) 让子类的原型指向父类的实例
+  //细节：1）我们首先让子类的原型指向父类的实例，然后再向子类原型上扩展方法，防止提前增加方法，等原型重新指向后，之前在子类原型上扩展的方法都没用了(子类原型已经指向新的空间地址了)
+  //2) 让子类原型重新指向父类实例，子类原型上原有的constructor就没有了，为了保证构造函数的完整性，我们最好给子类的原型重新手动设置constructor属性
+
+  //1) 在子类的构造体中，把父类做普通方法执行，并且让父类方法中的this指向子类的实例
+  //2)原理：把父类构造函数中提供给父类实例的私有属性和方法，原封不动复制了一份给子类的实例（继承完成后，子类和父类是没关系的）
+  //细节：我们一般把call继承放在子类构造函数中的第一行，也就是创建子类实例的时候，进来的第一件事情就是先继承，然后再给子类实例赋值自己私有的属性和方法(好处：自己设置的可以把继承过来的结果替换掉)
+
+  // 目前学过的关键字有：var定义变量 function定义函数 let定义变量 const定义常量  class自定义类  new创建出一个实例  this
+
+  //6) (元素).cloneNode(true/false); 克隆元素节点; true是深克隆，会克隆子孙节点，false是浅克隆，只会克隆自己；
+  //7) (元素).getAttribute("属性名"); 获取行内属性名对应的属性值
+  //8) (元素).removeAttribute("属性名"); 移除行内属性
+  //9) (元素).setAttribute("属性名","属性值"); 设置(新增或修改)行内属性
+  //10) (元素).classList.add("属性名");    新增class属性
+  //11) (元素).classList.remove("属性名"); 移除class属性
+  //12) (元素).classList.replace("旧属性名","新属性名"); 用新class属性替换旧class属性
+  //13) document.createDocumentFragment(); 创建文档碎片的容器
+
+  //﻿基于Attribute方法完成的自定义属性与基于(元素.属性名=属性值)完成的自定义属性互相独立，互不获取
+
+   //1)元素.style.属性名或元素.style[属性名]：只能获取元素的行内样式；获取不到css中的样式
+
+    //元素.style.属性名=属性值
+   // mark.className = "mark";
+    //mark.style.left="20px"
+    //mark.left="20px"
+
+    //增加class属性的方法
+    //获取class属性的方法
+
+
+    //获取行内属性的方法
+    //增加行内属性的方法
+
+    //div-->HTMLDivElement-->HTMLElement-->Element-->Node-->EventTarget-->Object
+    //document-->HTMLDocument-->Document(getElementById)-->Node-->EventTarget-->Object
+
+
+
+    //28, 使用git步骤：
+    // 1.新建一个文件夹： mkdir  文件夹名
+    // 2.打开刚才新建的文件夹：cd 文件夹名
+    // 3.在刚才新建的文件夹初始化一个git仓库（本地仓库）： git init
+    // 4. 把本地文件提交到暂存区 git add .
+    // 5. 查看本地文件是否提交到暂存区 git status （查看文件的状态；如果文件只存在本地，不在暂存区，那么文件颜色是红色的；如果文件在暂存区，还没到历史区，那么颜色是绿色；）
+    // 6. 把本地文件从暂存区提交到历史区 git commit -m"注释"
+    // 7. 查看本地文件是否提交到历史区  git status
+    // 8. 在gitHub上新建一个账户
+    // 9. 在git中配置gitHub用户名和邮箱
+    //git config --global user.email "邮箱"
+    //git config --global user.name "用户名"
+    //10. 检查是否配置好用户名和邮箱 git config --list 按回车，再按空格
+    //11. 在gitHub新建一个仓库（远程仓库） New repository -->Repository name -->Create repository
+    // 12. 把本地仓库和远程仓库进行绑定 git remote add origin 远程仓库地址
+    //13. 查看本地仓库和远程仓库的关联状态 git remote -v
+    //14. 把本地文件推送到gitHub上的仓库（远程仓库） git push origin master
+    //15. 输入gitHub的Username
+    //16. 输入gitHub的password
+    //17. 从gitHub上下载文件 git clone 远程仓库地址
+    //18. 从gitHub上拉取文件 git pull origin master
+
+    //1.1  webstorm: 代码编辑器  (IDE)
+    // 浏览器：代码解析器
+    // git: 是一个工具，用于团队协作开发、项目管理代码的工具；
+
+    //1.2  切换磁盘路径：E:
+    // cd 文件夹名字 ： 打开相应的路径
+    // cd  ../ : 回到上一级
+    // cd /  :回到根路径；
+    // mkdir +文件夹名字：   创建文件夹
+    // clear: 清除所有的命令
+
+    //1.3 git(代码的协作工具)的一些操作
+    //1）初始化一个本地仓库         git init
+    //2）把本地文件提交到暂存区      git add .:
+    //3）把暂存区文件提交到历史区    git commit -m"注释":
+    //4）把本地仓库和远程仓库进行关联 git remote add 仓库名 地址
+    //5) 把代码推送到主干上   git push 仓库名 master
+    //6) 下载远程仓库的代码   git clone 远程仓库地址
+    //7) 拉取主干上的代码     git pull 仓库名 master
+    //8) 查看本地和远程的连接  git remote -v
+    //9) 查看本地的基础配置    git config --list:
+    //10)查看文件状态         git status
+
+    //1.4 如果你第一次操作git，你还需本机进行git配置
+    // git config --global user.name " 本机记录git用户名
+    // git config --global user.email " 本机记录git邮箱
+    // git config --list 查看你的git存储的用户名和邮箱
+    // git config --help
+
+
+
+</script>
+</body>
+</html>

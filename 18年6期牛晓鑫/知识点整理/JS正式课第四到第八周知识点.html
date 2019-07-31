@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+//1.单线程与多线程(4个)
+//1) 单线程：一次只能执行一个任务，不能同时执行多个任务
+//2) 多线程：一次可以同时执行多个任务
+//3) JS是单线程的
+//4) 浏览器是多线程的
+
+//2. 同步编程(sync:synchronize) (1个)
+//1）浏览器把当前任务执行完毕，才能继续执行下一个任务
+
+//3. 异步编程(async) (1个)
+//1) 浏览器在当前任务没有执行完时，可以继续执行下一个任务；
+
+//4. 异步编程有(2个)
+//1) 微任务(2个)
+//1.1) Promise实例的then方法
+//1.2) async函数的await下面的任务
+//1.2.1)async函数默认返回一个promise的实例，因此返回值可以调用then方法
+//2) 宏任务(4)
+//2.1) 定时器(setTimeout/setInterval)
+//2.2) 所有的事件绑定
+//2.3) ajax中的异步编程
+//2.4) 回调函数(牵强)(不会放到等待任务队列中去)
+
+//5. 同步异步编程的核心原理(4个)
+//1)浏览器会把所有的任务分为两个任务队列：主任务队列(所有同步代码)和等待任务队列(所有异步代码)
+//2)只有当主任务队列中的所有任务运行完成之后，才会去执行等待任务队列中的任务
+//3)主任务队列运行完成之后，到等待任务队列中，找出已经到达时间的任务(哪一个先到，先找哪一个，同时到的，按照创建的顺序来)，拿到主任务队列中执行，当前任务完成后，再到等待任务队列中去找其它的任务
+//4)在异步的任务队列中分为微任务和宏任务；当同步的任务执行完毕，先去等待的任务队列中把所有的微任务找出来，挨个执行；当微任务执行完毕，再把所有的宏任务执行；
+
+//6. 匀速运动的公式(2个)
+//1) 目的 : 计算当前最新的位置
+//2) 公式 :
+/*function linear(t,b,c,d) {
+    // t: 最新的时间(走过的时间)    time
+    // b: 初始的位置              begin
+    // c: 变化的总距离            change
+    // d: 运动的总时间            duration
+    return t/d*c+b
+}*/
+
+//7. 可枚举属性与不可枚举属性(2个)
+//1)可枚举属性：对象的私有属性和对象所属类的原型上自定义的属性(给原型新增的属性)都是可枚举属性；for in循环会遍历出所有的可枚举属性;
+//2)不可枚举属性：对象所属类的原型上内置的属性都是不可枚举属性; for in不会遍历出来
+/*function Fn() {
+    this.a=2;
+    this.b=3;
+}
+var obj=new Fn;
+Fn.prototype.gn=function () {
+    console.log(2);
+}
+for (var key in obj){
+    console.log(key);   //a  b  gn
+}*/
+
+//8) for循环的作用域(1个)
+//1)在for循环时，首先会形成一个父作用域，循环每执行一次，都会形成一个子作用域，子作用域存储了变量，不受外界干扰，变量之间互不影响
+/*for(let a=0;a<5;a++){
+    // let a : 不是全局的；
+    // 第一个子作用域a=0；
+    // 第二个子作用域a=1;
+    // 第n个子作用域....
+    oLis[a].onclick = function () {
+        console.log(a);
+    }
+}
+console.log(a);*/
+
+//9. 块级作用域 (6个)
+//1) {}会形成块级作用域(对象除外)
+//2) 形成块级作用域的有：for;  for in;  while;  if  else;   try  catch....
+//3) 在块级作用域，函数只声明，不定义，外界可以调用
+//4) 一进到块级作用域，首先对块级作用域中的函数进行赋值；
+//5) 在块级作用域，带var的变量外界可以调用
+//6) 在块级作用域，带let的变量外界不能调用
+/*console.log(gn);  //==>  undefined
+if (true){
+    let a=15;
+    var b=10;
+    function gn() {
+        console.log(1);
+    }
+}
+console.log(b);   //10
+console.log(gn);  //  f gn(){console.log(1)}
+console.log(a);  // a is not defined*/
+
+//10. 解构赋值 (4个)
+//1) 如果变量没有对应的解构值，该变量默认解构出undefined
+/*let [x,y,z]=[1,2];
+    console.log(x);   //1
+    console.log(y);   //2
+    console.log(z);   //undefined*/
+//2) 要求等号两边的结构要保持一致
+/*  let [a,[b],[c]]=[1,[2],[3]]
+  console.log(a);   //1
+  console.log(b);   //2
+  console.log(c);   //3*/
+//3) 如果等号右边的值不是一个可遍历的值，就会报错
+/*let [f] = 1;
+console.log(f);*/     //TypeError: 1 is not iterable
+//4) 变量可以赋初始值，如果等号右边有对应的值，那么会将初始值覆盖
+/* let[foo=true]=[];
+  console.log(foo); */ //true
+// let[goo=true]=[1,2];
+// console.log(goo);   //1
+
+//11. 数组的解构赋值 (1个)
+//1) 数组按照顺序进行解构
+/*let [x,y,z]=[1,2];
+    console.log(x);   //1
+    console.log(y);   //2
+    console.log(z);   //undefined*/
+
+//12. 对象的解构赋值 (2个)
+//1) 对象按照属性名进行解构
+/* let {a,b,c}={a:1,b:2,c:3};
+   console.log(a);  //1
+   console.log(b);  //2
+   console.log(c);  //3*/
+//2) 如果对象的属性名和属性值重名，可以只写一个
+ /* var name="zf";
+   var obj={name:name};
+   var obj1={name}
+   console.log(obj);    //{name:"zf"}
+   console.log(obj1);*/   //{name:"zf"}
+
+//13. 字符串的解构赋值 (2个)
+//1) 字符串会按照数组的形式进行解构
+/* let [a,b,c,d,e]="hello";
+    console.log(a);      //"h"
+    console.log(b);      //"e"
+    console.log(c);      //"l"
+    console.log(d);      //"l"
+    console.log(e);     // "0"
+//2) 解构出字符串的长度  let {length}="hello"   console.log(length);  //5
+
+//14. 函数的扩展 (2个)
+//1) 在es6之后，函数形参可以赋初始值，如果有对应的实参，实参会将其初始值覆盖
+/*function fn(x=100,y) {console.log(x)}    fn()  //==>100
+function fn(x=100,y) {console.log(x)}   fn(1,2)   //==>1
+function fn([x,y]){console.log(x);console.log(y)};  fn([1,2])  //==>1,2
+function fn({x,y}) {console.log(x); console.log(y);}   fn({x:1,y:2})*/  //==>1,2
+//2) 形参和实参都可以用剩余运算符、扩展运算符和展开运算符来传递和接收参数
+/*function fn(...ary) {console.log(ary)}    fn(1,3,6)  //==>[1,3,6]
+function gn(a) {console.log(a);}     gn(...[1,2]) */   //==>1
+
+//15. 箭头函数 (4个)
+//1) 把function关键字去掉，在小括号和大括号之间加了箭头符号=>
+/*let fn1 =()=>{console.log(100);}
+fn1();
+//2) 如果只有一个形参，可以省略函数定义时的小括号。如果没有或者大于1个形参，则不能省略函数定义时的小括号
+// let fn3 = a =>{console.log(a);}
+// fn3(2);
+//3) 如果函数体中只有一条语句，可以省略大括号
+let fn4=(a,b)=> console.log(a);
+    fn4(1);  */
+//4) 如果函数体中只有return语句，可以省略return; 但如果是return出一个对象，省略了return，还要在对象外加一个小括号
+// let fn6=(a,b)=> a;
+// console.log(fn6(100));      //100
+// let fn8=(a,b)=>({a:1,b:2});
+// console.log(fn8());       //{a:1,b:2}
+
+//16. 普通函数和箭头函数的区别 (4个)
+//1)箭头函数自身没有this，箭头函数中出现的this会指向箭头函数定义时所在的作用域中的this指向
+//2)箭头函数不可以作为构造函数，不能被new
+//3)箭头函数没有arguments
+//4)箭头函数不能作为Generator函数，不能使用yield命令
+/*let obj = {
+    fn:function f() {
+        console.log(this);// obj
+        box.onclick =()=>{
+            console.log(this);// obj
+        }
+    }
+}
+obj.fn();*/
+/*let ary = [1,3,4];
+ary.map(()=>{
+    // 箭头函数执行时，外层作用域是map执行形成的私有作用域，map作用域中的this指向ary; 但是箭头函数中的this，跟箭头函数在哪执行没有关系，只跟在哪定义有关；
+    console.log(this);// window   window   window
+})*/
+
+//17. 数组的扩展 (3个)
+//1) 扩展运算符
+//1.1) 展开、合并数组、对象
+//1.2) 将类数组转成数组
+//let ary=[1,2,3];  console.log(...ary);  //==>  1   2   3
+//let a=[1,4];  let b=[3,50];   let newAry=[...a,...b];  console.log(newAry); //==> [1, 4, 3, 50]
+//let obj1={a:1,b:2}; let obj2={c:3}; let obj3={...obj1,...obj2};  console.log(obj3); ==>{a: 1, b: 2, c: 3}
+//function fn() {let a=[...arguments] ;console.log(a);}  fn(1,2,3);  //  a==> [1, 2, 3]
+//2) Array.from()
+//2.1) 将类数组转换成数组
+//2.2) from方法在Array的私有属性上
+//function fn() { let a=Array.from(arguments); console.log(a);}   fn(1,2) //a==>[1, 2]
+//3) Array.of()
+//3.1) 将一组数转换成一个数组
+//3.2) Of方法在Array的私有属性上
+//console.log(Array.of(1, 3, "a"));   //==>  [1, 3, "a"]
+
+//18 class (2种)
+//1)ES6之前创建类的方法(4个)
+/*function Person(name,age) {
+    //(1) 类new执行的时候，类中的this指向当前类的实例，this.xx=xxx是给类的实例增加私有属性和方法
+    this.name = name;
+    this.age = age;
+}
+//(2)给类的原型设置的属性和方法，是给类的实例增加公有属性和方法
+Person.prototype={
+    constructor:Person,  //(3)类的原型重新指向后，需要重新设置constructor指向当前类，保证机制的完整性
+    say:function () {
+        console.log(`my name is ${this.name},i am ${this.age} years old`);
+    }
+}
+//(4)把类当做普通对象，给类增加私有属性和方法，类的实例不能调用
+Person.study = function () {
+    console.log(`good good study, day day up`);
+}
+var p1 = new Person("小黄人",80);
+console.log(p1); */  //{name:"小黄人",age:80};
+
+//2)ES6中创建类的方法(7个)
+//(1)使用class创建的类，不存在变量提升
+//console.log(Person); //ReferenceError: Person is not defined
+//(2)使用class创建的类，不能当做普通函数执行，必须带有new运行
+//(3)用class创建的类默认把construcotr的问题解决了，此时原型上的constructor指向当前类;
+/*class Person{
+    constructor(name="zhufeng",age=9){
+        //(4) 类new执行的时候，类中的this指向当前类的实例，this.xx=xxx是在给类的实例增加私有属性和方法
+        //(5)如果要给类传递参数，是用constructor来接收
+        this.name=name;
+        this.age=age;
+    }//(6)直接在大括号中写的属性和方法都设置在类的原型上，是给类的实例增加公有属性和方法
+    say(){
+        console.log(`my name is ${this.name},i am ${this.age} years old`);
+    }
+    //(7)把类当做普通对象设置私有属性和方法，只需要在设置的属性和方法前面加static即可
+    static study(){
+        console.log(`good good study, day day up`);
+    }
+}
+let p1 = new Person("小黄人");
+p1.say();   //my name is 小黄人,i am 9 years old
+
+
+console.log(Person.prototype.constructor === Person); */ //true
+//Person();   //TypeError: Class constructor Person cannot be invoked without 'new'
+
+//19. ES6中类的继承extends(4个)
+/*class B{
+    constructor(...ary){
+        let [x=0,y=0]=ary;
+        this.x=x;
+        this.y=y;
+    }
+    sum(){
+        return this.x+this.y;
+    }
+    static gn(){
+
+    }
+}
+class A extends B{
+    //1)创建A类，并且让A类继承B类:
+    //2)把B类给实例的私有属性和方法继承过来给A类的实例，作为A类的实例的私有属性和方法
+    //3)A类实例的__proto__指向A类的prototype, A类的prototype的__proto__指向B类的prototype
+    constructor(...ary){
+        //可以不写constructor,浏览器默认会创建它，而且默认把父类给实例的私有属性继承过来，而且把传给子类的参数值也传递给父类
+        //写了constructor，this指向当前类的实例，this.xx=xxx是给类的实例增加私有属性
+        super(...ary);  //4)super()必须是constructor里面的第一行，super()里的参数是传递给被继承类；相当于B.prototype.constructor.call(this)
+        let [,,z]=ary;
+        this.z=z;
+    }
+    //直接在大括号中写的属性和方法都设置在类的原型上，是给子类的实例增加公有的属性和方法
+     fn(){
+
+     }
+}
+let c = new Child(10,20,30);
+console.log(c); */  //{x: 10, y: 20}
+
+//20 Generator函数 (6种)
+//1) Generator函数是ES6提供的解决异步编程的一种方案
+//2) Generator函数有两个特征。一是function关键字与函数名之间有一个星号，写在function的后面；二是函数体内部使用yield表达式，定义不同的内部状态
+//3)调用Generator函数后，该函数并不执行，而是返回一个遍历器对象，代表Generator函数的内部指针。
+//4)每次调用遍历器对象的next方法，内部指针就从函数头部或上一次停下来的地方继续执行，直到遇到下一个yield表达式或return语句为止。
+//5)每次调用遍历器对象的next方法，都会返回一个有着value和done两个属性的对象，value属性值是yield表达式后面的值，表示当前内部状态的值；done属性值是一个布尔值，表示遍历是否结束，当yield表达式都遍历完后，表示遍历结束。
+//6)Generator函数是分段执行的，yield表达式是暂停执行的标记，而遍历器对象的next方法可以恢复函数执行。
+/*function* helloWorldGenerator() {
+    let a = 10;
+    yield a;
+    yield 'world';
+    return 'ending';
+}
+var hw = helloWorldGenerator();
+console.log(hw);       //  helloWorldGenerator {<suspended>}
+console.log(hw.next());// {value: 10, done: false}
+console.log(hw.next());// {value: "world", done: false}
+console.log(hw.next());// {value: "ending", done: true}
+console.log(hw.next()); *///{value: undefined, done: true}
+
+//21. Promise (9个)
+//1)es6新增的一个类，是解决异步编程的一种方案，解决异步的回调地狱
+//2)Promise有三个状态: pending(进行时),fulfilled(成功态),rejected(失败态);
+//3)Promise的状态改变只有两种可能，从pending到fulfilled或从pending到rejected，而且当前Promise状态一旦发生改变，那当前Promise的状态就会凝固，不会再改变。
+//4)Promise是一个类，new Promise执行会创建出一个Promise的实例，需要传一个回调函数给Promise，并且回调函数需要接收两个参数resolve和reject
+//5)then方法是Promise原型上的方法，因此Promise的实例可以调用，调用时需要传两个参数，第一个必须要有；第二个可有可无
+//6)Promise本身是同步的，Promise传进的回调函数会立即执行；但Promise实例的then方法是异步的，如果异步成功，执行resolve方法和then方法的第一个参数，如果异步失败，执行reject方法和then方法的第二个参数;
+//7)then方法执行后默认返回一个Promise实例，默认返回成功的状态，因此可以链式调用then方法
+//8)链式调用then方法时，如果then方法中没有返回值，或者返回的不是一个promise的实例，那么下一个then中会根据第一个异步操作成功与否，执行相应的参数;在then的成功的回调中，如果then的第一个参数返回一个promise的实例，那么下一个then中会根据上一个then的返回的promise中异步操作成功与否，执行相应的参数。
+//9)一般情况下，then方法只放一个成功的回调函数，会把失败的回调函数放在catch方法中
+/*let p = new Promise(function (resolve, reject) {
+    console.log(100);
+    if (Math.random()<0.6) {
+        resolve();
+    }else {
+        reject();
+    }
+    /!*setTimeout(function () {
+        console.log(99);
+        if (Math.random()<0.6) {
+            resolve();
+        }else {
+            reject();
+        }
+    },2000)*!/
+});
+console.log(101);
+p.then(function () {
+    console.log(102);
+},function () {
+    console.log(103);
+})
+console.log(104);*/
+/*function getDate(url) {
+    let promise = new Promise(function (resolve, reject) {
+        let xhr= new XMLHttpRequest();
+        xhr.open("get",url,false);
+        xhr.onreadystatechange=function () {
+            if (xhr.readyState ===4 && xhr.status===200){
+                resolve(xhr.responseText);
+            } else {
+                reject(xhr.statusText)
+            }
+        }
+    })
+    return promise;
+}
+getDate("data.json").then(function (data) {
+    console.log(data);
+},function (data) {
+    console.log(data);
+})*/
+/*function getDate(url) {
+    let promise = new Promise(function (resolve, reject) {
+        let xhr= new XMLHttpRequest();
+        xhr.open("get",url,true);
+        xhr.onreadystatechange=function () {
+            // 2  3   4
+            if (xhr.readyState !==4) {
+                return;
+            }
+            if (xhr.status===200){
+                resolve(xhr.responseText);
+            } else {
+                reject(xhr.statusText);
+            }
+        }
+    })
+    return promise;
+}
+getDate("data.json").then(function (data) {
+    console.log(data);
+},function (data) {
+    console.log(data);
+})*/
+
+//22. Proxy (4种)
+//1)在目标对象之前架设一层“拦截”，外界对目标对象的访问，都必须先通过这层拦截，因此提供了一种机制，可以对外界的访问进行过滤和改写
+//2)Proxy是一个类，new Proxy需要传两个参数，第一个参数是目标对象，第二个参数是一个对象，里面有属性名分别是get和set的两个键值对
+//3)当获取目标对象的属性名对应的属性值时，会触发get对应的函数执行
+//4)当设置(修改或新增)目标对象的属性时，会触发set对应的函数执行
+/*let obj= new Proxy({a:1,b:"you are beautiful"},{
+    //两个键值对；一个是get, 一个是set，名字不能更改
+    get:function () {
+        //当获取对象属性名对应的属性值，会触发这个get对应的函数执行，
+        console.log("你很帅");
+        return 100;
+    },
+    set:function () {
+        //当设置(修改或新增)对象的属性时，会触发这个set对应的函数执行；
+        console.log("我很帅")
+    }
+})
+console.log(obj);        //{a: 1, b: "you are beautiful"}
+console.log(obj.a);     //"你很帅"  100
+console.log(obj.a++);*/  // "你很帅"  "我很帅"  100
+
+//23. 事件 (2种)
+//1)事件是元素天生自带的一种行为，不是后期新增的，当我们去操作元素的时候会触发元素的很多事件，让事件绑定的方法执行
+//2)当元素的事件行为没有绑定方法时，元素的事件行为的属性值默认都是null
+/*let oBox=document.getElementById("box");
+console.log(oBox.onclick);*/  //-->null
+
+//24. 事件绑定 (1种)
+//1) 给元素的某一个事件绑定方法，是为了让元素某个事件被触发的时候，可以做一些事情
+
+//25. 表单元素input常用的事件行为(4个)
+//1)onblur;  失去鼠标焦点
+//2)onfocus;  获取鼠标焦点
+//3)onchange; 内容改变并且失去鼠标焦点，才会触发
+//4)oninput;  value值发生改变时触发
+
+//26. 键盘的常用事件行为(2个)
+//1) onkeydown; 键盘按下，获取input的value是按下之前的value值
+//2) onkeyup; 键盘抬起，获取input的value是抬起后的value值
+
+//27. 鼠标的常用事件行为(10个)
+//1) onclick: 点击(不是单击)
+//2) ondblclick: 双击(300MS内连续触发两次点击事件，这样为双击事件)
+//3) onmouseover: 鼠标划上
+//4) onmouseout: 鼠标离开
+//5) onmouseenter: 鼠标进入，不会冒泡传播
+//6) onmouseleave: 鼠标离开，不会冒泡传播
+//7) onmousemove: 鼠标移动，事件对应的方法是每隔一段时间执行一次；事件方法的执行次数跟时间有关，跟盒子移动的距离没有关系
+//8) onmousedown: 鼠标按下
+//9) onmouseup:   鼠标抬起
+//10)onmousewheel: 鼠标滚轮滚动
+
+//28. 其他常用的事件行为 (8个)
+//1) onload;  加载成功
+//2) window.onload; 当页面元素都加载完毕，触发这个事件
+//3) onscroll; 滚轮滚动
+//4) onresize; 大小改变
+//5) window.onresize; 当浏览器窗口的大小发生改变，触发这个事件
+//6) canplay; 音视频播放时触发
+//7) webkitTransitionEnd: 当动画结束时，会触发这个事件
+//8) 元素.focus(); 让元素自动获取鼠标焦点
+
+//29. 移动端的常用事件行为(4个)
+//1) 移动端单手指模型：touchstart, touchmove, touchend, touchcancel(非常规操作触发的事件；比如手机没电了)
+//2) 移动端多手指模型: gesturestart, gesturechange, gestureend
+//3) 在touchstart,touchmove的事件对象中，把事件触摸的距离信息存储到e的touches属性名为0的属性值中
+//4) 在touchend的事件对象中，把事件触摸的距离信息存储到e的changedTouches属性名为0的属性值中
+
+//30. DOM0级事件绑定(4个)
+//1)给同一个元素的同一个事件，只能绑定一个方法；如果绑定多个，那么后面绑定的方法会把前面绑定的方法覆盖掉；前面绑定的方法不会执行；
+//2) 元素.type(带on)=方法
+//3) 不能控制方法是哪个阶段执行的；默认是冒泡阶段执行
+//4) 解除0级事件绑定：元素.type(带on)=null;
+/*oBox.onclick=function () {console.log(1);}
+oBox.onclick=function () {console.log(2);}  //点击盒子只会输出2，不会输出1
+oBox.onclick=null;*/
+
+//31. DOM2级事件绑定(3个)
+//1)可以给同一个元素的同一个事件绑定多个方法
+//2)元素.addEventLister("type",fn,true/false);
+//2.1) type: 去掉on的事件类型
+//2.2) fn: 要绑定的方法
+//2.3) true/false: 可以控制该方法是在哪个阶段执行; false：让绑定的方法在冒泡阶段执行； true: 让绑定的方法在捕获阶段执行； 不写默认是false
+//2.4) 方法中的this指向被绑定的那个元素
+//2.5) IE8及以下不兼容
+//2.6) 重复给同个元素的同一个事件绑定同个方法只会执行一次
+//2.7) 移除事件绑定的方法：元素.removeEventListener("type",fn,true/false)，三个参数必须与事件绑定时完全相同
+//oBox.addEventListener("click", function () {console.log(3)},false);
+//oBox.addEventListener("click", function () {console.log(4)},false);
+//oBox.removeEventListener("click", function () {console.log(4)},false);
+//3)元素.attachEvent("type",gn)
+//3.1) type: 带on的事件类型
+//3.2) gn: 要绑定的方法
+//3.3) 没有第三个参数，不能控制是哪个阶段执行的，默认是冒泡阶段执行
+//3.4) 方法中的this指向window
+//3.5) 谷歌浏览器没有这个属性
+//3.6) 重复给同一元素的同一个事件绑定同个方法，绑定几次，就执行几次
+//3.7) 移除事件绑定的方法：元素.detachEvent("type",gn)，两个参数必须与事件绑定时完全相同
+//  oBox.attachEvent('onclick',function () {console.log(1)});
+//  oBox.attachEvent('onclick',function () {console.log(2)});
+//  oBox.detachEvent('onclick',function () {console.log(2)});
+
+//32. addEventListener 和 attachEvent (3个)
+//1) 顺序问题：addEventListener先绑定谁，就先执行谁；attachEvent后绑定谁，就先执行谁
+//2) this问题：addEventListener绑定的方法中的this指向被绑定的元素，attachEvent绑定的方法中的this指向window
+//3) 重复绑定： addEventListener重复给一个元素的同一个事件行为绑定相同的方法，只执行一次；attachEvent重复给一个元素的同一个事件行为绑定相同的方法，绑定几次，就执行几次
+
+//33. 事件对象(5个)
+//1) 当元素的事件行为被触发，浏览器会默认把当前事件的事件信息传递给事件绑定的方法；事件信息包含了关于这次事件行为的基本信息，这个事件信息就是事件对象
+//2) 事件对象是个对象数据类型
+//3) 事件对象e，在IE8及以下不兼容
+//4) 在IE8及以下，浏览器会把当前事件的事件信息放到window的event属性上
+//5) 事件对象的兼容性写法： e = e || window.event
+
+//34. 一些事件信息(16个)
+//1) e.target; 事件源(当前触发的元素)，跟绑定的元素没有直接的关系，在IE8及以下不兼容
+//2) e.target的兼容性写法: e.target= e.target || e.srcElement
+//3) e.type;  事件类型(不带on)
+//4) e.clientX; 当前位置距离浏览器可视窗口左边框的距离
+//5) e.clientY; 当前位置距离浏览器可视窗口上边框的距离
+//6) e.offsetX; 当前位置距离事件源左边框的距离
+//7) e.offsetY; 当前位置距离事件源上边框的距离
+//8) e.pageX; 当前位置距离body左边框的距离，在IE8及以下不兼容
+//9) e.pageX的兼容性写法：e.pageX = e.pageX || e.clientX + document.documentElement.scrollLeft || document.body.scrollLeft
+//10)e.pageY; 当前位置距离body上边框的距离，在IE8及以下不兼容
+//11)e.pageY的兼容性写法：e.pageY = e.pageY || e.clientY + document.documentElement.scrollTop || document.body.scrollTop
+//12)e.keyCode: 键盘的每一个键都有对应的一个keyCode值; 左：37；上：38； 右：39； 下：40； 回车键：13；
+//13)e.preventDefault();阻止事件的默认行为，在IE8及以下不兼容
+//14)e.preventDefault()的兼容性写法： e.preventDefault? e.preventDefault():e.returnValue=false
+//15)e.stopPropagation(); 阻止事件的冒泡传播(在哪个元素设置，就只传播到该元素为止，不会继续向上传播)，在IE8及以下不兼容
+//16)e.stopPropagation()的兼容性写法：e.stopPropagation? e.stopPropagation():e.cancelBubble=true
+
+//35. 事件的冒泡传播(2个)
+//1) 当触发某个元素的事件行为时,会依次向上触发当前元素的祖先元素相应的事件行为，一直触发到window为止；这种事件传播的机制就是“冒泡传播”;
+//2)  body的冒泡传播过程：body-->html-->document-->window
+
+//36. 事件传播(4个)
+//1) 事件传播分为三个阶段：捕获阶段--> 目标阶段-->冒泡阶段
+//2) 捕获阶段：从外向里，依次触发当前元素的祖先元素身上给捕获阶段绑定的方法；
+//3) 目标阶段：先绑定谁，就先执行谁；true和false对于目标阶段的元素没有意义;
+//4) 冒泡阶段：从里向外，依次触发当前元素的祖先元素身上给冒泡阶段绑定的方法；
+
+//37. 事件委托(1个)
+//1)把方法绑定给最外层元素的事件，当触发子孙元素的事件行为时，由于冒泡传播的特点，也会触发最外层元素相应的事件行为，然后根据事件源的不同，执行不同的操作即可；
+
+//38. setCapture(3个)
+//1)在IE和火狐下，浏览器给元素提供方法setCapture；这个方法执行，会让盒子和鼠标绑定在一起，不管鼠标滑动多快，盒子都会跟着鼠标运动；
+//2)解除这个属性的方法releaseCapture()
+//3)谷歌浏览器没有这个属性
+
+//39. 可以发送请求的方法有(4个)
+//1) ajax的实例
+//2) src;  img/script/audio/video
+//3) form表单;  <form action=""></form>
+//4) 浏览器
+/*<form action="https://www.baidu.com/">
+    <!--action: 路径-->
+    <input type="text" username="">
+    <input type="text" password="">
+    <input type="submit" id="submit">
+    </form>*/
+
+//40. 发布订阅：观察者模式(3个)
+//1)订阅：把任务绑定给订阅主体
+//2)发布：让订阅的任务执行
+//3)先订阅方法，再发布方法
+// 订阅方法
+/*
+* curEle : 订阅主体；元素
+* type: 类型
+* fn : 观察者；
+ *  */
+/*function on(curEle,type,fn) {
+    // 初始化一个数组，存放的是观察者；
+    if(!curEle[type]){
+        // 当第一次进来，初始化一个空数组；
+        curEle[type] = [];
+    }
+    let  ary = curEle[type];
+    for(let i=0;i<ary.length;i++){
+        // 如果fn出现过，直接停止这次订阅；
+        if(fn===ary[i]){
+            return;
+        }
+    }
+    ary.push(fn);
+}
+// 发布；让观察者执行
+function selfrun(type) {
+    // this---> 订阅主体；
+    let  a = this[type];
+    for(let i=0;i<a.length;i++){
+        if(typeof a[i]==="function"){
+            a[i].call(this);
+        }
+    }
+}
+// 取消订阅；把在数组中存储的方法移除掉；
+function off(curEle,type,fn) {
+    let ary = curEle[type];
+    for(let i=0;i<ary.length;i++){
+        if(fn === ary[i]){
+            //ary.splice(i,1); 数组塌陷
+            ary[i] = null;
+        }
+    }
+}   */
+
+//41. 严格模式和非严格模式区别(5个)
+//1)非严格模式下，如果函数没有明确的执行主体，函数中的this指向window；严格模式下，如果函数没有明确的执行主体，函数中的this指向undefined;
+//2)在非严格模式下，call/apply/bind传null，undefined，或者不传，this都是指向window; 严格模式下，call/apply/bind传null，this指向null；传undefined，this指向undefined；不传，this指向undefined
+//3)非严格模式下，arguments与形参存在映射机制；严格模式下，arguments和形参不存在映射机制
+//4)严格模式下，对只读属性赋值会报错
+//5)严格模式下，不能识别0开头的八进制数字
+
+//42. less(7个)
+//1)less叫做预编译css，写好的less代码浏览器是不能渲染的，需要把它编译成为能渲染的css才可以
+//2)less中设置变量使用@变量名:变量值(传统css支持的值都可以作为变量值)，并且变量存在提升的机制，不仅提升，还会赋值；
+//3)less中变量一般用于存储公用的属性值、公有的URL等
+//4)不是所有的情况下都要使用变量，只有很多样式都是使用相同的值，而且改变的话，所有元素的样式都要跟着改变，此时才用变量存储起来
+//5)less中支持数学运算
+//6)在less中只要设置了一个样式类，就可以把它称之为一个方法，其它地方需要用到这些样式时，直接".类名"调用即可(原理：把当前样式类中的代码原封不动的copy一份过去)。不加括号即是普通样式类，也是封装的一个函数，编译的时候，这个样式类中的代码依然跟着编译；加括号就仅仅是封装的函数，编译的时候是不编译函数的, .xxx(@xx:xxx,@yy:yyy){@arguments}
+//7)unit是less提供的方法：unit(value,'px'),给value值设置单位(如果之前已经有单位了，此处是把原有单位去掉)
+
+//43. 开发环境与生产环境(2个)
+//1) 开发环境：在本地开发中的环境
+//2) 生产环境：本地开发完成了，需要把代码上传到服务器上，服务器上的环境叫做生产环境
+
+//44. 本地存储(5个)
+//1) 每个页面都会产生一个单独的作用域，页面之间是不可以互通访问变量的
+//2) 每个页面又都是在浏览器中打开的；如果可以把值存储到浏览器中，让浏览器作为中介，那么另一个页面就可以进行访问
+//3) localStorage: 永久性存储;  有三个属性，分别是setItem(设置键值对)，getItem(获取键值对)，removeItem(移除键值对)
+//4) sessionSorage: 会话级别存储；不能在另一个页面中访问变量; 有三个属性，分别是setItem(设置键值对)，getItem(获取键值对)，removeItem(移除键值对)
+//5) 如果获取不到属性值，获取的结果是null
+
+//45. 发布网站的过程(6个)
+//1)项目：前端后端开发的项目代码
+//2)域名：需要在万网(被阿里云收购)上购买域名; 每个域名像身份证号一样，不会重复; 域名解析和备案。
+//3)服务器：每一台服务器都有一个唯一的IP地址，永不重复；会把项目部署到服务器上
+//4)DNS解析：让当前域名和服务器的IP地址进行绑定
+//5)ftp上传工具：可以把项目上传到服务器特定的端口下;
+//6)端口：一台服务器有很多个端口；服务器是一个大的内存；在服务器中分布着65535个小房间(端口)，一个服务器最多承载65535个项目，即一台服务器最多有65535个端口，所以端口号的范围是0-65535；一个端口下，一般情况下只能配置一个项目，如果有两个项目，会出现端口号的占用；一个端口只能监听一个项目
+
+//46. http协议(5个)
+//1)http:一种超文本传输协议；
+//2)超文本: 不仅可以传送文本，还可以传送图片，音频，视频;
+//3)传输：在客户端和服务器之间传输内容；可以把客户端的数据发送给服务器；也可以把服务器的内容发送给客户端
+//4)协议：是客户端和服务器之间的一种约定；比如html和css从后端返回的是源码，其他文件返回的就是对应的文件
+//5)https: 一种加密的传输协议；更安全，在协议上加了一层密码，不容易被黑客攻击，像银行，支付页面，政府机构等一般使用这类协议；
+
+//47. 当在浏览器中输入url，向服务器发送请求，浏览器都做了些什么？(3个)
+//1)[http 请求阶段]
+//1.1)浏览器首先会把url发送给DNS服务器；解析出一个服务器的IP地址
+//1.2)DNS服务器会根据IP找到对应的服务器(服务器需要联网)
+//1.3)服务器接收到请求；客户端和服务器已经产生了连接
+//2)[http 响应阶段]
+//2.1)服务器接收到请求后，会根据你的传过来的地址，路径，找到相应的项目
+//2.2)在服务器找到之后，服务器立即把一些响应信息放在响应头中，通过http发送给客户端；同时，进行数据的整理
+//2.3)把整理出来的数据，通过http发送给客户端；直到客户端数据接收完毕
+//3)[浏览器 渲染阶段]
+//3.1)浏览器拿到从服务器传输过来的数据文件
+//3.2)首先会遍历html，形成DOM树
+//3.3)代码从上到下解析，形成css树
+//3.4)DOM树和css树，重新组合成render树
+//3.5)浏览器进行描绘和渲染
+
+//48. http事物(1个)
+//1)从浏览器发送请求开始，并通过http把数据传输给服务器，服务器通过http把数据返回给客户端，这样一个闭合的过程称为一个http事物
+
+//49. http的三次握手(5个)
+//1)浏览器在给服务器传输数据之前，有三次握手，握手成功之后，才可以传输数据
+//2)第一次握手：客户端发送SYN码给服务器，客户端请求和服务器建立连接
+//3)第二次握手：服务器接收到SYN码，会发送ACK码给客户端，可以建立连接
+//4)第三次握手：客户端接收到ACK码，验证这个ACK码是否正确，如果正确，则再次发送ACK码，客户端和服务器就建立起数据连接；双方的数据发送通道都将开启
+//5)客户端和服务器发送数据是双向的；客户端给服务器传递的是路径，参数，随机数；服务器给客户端传输自己的资源、文件、数据等等
+
+//50. http的四次挥手(4个)
+//1)当客户端把数据都发送给服务器，没有数据再传输给服务器，那么会发送一个FIN码，告诉服务器，数据发送完毕
+//2)当服务器接收客户端的数据完毕之后，给客户端发送AC码，告诉给客户端，可以把数据通道关闭
+//3)当服务器发送数据完毕之后，也会发送FIN码，告诉浏览器，数据发送完毕
+//4)当客户端接收完毕之后，同样发送ACK码，告诉服务器，数据接收完毕，可以把数据通道关闭
+
+//51. http的三次握手和四次挥手的优点(2个)
+//1).确保数据的安全性
+//2).确保数据的完整性
+
+//52. 响应头(1个)
+//1)响应头：服务器会告诉浏览器数据的长度；浏览器接收的数据长度和响应头数据长度相同，说明数据已经接收完毕
+
+//53. url、uri与urn的区别
+//1)URI: 统一资源标识符
+//2)URL: 统一资源定位符
+//3)URN: 统一资源名称
+//4)URI=URL+URN
+
+//54. 由什么组成(6个)： http://image.baidu.com/search/index?tn=baiduimage&ps=1&ct=201326592&lm=-1&cl=2&nc=1&ie=utf-8&word=http%E6%98%AF%E4%BB%80%E4%B9%88
+//1) 传输协议http/https； 如果是http协议，网站可以进行省略http；
+//2) 域名： image.baidu.com
+//3) 端口号： 0--65535
+//4) 路径 ： 服务器的资源文件的路径；
+//5) 参数：可有可无，放在问号的后面，?key=value&key1=value1
+//6) 问号后面常跟着一个随机的数字； 为了防止浏览器的缓存，不同的随机数，会重新进行请求；
+
+//55. ajax(async javascript and xml)请求的过程(7个)
+//1)创建一个ajax的实例xhr;  let xhr = new XMLHttpRequest();
+//2)通过XMLHttpRequest原型上的open方法，打开一个路径;  xhr.open("请求方式","url",true/false);
+//3)给xhr的onreadystatechange事件绑定一个方法，监听当前ajax进行到哪一步，当xhr的readyState发生改变时，会触发绑定的方法;  xhr.onreadystatechange=function(){if (xhr.readyState ===4 && /^2\d{2}/.test(xhr.status)){}}
+//4)为了拿到确定的数据，不仅要通过xhr的readyState判断，还需要根据xhr的status来判断，客户端是否成功接收到服务端返回的数据
+//5)当请求结束，会有一个状态码产生，会放在xhr的属性上
+//6)服务端会把请求成功的属性放在xhr的responseText属性上
+//7)发送请求到服务器，xhr.send();
+
+//56. xhr.readyState值分别代表什么意思(5个)
+//1) 0: 创建了一个ajax的实例
+//2) 1: 已经执行open方法，打开路径
+//3) 2: 客户端已经接收到服务器返回的响应头信息
+//4) 3: 客户端开始接收到服务器返回的数据
+//5) 4: 客户端已经接收到服务器返回的所有数据
+
+//57. xhr.status; 状态码，代表当前请求的状态(5个)
+//1) 当创建好实例，status默认状态值是0
+//2) 当请求结束之后，会根据当前的请求状态去改变这个属性值
+//3) 常用的状态码：
+//3.1) 200: 客户端数据接收成功
+//3.2) 301: 永久重定向
+//3.3) 302: 临时转移
+//3.4) 304: 读取缓存(浏览器缓存)
+//3.5) 307: 临时重定向
+//4) 400开头基本都是客户端的问题
+//4.1) 400: 请求参数有错误
+//4.2) 401: 没有权限访问该网站
+//4.3) 404: 路径错误
+//5)500开头基本都是服务端的问题
+//5.1) 500: 服务端代码有错误
+//5.2) 503: 服务端超负荷
+
+//58. ajax的请求方式(5个)
+//1)get:一般用于获取服务器数据; {username:"1110",password:"8888"}
+//1.1)get请求，传参数需要把参数放到url问号的后面； url?username=1110&password=88888;
+//1.2)浏览器对url的长度有所限制；IE的url一般不超过2k；谷歌一般不超过8k；超出部分自动截掉
+//1.3)参数在url中存在，安全性较低；
+//1.4)get请求会走缓存；为了防止走缓存，需要在url的后面拼接一个随机数或者时间戳
+//2)post:一般用于向服务器发送数据；
+//2.1)post请求，传参数需要把参数放进请求体中，发送给服务器
+//2.2)post请求的参数放进请求体中，对数据的大小没有限制，一般工作中使用post请求居多
+//2.3)post请求的参数放在请求体中，相对于get请求更安全
+//2.4)post请求不会走缓存，会重新刷新
+//3)delete:向服务器删除数据
+//4)head:向服务器只请求数据的响应头
+//5)put:向服务器发送一些数据
+
+//59. ajax的同步异步(2个)
+//1)如果当前ajax是同步的；必须等待当前的ajax任务执行结束，前端接收到后端的数据，才会继续向下执行代码
+//2)如果当前ajax是异步的，那么不会等待任务结束，继续向下执行
+
+//60. jquery的ajax的参数(8个)
+/*$.ajax({
+    url :"aside.json",
+    type:"get",
+    dataType:"json",
+    async:true,
+    cache:true,
+    data:{
+        username :  val1,
+        password :  val2
+    },
+    success:function (val) {
+        console.log(val);
+    },
+    error:function (v) {
+        console.log(v);// 包含了错误的信息；
+    }
+})*/
+//1)url: 请求路径
+//2)type:请求方式，不写默认是get请求
+//3)dataType:返回的数据类型，默认请求回来是json格式
+//4)async: true是异步，false是同步，不写默认是异步
+//5)cache:是否走缓存；true是走缓存，false是不走缓存
+//6)data: 属性值是一个对象；里面含有了多个键值对；是客户端发送给服务器的参数；
+//7)success:当数据请求成功之后，会执行success的回调函数；并且会把从服务器请求到的数据传给这个回调函数；
+//8)error:当数据请求失败之后，会执行error的回调函数；并且把错误信息传给这个回调函数；
+
+//61. 怎么样算同源(3个)
+//1) 协议相同
+//2) 域名相同
+//3) 端口号相同
+
+//62. 同源策略和非同源策略(3个)
+//1)ajax属于同源策略，在不做任务处理情况下，只能访问自己服务器下的数据;
+//2)把一个JSON文件部署到A服务器的6000端口下，那么A服务器的6001端口的ajax请求，不能访问6000端口下的数据；
+//3)浏览器属于非同源策略，可以访问任务服务器上的数据；
+
+//63. JSONP的原理(4个)
+//1)JSONP是常见的一种跨域解决方式，实现非同源下的数据请求
+//2)利用了script标签的src属性，src的属性是非同源策略，可以访问不同服务器或端口下的数据；
+//3)给这个src的路径拼接一个callback的属性，callback=fn;当数据通过http传输给服务器；服务器会把数据放进callback传进的函数的参数里； "fn(data)"
+//4)服务器把处理的数据和函数通过http传给客户端，当客户端接收到之后，让fn进行执行；fn(data);
+/*function fn(data) {
+    console.log(data)
+};*/
+//<script src="http://matchweb.sports.qq.com/kbs/calendar?columnId=100000&callback=fn"></script>
+
+//64. for of(3个)
+//1)可以用于循环数组
+//2)for of中，val是值，val of 数组;  for in中，key是属性名(索引), key in 对象/数组/字符串
+//3)不可以循环对象
+   /* let  ary = [1,2,3];
+    for(let val  of  ary){
+        console.log(val);// 当前数组成员项；1   2   3
+    }
+    // 由于对象没有iterator接口，所以不可以循环对象；
+    let b = {a:1,b:2};
+    for(let key  of  b){
+        console.log(key);
+    }*/
+
+//65. 数组的方法(6个)
+//1)filter((item,index,ary)=>{return item>n}); 作用：过滤数组; 返回一个新数组，把符合条件的数组成员放进新数组中；根据回调函数的返回值是true或false来过滤出新的数组; 参数：回调函数； 返回值：过滤后的数组； 原有数组不变
+//1.1)item -->数组成员  index-->索引  ary--->当前数组
+//1.2)return一个表达式(值)；从左到右循环数组中的每一项，如果使得该表达式(值)为true，那么会把这一项过滤出来，放到新的数组中；如果使得该表达式(值)为false，则不会放进新数组中；如果每一项，该表达式(值)都为false，结果返回一个[]
+//1.3)filter的回调函数执行次数和数组成员的个数相同(循环所有项)
+//2)find((item,index,ary)=>{return item>n});  作用：返回找到的那一项(返回符合条件的一个数组成员项，如果没有符合条件的，返回undefined)；查找；从左到右依次进行查找；找到符合条件的第一项，并且把这一项返回;  参数：回调函数；  返回值：符合条件的一个数组成员；   原有数组不变
+//2.1)item -->数组成员  index-->索引  ary--->当前数组
+//2.2)return一个表达式(值);从左到右循环数组中的每一项，如果使得该表达式(值)为true，那么会把这一项返回，并且结束数组循环; 如果每一项，该表达式(值)都为false，结果返回undefined
+//2.3)find的回调函数执行次数和找到符合项的数组成员个数相同(找到true就停下来)；如果没有找到符合项，则回调函数执行次数和数组成员的个数相同(循环所有项)
+//3)some((item,index,ary)=>{return item>n});  作用：找true,返回布尔(返回一个布尔值；只要有一个满足条件，就会返回true，some函数中止；如果都不满足，返回false) 查找是否有符合条件的数组成员，如果有返回true；如果没有返回false; 参数：回调函数； 返回值：true/false;  原有数组不变
+//3.1)item -->数组成员  index-->索引  ary--->当前数组
+//3.2)return一个表达式(值);从左到右循环数组中的每一项，如果使得该表达式(值)为true，那么结果返回true，并且结束数组循环; 如果每一项，该表达式(值)都为false，结果返回false
+//3.3)some的回调函数执行次数和找到符合项的数组成员个数相同(找到true就停下来)；如果没有找到符合项，则回调函数执行次数和数组成员的个数相同(循环所有项)
+//4)every((item,index,ary)=>{return item>n}); 作用：找false,返回布尔(返回一个布尔值；如果有一个不满足条件，返回值是false; 如果都满足，返回值是true) 验证数组的每一项是否都符合某个条件，如果是返回true，如果不是返回false；  参数：回调函数；  返回值：true/false；  原有数组不变
+//4.1)item -->数组成员  index-->索引  ary--->当前数组
+//4.2)return一个表达式(值);从左到右循环数组中的每一项，如果所有项都使得该表达式(值)为true，那么结果返回true; 如果有一项，使得该表达式(值)都为false，那么结果返回false，并且结束数组循环;
+//4.3)every的回调函数执行次数和某一项数组成员不符合条件有关(找到false就停下来)，如果都符合条件，则回调函数执行次数和数组成员的个数相同(循环所有项)
+//5)includes(); 作用：查找数组成员是否存在(是否包含某一项；返回一个布尔值；如果包含返回true；不包含返回false) 检测数组是否包含某一项成员；如果包含返回true，不包含返回false； 参数：要检测的某一项成员;   返回值：true/false；    原有数组不变
+//6)reduce((prev,next)=>{return prev+next;},n); 作用：一般用于数组的求和； 参数：第一个是回调函数，第二个是默认指定第一次的prev;  返回值：return后面的值；如果没有return，返回undefined;  原有数组不变
+//6.1)prev -->输出上一次回调函数的返回值【第一次除外】;  next -->下一项，从第二项开始的数组成员(如果有传参数n，则是从第一项开始的数组成员)； n-->如果有n，n为prev的第一个值
+//6.2)reduce的回调函数执行次数跟有没有传参数n有关，如果传了参数n，则回调函数执行次数跟数组成员的个数相同；如果没有传参数n，则回调函数执行次数为数组成员的个数减1;
+
+//66. for, for in, for of, forEach的区别(4个)
+//1) for可以循环数组、字符串，但是不能循环对象，for 中， i是索引
+//2) forEach是数组的方法，只能遍历数组，但不支持return，不管有没有写return，返回都是undefined
+//3) for in可以循环数组、字符串、对象，for in中，key是属性名(索引)，属性名(索引) in 数组/字符串/对象，key会变成字符串类型; 只有for in可以遍历出所有的可枚举属性，也可以遍历出数组的私有属性
+//4) for of只能循环数组，不能循环对象，for of中，val是值，值 of 数组
+/*let arr = [1,2,3];
+arr.c=3;
+console.log(arr);   //[1,2,3,c:3]
+for (let i = 0; i < arr.length; i++) {   //编程式
+console.log(arr[i]);    // 1  2  3
+}
+let a = arr.forEach(function (item,index,ary) {  //声明式，不关心如何实现
+console.log(item);    //1  2  3
+return {b:1};
+})
+console.log(a);   //undefined
+for (let key in arr){
+console.log(key);  //0  1  2  c
+console.log(typeof key); // string  string  string  string
+}
+for (let val of arr){
+console.log(val);  // 1  2  3
+console.log(typeof val);  //number  number  number
+}
+console.log(arr);*/
+
+//67. Object.keys(obj); 将对象obj的key(属性名，字符串格式)作为新的数组
+/*let obj={school:'zf',age:8};
+console.log(Object.keys(obj));  //[ 'school', 'age' ]
+for (let val of Object.keys(obj)){
+console.log(val);  //'school'   'age'
+console.log(obj[val]);  //'zf'   8
+console.log(typeof obj[val]);  //string  number
+}*/
+
+
+//68. svn(3个)
+//1)集中式的代码管理工具；有一个中央服务器，用来存储所有成员的代码
+//2)需要网络才可以把代码上传到中央服务器
+//3)上传的是文件
+
+//69. git(4个)
+//1)分布式的代码管理工具；每个成员都是一个服务器，也有中央服务器；如果想把本地代码提交到中央服务器，需要先把代码提交到本地的服务器
+//2)不需要网络，可以把代码上传到服务器
+//3)上传的是数据码；相对于svn更快
+//4)有三个区：工作区、暂存区、历史区
+
+//70. git的使用(22个)
+//1) git init: 初始化一个git仓库
+//2) mkdir 文件名: 创建一个文件夹
+//3) touch 1.txt: 创建一个文件(写不同的后缀可以创建不同的文件类型)
+//4) cat 文件名: 查看文件内容
+//5) cd 文件名: 打开相应的文件夹
+//6) cd ./: 同级文件
+//7) cd ../: 回到上一级目录
+//8) cd /: 回到根目录
+//9) clear: 清屏
+//10) vi 文件名: 进入文件的编辑模式----> i : 可以进行编辑--->如果想停止：ctrl+c ----> :wq (保存并退出)
+//11) git config --list: 查看当前的配置信息
+//12) git status: 查看当前仓库文件的状态; 如果文件只在工作区，那么文件颜色是红色的；如果把代码提交到暂存区，没有提交到历史区；那么文件颜色是绿色的
+//13) git add ./-A: 把文件上传到暂存区
+//14) git rm --cached 文件名: 删除暂存区提交的文件
+//15) git checkout 文件名: 把暂存区的代码拉取到本地（工作区），并且把本地（工作区）进行覆盖
+//16) git diff: 工作区和暂存区的比较；能看出改了哪一行
+//17) git diff --cached: 暂存区和历史区的比较
+//18) git diff master: 工作区和历史区比较
+//19) git commit -m"注释"： 注释一定要有；把代码从暂存区提交到历史区;
+//19.1) 每提交一次到历史区，都会产生一个唯一的版本号；可以根据版本号，把代码回滚到之前的版本
+//19.2) 注释： 是对当前修改的代码的一个标识；可以通过注释，回想改的代码
+//20) git log: 打印出以往的版本号
+//21) git reset --hard 版本号：把历史区之前的版本拉取到工作区；把历史区的代码先拉回到暂存区，再从暂存区拉到工作区；三区一致；历史区和工作区不能直接传输
+//22) git add -a -m"": 从工作区提交到历史区中；工作区-->暂存区--->历史区
+
+//71. git的分支(8个)
+//1)工作中都会在分支上进行开发项目
+//2)主干的代码是没有bug，是经过多轮测试的；和线上的代码是一致的；
+//3)在分支上改代码，不会影响到主干上的代码
+//4)如果需要创建分支，必须在master上提交到历史区
+//5)git branch 分支名: 创建一个分支
+//6)git checkout 分支名: 切换分支
+//7)git branch: 查看当前仓库所有的分支，并且查看当前在哪个分支上
+//8)git merge 分支名: 在主干上去合并分支上的代码；分支上经过了多轮测试
+
+//72. git的远程仓库(6个)
+//1) 关联远程仓库：git remote add origin(仓库名) url(远程仓库地址)
+//2) 查看和远程仓库的关联: git remote -v
+//3) 把历史区的代码推送到远程仓库，只能从历史区推送到远程仓库，空文件夹不进行推送，把本地的代码在中央服务器再备份一下，同时其他成员都可以通过这个地址把你的代码下载下来: git push origin master
+//4) 把远程仓库的地址拉取到本地: git clone url(远程仓库地址)
+//5) 拉取最新的代码: git pull origin master
+//6) 如果多人协作开发，需要添加权限: setting ---> Collaborators ---> add Collaborators
+
+
+</script>
+</body>
+</html>

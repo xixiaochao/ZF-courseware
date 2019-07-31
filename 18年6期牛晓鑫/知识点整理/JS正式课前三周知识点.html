@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+//1. 作用域(栈内存)的作用(2个)
+//1)提供代码运行环境
+//2)存储基本数据类型值
+
+//2.作用域的分类和区别(3个)
+//1)全局作用域：当打开浏览器页面时，会形成一个全局的作用域，运行全局下的代码
+//2)私有所用域：函数每次执行时，都会形成一个私有的作用域，运行函数体中的代码
+//3)块级作用域：除了私有作用域和对象以外的{}包裹的作用域都是块级的作用域
+
+//3. 全局变量和私有变量的区别(2个)
+//1)全局变量：在全局作用域下带var或带function
+//2)私有变量：在私有所用域下带var或带function或函数形参,私有变量不受全局变量的影响(实参非引用数据类型)
+/*var num={a:1};
+function f(num1) {
+    num1=1;
+    console.log(num);   //{a:1}
+}
+f(num);
+console.log(num); */     //{a:1}
+
+/*console.log(num);       //undefined
+var num={a:1};
+function f2(num1) {
+    num1.a=2;
+    console.log(num1);  //{a:2}
+    console.log(num);   //{a:2}
+    num.a=3;
+    console.log(num1);   //{a:3}
+    console.log(num);    //{a:3}
+    window.num.a=4;
+    console.log(num1);    //{a:4}
+    console.log(num);     //{a:4}
+    window.num1.a=6;
+    console.log(num1);   //  TypeError: Cannot set property 'a' of undefined
+}
+f2(num);
+console.log(num);      //{a:4}
+console.log(num1);*/  //ReferenceError: num1 is not defined
+
+//4. 怎么判断是否是私有变量(3个)
+//1)私有作用域下带var
+//2)私有作用域下带function
+//3)函数形参
+
+//5. 私有作用域下的变量有哪些(4个)
+//1)带var
+//2)带function
+//3)函数形参
+//4)不带var,不带function,不是函数形参,有可能是上一级作用域变量或全局变量或全局对象window下的属性或未定义
+
+//6. 变量提升的概念(1个)
+//1)在当前作用域下，在代码从上到下执行之前，遇到带var、带function的，会进行提升声明，通知当前作用域有这么一个变量，带var的是提前声明，不定义(不赋值)，带function的是提前声明加还定义(赋值，存放函数的空间地址赋值给函数名)；
+
+//7.全局作用域下的变量提升与私有作用域下的变量提升(2个)
+//1)全局作用域下的变量提升：会给全局对象window新增一个键值对,带var的会新增一个属性名为变量名,属性值为undefined的键值对; 带function的会新增一个属性名为函数名，属性值为存放函数的空间地址的键值对;(全局变量与全局属性是一一对应的，修改全局变量的同时也会修改对应的全局属性，修改全局属性的同时也会修改对应的全局变量)
+//2)私有作用域下的变量提升： 带var, 带function, 都不会给全局对象window新增一个键值对
+/*console.log(window.a);    //undefined
+var a=10;
+console.log(window.a);   //10
+a=20;
+console.log(window.a);   //20
+window.a=30;
+console.log(window.a);   //30
+console.log(a); */         //30
+
+/*console.log(window.f1);
+function f1() {
+    console.log(1);
+}
+console.log(window.f1);
+function f1() {
+    console.log(2);
+}*/
+
+/*console.log(window.f3);  //f3
+function f3() {
+    console.log(3);
+}
+console.log(window.f3);   //f3
+f3=3
+console.log(window.f3);   //3
+window.f3=4;
+console.log(window.f3);   //4
+console.log(f3);  */        //4
+
+//8.全局作用域下和私有作用域下代码执行过程(2个)
+//1）全局作用域下：形成一个全局作用域-->变量提升-->代码从上到下执行
+//2)私有作用域下(函数执行的过程)：形成一个私有作用域-->形参赋值-->变量提升-->代码从上到下执行--> 作用域是否销毁  function fn(b){console.log(a); console.log(b); console.log(f); var a=10; function f(){}; console.log(a); console.log(b); console.log(f);}; fn(1); console.log(a);console.log(b); console.log(f);
+
+//9. window是什么(2个)
+//1)全局对象 console.log(window.a); a=20;  console.log(window.a); var a=10; console.log(window.a);    function fn(){var b=9}; console.log(window.b)
+//2)全局作用域  var a,b,fn=function () {} --> var a;  var b;  var fn=fucnton(){}
+//  var a=b=10;  -->var a=10; b=10;
+
+//10. 变量提升的几种特殊情况(7个)
+//1)高版本浏览器，条件判断中：在条件判断之前，带var和带function都会进行变量提升，都是只声明不定义,当条件判断成立以后，第一时间给函数定义(赋值)；当条件不成立，判断体不执行,函数没有被定义(赋值)
+//2)只对等号左边的带var，带function进行变量提升；等号右边带var，带function的不进行变量提升
+//3)函数体中,return后面的带var带function的不进行变量提升，但return下面的带var带function的要进行变量提升
+//4)如果变量名字、函数名字发生重复，那么不再重复声明，但有可能重新定义(赋值) *
+//5)匿名函数不进行变量提升  *
+//6)回调函数不进行变量提升(函数作为参数不进行变量提升)
+//7)带let、带const的不进行变量提升
+
+ //11.作用域链(1个)
+ //1)当获取变量时，先判断是否是私有变量，如果不是私有变量，往上一级作用域查找，如果上一级作用域没有，再继续往上一级作用域查找，直到查找到全局对象window为止,如果全局对象window也没有，就会报错，这样一级一级往上查找作用域形成作用域链
+/*a=1;
+function f() {
+    console.log(a);
+}
+f();  */ //1
+
+ //12.怎么判断上一级作用域(1个)
+ //1)函数在哪定义(赋值空间地址)的，函数上一级作用域就在哪里，跟函数在哪执行的没有任何关系
+
+ //13. 堆内存的销毁(4个)
+//1)当堆内存的空间地址不再被占用，堆内存就会被销毁
+//2)谷歌浏览器：每隔一段时间，会去检查当前的空间地址有没有被占用；如果没有被占用，那么浏览器会将其回收；
+//3)火狐、IE浏览器：采用的是计数规则；当堆内存空间地址被占用一次，那么对当前进行计数+1，如果不占用那么计数-1；当当前空间地址被占用0次，那么马上将其回收
+//4)如果想要释放该堆内存，需要手动将该变量指向null【空指针】，浏览器判断该堆内存没有变量去接收它，那么浏览器会在空闲的时候将其回收*
+
+//14. 全局作用域(栈内存)的销毁(1个)
+//1)只有当浏览器页面关闭或浏览器关闭时，全局作用域才会销毁---> 不销毁的作用域
+
+//15. 私有作用域(栈内存)的销毁(3个)
+//1)立即销毁的作用域：一般情况下，函数执行完成之后，当前的作用域会立即销毁
+//2)不销毁的作用域：函数执行return出一个引用数据类型的值；该引用数据类型的值被外界接收[被占用]（变量、对象、元素上的一个事件（属性）），该作用域不销毁
+//3)不立即销毁的作用域：函数连着执行，当外层函数执行return出一个小函数，会等待里面的小函数执行完成之后，外层作用域才会随着销毁
+
+//16. 闭包的作用(2个)
+//1)保护机制：保护函数体内的私有变量不受外界的干扰
+//2)保存机制：*当前私有作用域中有引用数据类型值被外界占用，导致当前的私有作用域变成一个不销毁的作用域，里面的私有变量也就变成了不销毁的变量 *
+
+//17. this(2个)
+//1)this是一个关键字，它代表当前函数的执行主体，谁执行函数，this就指向谁，this在特殊场景(作用域)下，指向空间地址；
+//2)this只能代表值，不能赋值。
+/*var a=1;
+console.log(this);
+var obj={a:1,
+    fn:function () {
+        console.log(this);
+    }
+};
+obj.fn();
+var c=obj.fn;
+c();*/
+
+//18. this的指向(9个)
+//1)在全局作用域下，this指向window;(即this与全局对象window指向同一个堆内存空间地址)
+//2)函数体中的this，看函数执行前有没点,如果有，那么点前面是谁，this就指向谁；如果没有点,那么会指向window；
+//3)如果给元素的事件(点击事件、鼠标滑过事件等等)行为绑定方法(函数)，那么方法(函数)中的this，就会指向当前被绑定的那个元素；
+//4)回调函数中的this指向window; (函数作为参数的时候，一般情况下this都是指向window)
+//5)自执行函数中的this永远指向window
+//6)在构造函数模式中，函数体中出现的this指向当前类的实例
+//7)严格模式下，如果this没有明确的执行主体，this指向undefined
+//8)call/apply/bind方法可以改变this指向
+//9)箭头函数自身没有this，箭头函数中的this会指向函数定义时所在的作用域中的this指向
+
+//19. 带var和不带var的区别(3个)
+//1)不带var, 直接赋值，相当于给全局对象window直接新增了一个属性且给它赋值；不带var的必须赋值，否则会去全局对象window找这个属性,如果全局对象window没有这个属性，会报错
+//2)全局作用域下带var, 相当于创建了一个全局变量，还给全局对象window新增了一个属性，可以不赋值
+//3)私有作用域下带var，相当于创建了一个私有变量，但不会给全局对象window新增属性，可以不赋值
+
+//20.几种写法的区别(3种)
+//1)var a, b, c=3;用逗号分隔，表示连var[相当于省略了写var] --> var a;  var b; var c=3;
+//2) var a=1; b=2; c=3;用分号分隔，前面带var的属于变量，后面不带var的相当于给全局对象window新增了一个属性且给它赋值  --> var a=1; b=2; c=3;
+//3) var a=b=c=1;  //连等号,前面带var的属于变量，后面不带var相当于给全局对象window新增了一个属性且给它赋值  --> var a=1; b=1; c=1;
+
+//21. let(4个)
+//1) let声明的变量没有变量提升(let存在变量声明，在代码运行之前，变量要进行声明，但是不提升)
+//2) 在当前作用域下，let声明的变量不可以重复声明
+//3) 在函数中，let声明的变量不能与函数形参重名，也不能与函数名重名
+//4）let声明的变量不会给全局对象window新增属性
+
+//22. const(6个)
+//1) const声明的常量没有变量提升
+//2) 在当前作用域下，const声明的常量不可以重复声明
+//3) 在函数中，const声明的常量不能与函数形参重名，也不能与函数名重名
+//4) const声明的常量不会给全局对象window增加属性
+//5) const声明的常量，如果值是基本数据类型，那么不可以修改；如果值是引用数据类型，可以操作空间地址(可以修改该空间里的东西)，但不可以修改空间地址
+//6) const声明的常量必须赋值，不赋值报错
+
+//23. onload方法(2个)
+//1) img.onload=function(){}
+//2) 当图片加载成功之后会执行这个函数；如果图片不存在，那么函数不会执行
+
+//24. 单例模式(Singleton Pattern)(3个)
+//1)定义：把描述同一件事物的不同属性放在同一个命名空间(对象)下，避免了全局变量的污染和干扰；这种模式就是单例模式 (把对象数据类型实现"把描述同一件事物的属性或者方法归纳在一起，以此避免全局变量冲突问题"的方式和思想叫做："单例设计模式")
+//2)好处：避免了全局变量的污染和干扰，并且可以相互调用方法
+//3)由来：单例模式的本质就是一个对象，它是Object上的一个实例，实例与实例之间互相不干扰，叫做单独的实例，简称单例
+
+//25 工厂模式(1个)
+//1)定义：利用函数批量生成多个命名空间(对象)的模式
+/*function createPerson(name,age) {
+    var obj={};
+    obj.name=name;
+    obj.age=age;
+    return obj
+}
+createPerson('董凯凯',18);
+createPerson('魏振东',16);*/
+
+//26 高级单例模式(2种)
+//1)定义：在高级单例模式当中，我们不只会把一个对象赋值一个命名空间，会让它先执行一个自执行函数，在自执行函数中，返回一个对象给这个命名空间
+//2)好处：可以在这个自执行函数的私有的作用域中，创建很多属性和方法，然后把我们需要使用的属性和方法放在返回的对象当中即可
+/*
+var utils = (function () {
+    var  newAry = [];// 私有变量
+    function unique(ary) {
+        for(var i=0;i<ary.length;i++){
+            var cur = ary[i];
+            if(newAry.indexOf(cur)===-1){
+                newAry.push(cur)
+            }
+        }
+        return newAry;
+    }
+    function sortMy() {
+        // 上一级作用域是自执行函数形成的作用域；
+    }
+    return  {
+        unique:unique,
+        sortMy:sortMy
+    };
+})();
+console.log(utils.unique(ary));
+console.log(utils.sortMy(ary));*/
+
+//27 面向对象(OOP)(4种)
+//1)定义：面向类的继承、封装和多态，通过简单实例化，调用其属性和方法
+//2)对象：编程语言中的对象是一个泛指，**万物皆对象**(我们所要研究、学习以及使用的都是对象)(对象数据类型是对象的一种，但对象不是对象数据类型，它只是一个抽象的泛指)
+//3)类 ：对象的具体细分(按照属性或者特征细分为一些类别) (对象中具有同一属性和特征的集合，称之为类)
+//4)实例：某一类中具体的事物 (实例是类中的一个具体的事物，我们研究当前实例具有哪些属性和方法，那么当前类中的其他实例也同样具有这些属性和方法)
+
+//28 JS中一些常用的内置类(7种)
+//1)Number:数字类，每一个数字或者NaN是它的一个实例
+//2)String:字符串类，每一个字符串都是它的一个实例
+//3)Boolean:布尔类，true或false都是它的一个实例
+//4)Null:浏览器屏蔽了我们操作Null或者Undefined这两个类
+//5)Undefined:浏览器屏蔽了我们操作Null或者Undefined这两个类
+//6)Object:对象类，每一个对象数据类型都是它的一个实例
+    //Array:数组类，每一个数组都是它的一个实例
+    //RegExp:正则类，每一个正则都是它的一个实例
+    //Date:日期类
+    //....
+//7)Function:函数类，每一个函数都是它的一个实例
+
+//29 基于面向对象(构造函数)创建数据值(2种)
+//1) 基于构造函数创建的引用数据类型值与基于字面量创建的引用数据类型值，都是所属类的一个实例，但是在语法上是有区别的
+// var ary=[12,23]  -->字面量创建方式，字面量创建方式传递进来什么，都是给数组每一项加入的内容
+// var ary=new Array() -->[]:如果什么都不传，相当于创建一个长度为0的空数组
+// var ary=new Array(10) --> [empty × 10]:如果传递一个实参，并且实参是数字，相当于创建一个长度为该数字的数组，并且数组中的每一项都是空
+// var ary=new Array('10')-->['10']:如果传递一个实参，并且实参不是数字，相当于把当前值作为数组的第一项存储进来
+//var ary=new Array(10,20,30)-->[10,20,30]:如果传递多个实参，不是设置长度，而是把传递的内容当做数组中的每一项存储起来
+// var obj={name:'zhufeng'}-->字面量创建方式
+// var obj=new Object({name:'zhufeng'})-->{name:'zhufeng'}
+// var obj=new Object({}) -->{}一般只用于创建空对象，如果需要增加键值对，创建完成后自己依次添加即可
+// var f=new Function();  -->ƒ anonymous(){}
+//var f=new Function('return 1');-->ƒ anonymous(){return 1}:如果参数只有一个的话，这个参数就属于函数体中的内容
+//var f=new Function('a','b','return 1'); -->ƒ anonymous(a,b){return 1}:如果参数是2个或者2个以上的话，最后一个是函数体，其他的都是形参
+//2)基于构造函数创建的基本数据类型值是一个实例(实例都是对象)，它是用对象包裹的，和字面量方式的创建表现形式不同而已，功能方法都一样，都是所属类的一个实例。
+ //var num=12;   --> 12  字面量方式
+// var num=new Number(1);  -->{1}
+// var boo=new Boolean(true); -->{true}
+// var str=new String('1');   -->{'1'}
+
+//30 构造函数设计模式(constructor)(7种)
+//1)用途：使用构造函数方式，主要是为了创建类和实例
+//2)定义：在JS中，当使用'new xxx()'执行函数的时候，new是关键字，放在函数的前面，此时的函数就不是普通的函数了，函数就变成一个构造函数(类)，构造函数被new，就会创建出一个实例，最后返回这个实例，我们把这种new xxx()执行的方式称之为'构造函数设计模式'
+//var f=new fn();  //->fn是一个类，f是当前fn这个类的一个实例(我们一般都会把类名第一个字母大写)
+//3)参数：构造函数执行的时候，如果没有实参，可以省略执行的小括号
+//4)实例：通过构造函数(类)创建出来的每一个实例都是单独的个体(单独的堆内存空间)，实例和实例之间互不影响
+//5)this：构造函数中的this，指向当前类的实例
+//6)私有属性：在构造函数中，通过this.xx=xxx给实例设置的属性都是当前实例的'私有属性'
+//7)return: 当构造函数中没有return，默认返回创建的实例，如果return的是一个基本数据类型值，对返回的实例没有影响，如果return的是引用数据类型值，会把默认返回的实例替换掉
+
+//31 '普通函数执行' vs '构造函数执行'(2种)
+//1.普通函数执行(5个)
+//1)开辟一个新的私有作用域
+//2)形参赋值
+//3)变量提升
+//4)代码从上到下执行(return后面的值就是当前函数返回的结果)
+//5)作用域是否销毁
+   /* function fn(num) {
+        this.num=num;    //this:window 给全局对象增加一个num的属性名，属性值是10
+        var total=null;
+        total+=num;
+        return total;
+    }
+    var f=fn(10);  //f=10*/
+//2.构造函数执行(7个)
+//1) 开辟一个新的私有作用域
+//2) 形参赋值
+//3) 变量提升
+//4) 浏览器会创建一个对象数据类型的值(实例)，并且会让当前函数的执行主体(this)指向创建的这个对象（实例）
+//5) 代码从上到下执行：'this.xx=xxx这里的操作都是在给创建的这个对象（实例）增加属性名和属性值'
+//6) 函数函数执行结束后，即使函数中没有写return，浏览器会默认把创建的对象（实例）返回
+//7) 作用域是否销毁
+    /*function Fn(num) {
+        this.num=num;
+    }
+   var f=new Fn(10);*/
+
+//32 私有属性与公有属性(3个)
+//1)私有属性：在构造函数中，通过this.xx=xxx给实例设置的属性，都属于当前实例的私有属性
+//2)公有属性：当前实例通过__proto__找到的属性，都属于当前实例的公有属性
+//3)私有属性和公有属性是相对的，需要看相对于哪个对象而言。凡是通过__proto__找到的属性都是公有属性，反之都是私有属性
+
+//33 hasOwnProperty VS in(2个)
+//1)in:检测当前这个属性是否属于某个对象，是返回true，不是返回false
+//2)hasOwnProperty:检测当前这个属性是否属于对象的私有属性，是返回true，不是返回false
+
+//34 存在映射关系的有(3种)
+//1)全局变量与全局对象window下的属性
+//2)非严格模式下，agruments与形参
+//3)js中的元素对象与页面中的DOM元素标签
+
+//35 JS中的对象和函数汇总
+//1)对象数据类型值(10个)
+//1.1 {}普通对象
+//1.2 []数组
+//1.3 /^$/正则
+//1.4 Math数学函数
+//1.5 一般类的实例都是对象数据类型的 (包括Date的实例)
+//1.6 函数的prototype属性
+//1.7 对象的__proto__属性
+//1.8 函数
+//1.9 节点
+//1.10 事件对象
+//2)函数数据类型值(2个)
+//2.1 普通函数
+//2.2 所有的类(内置类和自定义类)
+
+//36 原型(6种)
+//1)所有的函数数据类型(函数、类)都天生自带一个属性：prototype(原型)，它是一个对象数据类型
+//2)prototype这个对象中天生自带一个属性：constructor，属性值是当前函数本身(当前原型所属的类)
+//3)每一个对象数据类型都天生自带一个属性：__proto__，它是一个对象数据类型，属性值是当前对象所属类的原型(prototype)
+//4)所有的函数数据类型(普通函数、类(内置类、自定义类))都是Function的一个实例；Function是所有函数数据类型的基类；
+//5)所有的对象数据类型(实例、prototype、对象)都是Object的一个实例；Object是所有对象数据类型的基类；
+//6)Function首先是自己的一个实例，Function的__proto__指向Function的prototype
+
+//37 原型链(2种)
+//1)*当获取对象属性名对应的属性值时*，首先会看是否是私有属性，如果不是，那么会通过对象的__proto__向上找到自己所属类的原型上，如果所属类的原型上也没有，那么会通过原型中__proto__继续向上查找，直到找到Object的原型为止；如果Object的原型上也没有，那么会输出undefined；这样一级一级向上查找就会形成'原型链'
+//2)某一个实例或者某一个对象之所以能使用某些属性和方法，是因为在它的原型链上能找到这些属性和方法，如果找不到则不能使用
+
+//38 关于原型链中提供的私有(公有)方法中的this指向问题(1种)
+//1)看点前面是谁，this就是谁
+//  f1.say()      : this->f1
+//  f1.__proto__.say()   :this->f1.__proto__
+//  Fn.prototype.say()   :this->Fn.prototype
+
+//39 //原型的扩展(1种)
+//1)类.prototype.属性名=属性值; 类.prototype[属性名]=属性值;   不会改变原型prototype的空间地址
+
+//40 原型的重新构造(3种)
+//1) 让原型指向重新开辟的堆内存有一个问题：重新开辟的堆内存中没有constructor这个属性，所以实例在调取constructor的时候找到的是Object，这样不好，此时我们应该重新设置一下constructor，保证机制的完整性
+//2) 重新做原型指向后，之前浏览器默认开辟的堆内存中存储的属性和方法就不能用了，只有在新开辟的堆内存中设置的属性和方法才能用
+//3) 内置类的原型不允许修改空间地址，修改是无效的，但是可以给其新增方法；
+
+ //41 函数的三种角色(3种)
+ //1)普通函数
+ //2)类[构造函数]
+ //3)普通对象
+
+//42 call方法(12种)
+//1)改变call前面函数中的this指向，让其指向call传递的第一个参数，（改变this中的this指向，并且让this执行）
+//2)将第一个以后的参数依次传给call前面的函数，作为实参
+//3)让call前面的函数执行
+//4) fn.call(opp)  // this-->opp
+//5) fn.call(1,2)  // this-->{1};   num1=2
+//6) fn.call(opp,1,2,...)// this-->opp; num1=1;  num2=2;  num3=....
+//7) fn.call()    //this-->window
+//8) fn.call(null) // this-->window
+//9) fn.call(undefined) // this-->window
+//'use strict'
+//10) fn.call()    //this-->undefined
+//11) fn.call(null) // this-->null
+//12) fn.call(undefined) // this-->undefined
+
+//43 apply(2种)
+//1)apply和call执行的方法相同，只不过第二个参数是一个数组或类数组，但数组(类数组)里的参数也是一个个传进去
+//2)同样也可以改变this指向
+
+//44 bind(2种)
+//1)改变this指向，会创建一个新函数[改完this后的函数，与之前的函数fn没有关系]，但是新函数不执行
+//2)在IE8及以下不兼容
+
+//45 常见报错信息(5种)
+//1) Error: 错误
+//2) SyntaxError: 语法错误
+//3）ReferenceError: 引用错误  (a is not defined)
+//4) TypeError: 类型错误  (Cannot set property 'onclick' of null)(12 is not a function)
+//5) RangeError: 范围错误  (堆栈溢出)
+
+//46  终端常用命令(5种)
+//1) 创建文件夹:      mkdir 文件名字
+//2) 打开相应的路径:  cd 文件名字
+//3) 回到上一级文件:  cd  ../
+//4) 回到根路径:     cd /
+//5) 清除所有的命令   clear
+
+//47 git的一些操作(10种)
+//1）初始化一个本地仓库         git init
+//2）把本地文件提交到暂存区      git add .
+//3）把暂存区文件提交到历史区    git commit -m"注释":
+//4）把本地仓库和远程仓库进行关联 git remote add 仓库名 远程仓库地址 (git remote add origin url)
+//5) 把代码推送到主干上   git push 仓库名 master  (git push origin master)
+//6) 下载远程仓库的代码   git clone 远程仓库地址 (git clone url)
+//7) 拉取主干上的代码     git pull 仓库名 master (git pull origin master)
+//8) 查看本地和远程的连接  git remote -v
+//9) 查看本地的基础配置    git config --list
+//10)查看文件状态         git status
+
+//48  a和b的值进行互换的方法有(3种)
+//1) var c=null;   c=a;  a=b;  b=c;
+//2) a=a+b;  b=a-b;  a=a-b;
+//3) var a;  var b;  [b,a]=[a,b]
+
+//49. es6的展开运算符(3种)
+//1)常用在展开数组和对象
+//2)var ary =[10,29];
+//  var ary1=[10,30];
+//  var a=[...ary,...ary1];
+//  console.log(a);            //[10,29,10,30]
+//  console.log(Math.max(...ary));  //29;
+//3)var obj={a:1,b:2};
+//  var obj1={c:3};
+//  var obj2={...obj,...obj1}
+//  console.log(obj2);          //  {a:1,b:2,c:3}
+
+//50. es6的剩余运算符(1个)
+// 1)把多余的参数放到一个数组中
+/*function sum(...yy) {
+    console.log(yy);   //[10,38,78,80]
+}
+sum(10,38,78,89);
+function sum1(m,n,...yy) {
+    console.log(yy);    //[78,89]
+}
+sum1(10,38,78,89); */
+
+//51 eval(3种)
+//1)window下的一个方法，将字符串转换成js代码
+//2)eval('1,2,3')-->3
+//3)eval('fn(1,2,3)')-->fn(1,2,3)
+
+
+//52 div和document的原型链(2个)
+//1) div-->HTMLDivElement-->HTMLElement-->Element-->Node-->EventTarget-->Object
+//2) document-->HTMLDocument-->Document(getElementById)-->Node-->EventTarget-->Object
+
+
+//53  try  catch   finally    进行错误信息拦截
+/*try{
+    //如果这里面的代码有报错；那么会执行catch中的代码；
+    //如果不报错，那么catch中不再运行；
+    console.log(a);
+    console.log(1);
+}  catch (e) {
+    console.log(e.message); //控制台输出报错信息  a is not defined
+    console.dir(e);// 控制台输出详细报错信息;
+     alert('哎呦，你的网络有问题哦！！');
+    throw new Error(e.message); //手动抛出错误异常，下面代码不再执行 //Error: a is not defined
+     throw new ReferenceError('我是引用错误')
+    console.log(200);
+} finally {
+    //不管try中的代码执行是否报错，finally都会执行
+    console.log(12);
+}
+console.log(100);*/
+
+//54 sort深入(2种)
+//1)sort排序的原理：让相邻两项进行比较，如果return的结果【回调函数的返回值】大于0；那么会让这两项交换位置；如果return的结果小于0；那么不交换；
+//2)如果数组中有对象，sort排序交换的是整个对象成员;
+
+//55 DOM 映射、重绘和回流(3种)
+//1)DOM映射:JS中获取到的元素对象和页面中的DOM元素标签，一一对应，存在映射关系，不管进行增加、删除、修改，浏览器不会重新创建一个新的元素标签，而是直接操作页面那个元素标签，对dom结构进行重新的渲染
+//2)DOM重绘:在js中对元素对象，进行样式【位置不改变】改变，会导致dom结构发生变化，浏览器会对其进行渲染，这种方式对dom性能消耗低
+//3)DOM的回流:在js中对元素对象，进行位置改变，包括增加、删除、修改，会导致dom结构发生变化，浏览器会重新进行计算+渲染，这种方式对dom性能消耗高
+
+//56 JSON(7种)
+//1)类型：JSON是一种数据格式，不是数据类型，同时它也是window上的一个属性
+//2)分类：JSON分为JSON字符串和JSON对象
+//3)JSON对象:   var obj={"name":"yg"};    var obj1=[{"name":"zf"}]
+//4)JSON字符串: var str='{"name":"yg"}';  var str1='[{"name":"zf"}]';
+//5)JSON对象和普通对象：功能一样，只是写法上有一些不同【属性名和属性值加双引号】？
+//6)JSON.parse    :将JSON字符串转换成JSON对象,在IE8以下不兼容
+//7)JSON.stringify:将JSON对象转换成JSON字符串
+
+//57 深拷贝(2种)
+//1)let newObj= JSON.parse(JSON.stringify(oldObj)); //newObj和oldObj为两个不同的空间地址，互不影响
+//2) 通过展开运算符实现深拷贝     let newObj={...oldObj}
+
+//58 ajax 请求四步曲(4步)
+//先定义一个用来接收数据的变量 var data=null;
+//1)创建一个ajax对象  var xhr=new XMLHttpRequest();
+//2)打开一个地址，进行配置请求 xhr.open('get','url',false);
+//3)监听状态请求 xhr.onreadystatechange=function(){
+// if (xhr.readyState==4 && xhr.status==200) {data=xhr.responseText}  };
+//4)发送请求   xhr.send();
+
+//59 文档碎片(2个)
+//1) JS给浏览器提供了一个临时存储DOM元素的容器；
+/*2)  var frg = document.createDocumentFragment();
+   for (var i = 0; i < ary.length; i++) {
+   // 每创建一个元素，都会放到文档碎片中，最后一次性放回页面，只引发一次回流；
+   var cur = ary[i];
+   var curLi = document.createElement("li");
+   curLi.innerHTML = cur;
+   frg.appendChild(curLi);
+   }
+   ul.appendChild(frg);
+   frg = null;*/
+
+//60 es6模板字符串(2个)
+//1) var  str =``
+/*2) ${变量名}
+for(var i=0;i<ary.length;i++){
+    var cur = ary[i]
+    str+=`<li>${cur}
+                 <div>
+                    <div></div>
+                 </div>
+              </li>`
+}
+ul.innerHTML = str;*/
+
+//61 正则(2种)
+//1)定义：正则叫做正确的规则，专门用来处理字符串
+//2)组成：由元字符和修饰符组成，两个斜杠中间包裹的都是元字符，斜杠后面的是修饰符
+
+//62 正则的创建方式(4个)
+//1)字面量的方式： var reg=/\d+/img;
+//2)构造函数的方式：new RegExp('元字符','修饰符')
+//var reg2=new RegExp('\\d+','img'); //-->构造函数创建的正则，要用到转义字符时需要写'\\'才可以
+//3) 使用构造函数方式写出验证是否为有效数字的正则
+//var reg = new RegExp('^-?(\\d|([1-9]\\d+))(\\.\\d+)?$');
+//4)在正则中动态加入一个变量的值，作为正则的一部分，只能用构造函数的方式创建正则
+//var strClass="String";
+//var reg=/^\[object '+strClass+'\]$/ ; //-->字面量方式中出现的所有字符都叫元字符，例如：在当前案例中'+不是字符串拼接，是属于让单引号出现一到多次...
+//var reg=new RegExp('^\\[object '+strClass+'\\]$');
+//var reg=new RegExp(`^\\[object ${strClass}\\]$`);
+
+//63 正则的常用方法(2种)
+//1)test:匹配-->验证字符串是否匹配正则规则，验证成功返回true，失败返回false
+//2)exec:捕获-->把字符串中符合正则规则的字符找出来； 如果正则没有捕获到内容，返回null
+
+//64 常用的修饰符(3种)
+//1) i(ignoreCase) :忽略大小写匹配
+//2) m(multiline): 多行匹配
+//3) g(global):全局匹配；    取消捕获的懒惰性
+
+//65 元字符
+//1)常用的量词元字符(6个)
+//1.1) + :让前面的元字符出现一到多次
+//1.2) ? :让前面的元字符出现零到一次【有或没有】
+//1.3) * :让前面的元字符出现零到多次
+//1.4){n}:让前面的元字符出现n次
+//1.5){n,m}:让前面的元字符出现n到m次
+//1.6){n,}:让前面的元字符出现n到多次
+
+//2)特殊意义的元字符(22)
+//2.1)\:转义字符（把一个普通字符转变为有意义的字符，或者把一个有意义的字符转换为普通的字符）
+//2.2)\n: 匹配一个换行符
+//2.3) .: 匹配一个除了\n(换行符)以外的任意字符
+//2.4)\d: 匹配0~9之间的任意一个数字
+//2.5)\D: 匹配0~9以外的任意一个字符   【除了\d以外的字符】
+//2.6)\w: 匹配0~9或字母或_之间的任意一个字符  【a-zA-z0-9_】
+//2.7)\W: 匹配除了0~9、字母、下划线以外的任意一个字符【除了\w以外的字符】
+//2.8)\s: 匹配一个空白字符【空格】
+//2.9)\S: 匹配除了空白字符以外的任意一个字符
+//2.10)\b: 匹配一个边界符
+//2.11)\B: 匹配除了边界以外的任意一个字符
+//2.12)x|y:匹配x或者y中的一个
+//2.13)[xyz]:匹配x或者y或者z中的一个字符
+//2.14)[^xyz]:匹配除了xyz以外的任意一个字符
+//2.15)[a-z]:代表a-z之间的任意一个字符，[0-z]:表示0-9，a-z之间的任意一个字符
+//2.16)[^a-z]:除了a-z以外的任意一个字符
+//2.17) ^:以某一个元字符开始
+//2.18)$ :以某一个元字符结束
+//2.19)():在正则中表示分组捕获、提高优先级、分组引用
+//2.20)(?:) :只匹配不捕获
+//2.21)?= :正向预查
+//2.22)?! :负向预查
+//3)普通元字符：除了特殊元字符和量词元字符以外的字符
+
+//66 正则中的|
+//1)var reg=/^18|19$/ (3种)
+//1.1)18或19
+//1.2)以1开头，以9结尾，中间是8或1，-->189, 119
+//1.3)以18开头或者以19结尾
+//2)var reg=/^(18|19)$/ (1种)
+//2.1) -->只能是18或19
+
+//67 正则中的中括号(4种)
+//1)定义：表示中括号内的任意一个字符
+//2)在中括号中，[\w],[\d],[\s]依然代表具有特殊含义的字符
+//3)在中括号中，一般元字符都代表它本身的含义，比如[.],[?],[+],[*],[-]
+//4)在中括号中，-表示范围的意思
+
+//68 正则中的大括号(4种)
+//1){n}，表示前面的元字符出现n次
+//2){n,m}，表示前面的元字符出现n到m次
+//3){n,}，表示前面的字符出现n到多次
+//4)\{\}，仅表示大括号{}
+
+//69 正则中的小括号(3种)
+//1)正则中的分组，也可以理解为一个大正则中的一个小正则(包起来的部分是一个整体)，在正则中可以使用小括号改变一些默认的优先级 var reg=/^(18|19)$/，只能是18或19
+//2)分组引用：\1或者\2...出现和第n个分组一模一样的内容
+//var reg=/^([a-z])([a-z])\2([a-z])$/
+//3)分组捕获，大正则捕获，小正则(分组内容)也要捕获一次
+
+//70 正则捕获exec(9种)
+//1)作用：把字符串中符合正则规则的字符捕获到
+//2)先去验证字符串和正则是否匹配，如果不匹配返回的结果是null(没有捕获到任何的内容)
+//3)如果匹配，从字符串最左边开始，向右查找到匹配的内容，并且把匹配的内容返回
+//4)获取的结果是一个数组
+//5)数组中的第一项是本次大正则在字符串中匹配到的结果，为字符串格式
+//6)index:记录了本次捕获到的结果在字符串中的起始索引，为数字格式
+//7)input:当前正则操作的原始字符串，为字符串格式
+//8)如果当前正则中有分组，获取的数组中，从第二项开始都是每个小分组本次匹配到的结果，为字符串格式，分组内容从左到右捕获
+//9)执行一次exec只能把符合正则规则中的一个内容捕获到，如果还有其他符合规则的，需要再次执行exec才有可能捕获到
+
+//71 正则捕获存在懒惰性(3种)
+//1)执行一次exec捕获到第一个符合规则的内容，第二次执行exec，捕获到的依然是第一个匹配的内容，后面匹配的内容不管执行多少次exec都无法捕获到
+//2)解决正则捕获的懒惰性：在正则的末尾加修饰符g(全局匹配)
+//3)g取消捕获的懒惰性:加g之后，每当捕获一次，都会改变当前正则的lastIndex属性；下一次捕获会从上一次捕获结束的位置开始
+
+//72 正则捕获存在贪婪性(1种)
+//1)解决正则捕获的贪婪性：把问号放在量词元字符的后面，取消捕获的贪婪性，取消贪婪性后，每次只能获取单个字符
+
+//73 replace(4种)
+//1)字符串方法，替换，
+//2)str.replace(oldStr,newStr)，每次只能替换一项内容
+//3)str.replace(reg,newStr):把正则捕获到的内容用新的字符串进行替换
+//4)str.replace(reg,function(){})
+//4.1)reg中捕获几次，回调函数就运行几次
+//4.2)arguments: 类数组，代表捕获的内容，正则中有小分组时，arguments还会捕获到小分组中的内容，排在大正则捕获的内容后面
+//arguments[0]:代表捕获到的内容
+//arguments[1]:捕获内容的起始索引
+//arguments[2]:要捕获的整个字符串
+//4.3)return: 用return后面的内容替换正则捕获到的内容
+//不return: 用undefined替换正则捕获到的内容
+
+//74 断点调试的常用方法(3种)
+//1) console.log()
+//2) alert();      代码执行到此行，不会向下执行，会停止到这一行
+//3) debugger: 断点,让代码停止到这一行
+//3.1) F10:运行下一步
+//3.2) F8:直接到下一个断点
+
+//75 typeof (3个)
+//1)检测数据类型，返回一个字符串
+//2)只能检测通过字面量方式创建的基本数据类型值，不能细分对象数据类型下具体的数据类型(通过构造函数创建的*基本数据类型*值用typeof检测结果为"object")
+//3) typeof 类   ==》"function"   typeof Null/Undefined ==>"undefined"
+/*
+console.log(typeof 23);  //-->"number"
+var num1=new Number(23);
+console.log(typeof num1); //-->"object"
+var str='abc';
+console.log(typeof str); //-->"string"
+var str1=new String('abc');
+console.log(typeof str1); //-->"object"*/
+
+//76 instanceof(4个)
+//1)检测当前实例是否属于某个类，属于返回true，不属于返回false
+//2)只要某个类在当前实例的原型链上，返回true
+//3)通过字面量方式创建的*基本数据类型值*检测是否属于某个类，结果是false
+//4)解决了typeof无法识别是数组还是正则的问题
+/*console.log(12 instanceof Number);   //-->false
+console.log(12 instanceof Object); //-->false
+console.log(new Number(12) instanceof Number); //-->true
+console.log('abc' instanceof String); //-->false
+console.log('abc' instanceof Object); //-->false
+console.log(new String('abc') instanceof String);//-->true
+console.log([] instanceof Array);   //-->true
+console.log([12] instanceof Array);  //-->true
+console.log(/^\d$/ instanceof Array);  //-->false
+console.log(/^\d$/ instanceof RegExp); //-->true
+console.log({} instanceof Array);   // -->false
+console.log([] instanceof Object);  //-->true
+console.log(/^\d$/ instanceof Object); //-->true
+console.log({} instanceof Object);  //-->true*/
+
+//77 constructor : 构造函数(2种)
+//1)检测当前实例是否属于某个类，返回布尔类型
+//2)一旦原型指向发生改变，constructor会指向改变后的类；
+/*var ary=[];
+console.log(ary.constructor === Array);//--> true
+console.log(ary.constructor === Number);//--> false*/
+
+//78 Object.prototype.toString.call()  (1种)
+//1)检测数据类型，返回值是一个字符串，"[object 类]"
+/*console.log(Object.prototype.toString.call(1));      //"[object Number]"
+console.log(Object.prototype.toString.call('abc'));  //"[object String]"
+console.log(Object.prototype.toString.call(true));  //"[object Boolean]"
+console.log(Object.prototype.toString.call(null));  //"[object Null]"
+console.log(Object.prototype.toString.call(undefined)); //"[object Undefined]"
+console.log(Object.prototype.toString.call({}));     //"[object Object]"
+console.log(Object.prototype.toString.call([]));     //"[object Array]"
+console.log(Object.prototype.toString.call(/\d+/));  //"[object RegExp]"
+console.log(Object.prototype.toString.call(function(){}));  //"[object Function]"*/
+
+//79 ?=与?!  (2种)
+//1) ?= :正向预查，满足?=后面的条件才符合要求
+/*var reg=/zhufeng(?=peixun)/;
+var str="123zhufengpeixun67";
+console.log(reg.exec(str));  // ["zhufeng",index:3,input:"123zhufengpeixun67"]
+console.log(reg.test(str)); */ //true
+//2) ?! :负向预查，不满足?!后面的条件才符合要求
+// var reg=/zhufeng(?!js)/;
+// console.log(reg.test("zhufengjs")); // false
+// console.log(reg.exec("zhufengjs")); // null
+// console.log(reg.exec("zhufeng123")); //["zhufeng",index:0,input:"zhufeng123"]
+
+//80 JS盒子模型 (13个)
+//1) clientWidth: 当前元素可视区域的宽度  width+左右padding  不包括边线和滚动条
+//2) clientHeight:当前元素可视区域的高度  height+上下padding 不包括边线和滚动条
+//3) clientLeft:当前元素左边框的宽度 border-left
+//4) clientTop: 当前元素上边框的高度  border-top
+//5) offsetWidth: 当前盒子的总宽度 width+左右padding+左右border
+//6) offsetHeight:当前盒子的总高度 height+上下padding+上下border
+//7) scrollWidth: 一个左padding+内容的真实宽度(溢出的情况下)，溢出隐藏和溢出滚动不影响scrollWidth
+//8) scrollHeight: 一个上padding+内容的真实高度(溢出的情况下),溢出隐藏和溢出滚动不影响scrollHeight
+//9)offsetParent: 父级参照物
+//10)offsetLeft: 左偏移量；当前元素的左外边框距离父级参照物的左内边框的距离
+//11)offsetTop:上偏移量；当前元素的上外边框距离父级参照物的上内边框的距离
+//12)scrollLeft(读写属性):当前元素的横向滚动条卷去的宽度，该距离实际控制的是盒子内容滚动的距离
+//13)scrollTop(读写属性):当前元素的纵向滚动条卷去的高度， 该距离实际控制的是盒子内容滚动的距离
+
+
+//81 获取样式(3种)
+//1)元素.style.属性名或元素.style[属性名]：只能获取元素的行内样式；获取不到css中的样式
+//oBox.style.background="red";
+//2)getComputedStyle: window的一个属性，是一个函数，获取浏览器的计算样式，获取的属性值是字符串格式;在IE8及以下，getComputedStyle不存在
+//getComputedStyle(元素).属性名   或   getComputedStyle(元素)[属性名]
+//getComputedStyle(oBox).width
+//3)currentStyle: 在IE中是元素的一个属性；属性值包含了css中的样式；在谷歌中不存在这个属性
+// 元素.currentStyle.属性名     或  元素.currentStyle[属性名]
+//oBox.currentStyle.width
+
+//82 透明度(2种)
+//1)标准浏览器(IE9及以上)写法：opacity: 0.5;  (0-1,0是完全透明,1是完全不透明)
+//2)低版本浏览器(IE8及以下)写法：filter:alpha(opacity=50);
+
+//83 设置行内属性(1种)
+//1) 元素.style.属性名=属性值；   元素.style[属性名]=属性值
+
+//84 父级参照物(3种)
+//1)默认情况下，页面中元素的父级参照物都是body
+//2)设置position属性可以改变子孙元素的父级参照物
+//3) body.offsetParent-->null ;  body.parentNode-->html.parentNode-->document.parentNode-->null
+
+//85 navigator.userAgent (2种)
+//1) window下的一个属性，存有当前浏览器的内核信息；属性值是字符串；
+//2) 校验是否是IE8:  /MSIE 8\.0/.test(navigator.userAgent)
+
+//86  onscroll事件 (2种)
+//1) window.onscroll = function (){}
+//2) window下的一个属性，当滚动条滚动时触发window的onscroll事件
+
+//87 window上的属性和方法有(10种)
+//1)eval
+//2)navigator.userAgent
+//3)JSON
+//4)getComputedStyle
+//5)onscroll
+//6)Math
+//7)setTimeout
+//8)setInterval
+//9)clearTimeout
+//10)clearInterval
+
+//88 以数组形式存放的有(2种)
+//1) 剩余运算符
+/* function sum1(m,n,...yy) {
+console.log(yy);    // [78,89]
+}
+sum1(10,38,78,89);  */
+//2) reg.exec()
+
+
+//89 css盒子模型(2种)
+//1)标准盒子模型：width/height/padding/border/margin
+//2)怪异盒模型：可以通过box-sizing这个属性来控制，属性值为border-box的时候，这时候盒子的宽度就包括:内容的宽度+左右padding+左右border(offsetWidth) ;盒子的高度就包括：内容的高度+上下padding+上下border(offsetHeight)
+
+//90 js盒子模型的共同点与不同点(2种)
+//1)共同点：获取到的值都是一个整数，都会进行四舍五入，而且没有单位
+//2)不同点：除了scrollTop和scrollLeft这两个属性可以进行修改，其他11个属性(clientWidth/clientHeight/clientTop/clientLeft/offsetWidth/offsetHeight/offsetParent/offsetLeft/offsetTop/scrollwidth/scrollHeight)
+
+//91 浏览器窗口的可视区域的宽度和高度(2个)
+//1) 宽度：document.documentElement.clientWidth||document.body.clientWidth
+//2) 高度：document.documentElement.clientHeight||document.body.cilentHeight
+
+//92 数据绑定的方法有(3种)
+//1) 字符串拼接
+//2) 文档碎片
+//3) es6模板字符串
+
+//93 在低版本浏览器(IE8及以下)不兼容的情况有 (12种)
+//1)bind
+//2)children
+//3)firstElementChild
+//4)lastElementChild
+//5)previousElementSibling
+//6)nextElementSibling
+//7)(context).getElementsByClassName()
+//8)(context).querySelector()
+//9)(context).querySelectorAll()
+//10)JSON.parse
+//11)getComputedStyle
+//12)opacity: 0.5  (filter:alpha(opacity=50))
+
+//94 类的封装(1个)
+//1)把实现一个功能的代码封装到一个函数中(一个类中)，以后再想实现这个功能，只需要执行函数方法即可，不需要再重复的编写代码，实现低内聚，高耦合。
+
+//95 类的继承(1个)
+//1) 类继承其他类中的一些属性和方法
+
+//96 原型的继承(1个)
+//1) 让A类的原型指向B类的实例，这样A类的实例可以继承B类实例上的私有属性和方法，也可以继承B类实例上的公有属性和方法
+/*function A() {}
+A.prototype.sum=function () {}
+function B() {}
+B.prototype.getX=function () {}
+A.prototype=new B;
+var a=new A;*/
+
+//97 call继承(1个)
+//1) 在A类的构造函数中，让B类执行，并且让B类中的this指向A类的实例，这样A类的实例可以继承B类实例上的私有属性和方法
+/*function A() {
+   //this-->A类的实例
+    B.call(this)   //-->让B类执行，方法中的this依然指向A类的实例(在B类的构造函数中写的this.xx=xxx都相当于在给A类的实例增加一些私有属性和方法)
+}
+A.prototype.sum=function () {}
+function B() {}
+B.prototype.getX=function () {}
+A.prototype=new B;
+var a=new A;*/
+
+//98  Object.create(obj)(1个)
+//1) 创建一个空对象(实例)，并且把实例的__proto__指向obj
+ /* var obj={name:'zf'};
+  var newObj=Object.create(obj);
+console.log(newObj.__proto__ === obj);*/    //true
+
+//99 寄生组合继承
+//1)子类公有的继承父类公有的(原型继承的变通)
+//2)子类私有的继承父类私有的(call继承完成)
+  /*  function Parent() {
+        this.x=100;
+    }
+    Parent.prototype.getX=function () {
+        console.log(this.x);
+    }
+     var obj=Object.create(Parent.prototype);
+     console.log(obj instanceof Parent);  //true
+    function Children() {
+        Parent.call(this);
+        this.y=200;
+    }
+    Children.prototype=Object.create(Parent.prototype);
+    Children.prototype.constructor=Children;
+    Children.prototype.getY=function () {
+        console.log(this.y);
+    }*/
+
+
+</script>
+</body>
+</html>

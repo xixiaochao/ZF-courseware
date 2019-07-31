@@ -1,0 +1,20 @@
+.columns(@i) when(@i<=4){
+  .box@{i}{
+    width:unit(@i*10,%);
+  }
+  .columns(@i+1);
+}
+.columns(1);
+//结果：
+.box1{
+  width:10%;
+}
+.box2{
+  width:20%;
+}
+.box3{
+  width:30%;
+}
+.box4{
+  width:40%;
+}

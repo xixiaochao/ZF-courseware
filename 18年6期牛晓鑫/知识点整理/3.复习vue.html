@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    {{msg}}
+    <ul>
+        <li v-for="a in  arr">{{a}}</li>
+    </ul>
+    {{sum}}
+</div>
+<template id="box">
+    <div>
+        <ul>
+            <li v-for="a in  arr">{{a}}</li>
+        </ul>
+    </div>
+    <div>{{1.2344|toFixed(2)}}</div>
+</template>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    //debugger
+    // vue  是一款MVVM框架
+    // M : model(数据)  v: view（视图）   vm : view-model（视图模型）
+    //  双向数据绑定  vue的指令  vue的属性  vue的生命周期  vue的组件   vue的路由   vuex   webpack    elementUI
+
+    // 数据影响视图，视图影响数据；
+    // Object.defineProperty()
+    let obj  = {
+        name:"zfpx"
+    };
+    Object.defineProperty(obj,"name",{
+        get(){
+            // 当获取obj的name属性的属性值时，执行get方法
+        },
+        set(){
+            // 当设置name时，执行set方法；
+        }
+    });
+    let vm = new  Vue({
+        el:"#app",
+        filters:{
+            toFixed(val,num){
+                return val.toFixed(num)
+            }
+        },
+        data:{
+            msg:"hello",
+            arr:[1,2,3,4]
+        },
+        computed:{
+            sum(){
+                // 默认调用get方法
+                return 100;
+            },
+            s:{
+                set(){
+
+                },
+                get(){
+
+                }
+            }
+        },
+        template:"#box"
+    });
+    /// vue : 单页面应用开发；
+    // 当数据发生更改之后，影响虚拟的DOM，虚拟的DOM通过DOM-diff进行计算，判断出发生改变的那部分；然后进行修改和替换；大大减少了直接操作DOM元素；提高了浏览器性能；
+
+
+    // vue的指令 ：在DOM元素的行间属性上，以v-开头，具有特殊意义的一些属性；
+    // v-model  v-for  v-text  v-html  v-bind =>: v-on =>@ v-if  v-else  v-else-if  v-show  v-once   v-cloak
+
+    // vue 的属性：
+    //1. el   : 挂载的元素
+    //2. data : 数据
+    // 在组件中的data都是函数数据类型的；data函数需要返回一个对象；
+    //3. methods: 方法
+    // 一般存储的是方法；点击事件的方法
+    //4. computed : 计算属性
+    // 不支持异步，多对一的关系
+    //5. watch : 监听；
+    // 支持异步，一对多的关系；
+    //6. components
+    // 局部组件的注册；
+    //7. template: 模板
+    // 1. 只能有一个根元素  2.会把原有的进覆盖
+    //8. filters:
+    // 过滤
+    //9. directives
+    // 自定义指令
+    //10. router
+    // 注册路由
+    //11. render：
+    // 把虚拟的DOM转成真实的DOM；
+
+
+    // 生命周期  created  mounted  beforeDestroyed
+
+</script>
+</body>
+</html>

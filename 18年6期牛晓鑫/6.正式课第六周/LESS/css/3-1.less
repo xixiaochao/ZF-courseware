@@ -1,0 +1,16 @@
+@a:10;
+.box{
+  width:unit(@a,px);
+  @a:20;
+  .mark{  //=>相当于.box .mark{}
+    width:unit(@a,px);
+  }
+}
+//结果：
+.box{
+  width:20px;
+}
+.box .mark{
+  width: 20px;
+}
+/*less中也有变量提升，而且less把声明和定义在私有作用域中事先完成了*/

@@ -1,0 +1,36 @@
+
+!DOCTYPE html>
+<html lang="en">
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<body>
+<div>
+    <input type="text" id="phone" value="" />
+    <button id="submit">查询</button><br/>
+    <p style="width:100px;height: 100px;" id="text"></p>
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+    //1.接收到用户输入的手机号
+    //$("#id值")   .val()获取input value值  ajax   append()   empty()
+    $("#submit").click(function (res) {
+       var phone=$("#phone").val();
+       $.ajax({
+           url:'https://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel='+phone,
+           dataType: 'jsonp',
+           crossDomain: true,
+           success:function (res) {
+               $("#text").append(res.carrier);
+           }
+       });
+    });
+    //2.请求接口，将用户手机号传递过去
+
+    //3.将接口返回的数据进行页面渲染
+</script>
