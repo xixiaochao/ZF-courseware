@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    /*数组冒泡排序*/
+    var ary = [12, 32, 88, 99, 56, 67, 101];
+    for (var j = 0; j < ary.length - 1; j++) {
+        for (var i = 0; i < ary.length; i++) {
+            if (ary[i] > ary[i + 1]) {
+                var temp = ary[i];
+                ary[i] = ary[i + 1];
+                ary[i + 1] = temp;
+            }
+        }
+    }
+    console.log(ary);
+    
+    /*数组去重*/
+    var arr=[12,8,88,12];
+    var newAry=[];
+    for(var i=0;i<arr.length;i++){
+        var cur=arr[i];
+        if(newAry.indexOf(cur)===-1){
+            newAry.push(cur);
+        }document.get
+    }
+    console.log(newAry);
+
+    /*数组插入排序*/
+    var arz = [12,7,56,9,5,90,30,100,39]
+    var a =[];
+    a.push(arz[0]);
+    for(var i=1;i<arz.length;i++){
+        var cur=arz[i];
+        for(var j=a.length-1;j>=0;j--){
+            //数组拿到比当前项小，继续向前比较；如果比第一项还小，直接新增数组第一项
+            if(cur<a[j]){
+                if(j===0){
+                    a.unshift(cur);
+                }
+            }else {
+                //比当前项大，把这一项放在当前项的后面
+                a.splice(j+1,0,cur);
+                break;
+            }
+        }
+    }
+    console.log(arz);
+</script>

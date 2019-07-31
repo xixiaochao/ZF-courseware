@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {
+            margin: 200px auto 0;
+            width: 100px;
+            height: 100px;
+            background: pink;
+            /* 2.调用动画效果 */
+            -webkit-animation: box 1s infinite;
+            animation: box 1s infinite;
+            background: url(hua.png) no-repeat;
+            background-size: 100%;
+        }
+
+        /* 1. 规定好动画效果 */
+        @-webkit-keyframes box {
+            /* 动画开始的位置 */
+            0% {
+                -webkit-transform: scale(.5);
+                transform: scale(.5);
+            }
+
+            /* 动画结束的位置 */
+            100% {
+                -webkit-transform: scale(2);
+                transform: scale(2);
+            }
+        }
+
+        @keyframes box {
+
+            /* 动画开始的位置 */
+            0% {
+                -webkit-transform: scale(.5);
+                transform: scale(.5);
+            }
+
+            /* 动画结束的位置 */
+            100% {
+                -webkit-transform: scale(2);
+                transform: scale(2);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box"></div>
+
+
+
+
+
+
+
+</body>
+
+</html>

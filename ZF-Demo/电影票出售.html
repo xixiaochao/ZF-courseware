@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>电影票出售</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    /*
+        电影票出售问题
+        电影票售价为25元，排队的顾客可能持有，25,50,100这三种之一
+        售票员开始没钱，并且严格按照排队顺序卖票
+        判断售票员能否满足每个顾客需求，完成电影票出售
+        传入的参数peopleInLine就是排队的队列，类似于[25,25,50,25,100,25,50,25,100,25,25,25,100,50,25]
+        如果能满足返回true，不能返回false
+    */
+    const peopleInLine = [25, 25, 50, 25, 100, 25, 50, 25, 100, 25, 25, 25, 100, 50, 25];
+    //方法一：
+    function ticketsOne(peopleInline) {
+        let store = [];
+        for (let i = 0; i < peopleInline.length; i++) {
+            let element = peopleInline[i];
+            if (element === 25) {
+                store.unshift(element);
+            } else if (element === 50) {
+                let momey = store.shift();
+                if (momey !== 25) return false;
+                store.push(element);
+            } else if (element === 100) {
+                if (store[store.length - 1] === 50) {
+                    store.pop();
+                    let momey = store.shift();
+                    if (momey !== 25) return false;
+                } else {
+                    if (store.length < 3) return false;
+                    store.splice(0, 3);
+                }
+            }
+        }
+        return true;
+    }
+    ticketsOne(peopleInLine)
+
+    //方法二：
+    function ticketsTwo(peopleInline) {
+        let money25 = 0,
+            money50 = 0,
+            money100 = 0;
+        for (let i = 0; i < peopleInline.length; i++) {
+            let val = peopleInline[i];
+            switch (val) {
+                case 25:
+                    money25++;
+                    console.log(money25, money50, money100);
+                    break;
+                case 50:
+                    if (money25 <= 0) {
+                        return false;
+                    }
+                    money50++;
+                    money25--;
+                    break;
+                case 100:
+                    if (money25 <= 0 || (money50 <= 0 && money25 < 3)) {
+                        return false;
+                    }
+                    money100++;
+                    money50--;
+                    money25--;
+                    break;
+            }
+        }
+        return true;
+    }
+    ticketsTwo(peopleInLine)
+
+    //方法三：
+    function ticketsThree(peopleInLine) {
+        this.balance = 0;
+        this.keren = peopleInLine;
+        console.log(this.gogogo());
+    }
+    ticketsThree.prototype.gogogo = function() {
+        let _length = this.keren.length;
+        for (let i = 0;i < _length; i++) {
+            if(!this.buyP(this.keren[i])) {
+                return false
+            }else if (i === _length-1) {
+                return true
+            }
+        }
+    }
+    ticketsThree.prototype.buyP = function (_money) {
+        if(this.balance >= _money - 25) {
+            this.balance +=25;
+            return true
+        } else {
+            return false
+        }
+    }
+    new ticketsThree(peopleInLine)
+
+</script>
+
+</html>

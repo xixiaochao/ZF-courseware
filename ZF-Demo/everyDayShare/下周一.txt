@@ -1,0 +1,51 @@
+1.准备作品链接（最少1个最多3个，超过周一我就不看了）
+
+2.准备分享(随机抽分享顺序)
+{name: "高春梅", num: 1}
+{name: "李晓琳"，num: 2}
+{name: "张  欢", num: 3}
+{name: "席  超", num: 4}
+{name: "李娅茹", num: 5}
+{name: "李永梅", num: 6}
+{name: "刘凤华", num: 7}
+{name: "赵  丹", num: 8}
+{name: "荣永轶", num: 9}
+{name: "崔双建", num: 10}
+{name: "李雨来", num: 11}
+{name: "陈思胜", num: 12}
+{name: "廖一庭", num: 13}
+{name: "刘宏捷", num: 14}
+{name: "常  震", num: 15}
+{name: "王  冠", num: 16}
+{name: "吕  阔", num: 17}
+{name: "刘  泉", num: 18}
+{name: "赵星宇", num: 19}
+{name: "刘  鑫", num: 20}
+{name: "郜臣臣", num: 21}
+{name: "宋  尊", num: 22}
+{name: "齐岳亭", num: 23}
+{name: "许  琦", num: 24}
+{name: "李  鑫", num: 25}
+{name: "刘  月", num: 26}
+{name: "杨志康", num: 27}
+{name: "吴晓娟", num: 28}
+{name: "王世琦", num: 29}
+{name: "郝晓溪", num: 30}
+{name: "马骅骏", num: 31}
+{name: "王猛磊", num: 32}
+{name: "续斗寅", num: 33}
+{name: "李云龙", num: 34}
+{name: "郭玥", num: 35}
+{name: "冯芳", num: 36}
+{name: "李书红", num: 37}
+{name: "龙海丽", num: 38}
+{name: "卫博晖", num: 39}
+{name: "张梦雅", num: 40}
+{name: "林同贺", num: 41}
+{name: "王权士", num: 42}
+{name: "赵志强", num: 43}
+{name: "多亚宁", num: 44}
+{name: "梁宏伟", num: 45}
+{name: "王旭", num: 46}
+{name: "梅婷", num: 47}
+{name: "战凤月", num: 48}

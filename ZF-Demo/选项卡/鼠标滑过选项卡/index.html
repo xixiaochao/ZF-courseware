@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="banner" id="banner" >
+        <ul class="list">
+            <li class="cur"><span>谈判官</span><i>:</i>杨幂、黄子韬情定谈判桌</li>
+            <li><span>乡村爱情10</span><i>:</i>刘能帮晓峰找初恋</li>
+            <li><span>美好生活</span><i>:</i>张嘉译李小冉中年初恋</li>
+            <li><span>神秘巨星</span><i>:</i>阿米尔·汗最新力作！</li>
+            <li><span>独孤天下</span><i>:</i>胡冰卿张丹峰互怼日常</li>
+            <li><span>王牌对王牌</span><i>:</i>王源沈腾斗鸡眼比拼</li>
+            <li><span>利刃出击</span><i>:</i>杨烁变身热血武警</li>
+            <li><span>开通连续包月</span><i>:</i>送5天会员！</li>
+        </ul>
+    </div>
+</body>
+</html>
+<script>
+    let banner = document.getElementById("banner");//id名是banner的元素
+    let oLis = banner.getElementsByTagName("li");//所有的li,集合
+    let preIndex = 0;
+    for(let i = 0;i<oLis.length;i++){
+        oLis[i].onmouseover = function(){//鼠标划过时做些事情
+            oLis[preIndex].className = "";
+           banner.style.background = "url(images/pic"+i+".jpg) no-repeat center top";
+            oLis[i].className = "cur";//划过结束时，给当前划过元素添加选中效果
+            preIndex = i;//把当前划过元素的编号保存在preIndex里
+        }
+    }
+</script>

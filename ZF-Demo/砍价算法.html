@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>砍价算法</title>
+</head>
+<body>
+    <div></div>
+</body>
+<script>
+    var floor_price = 108;//底价
+    var present_price = 198;//现价
+    var theSum_knife = 30;//总刀数
+    var already_bargain = 68.81;//已砍总价
+    var already_knife = 18;//已砍刀数
+    var ending = 30;//商家设置此商品期望刀数
+    //函数定义，砍价算法
+    function dataFn(floor_price, present_price, theSum_knife, already_bargain, already_knife, ending) {
+        var endingPrice = present_price - already_bargain; //现价-已砍总价=此时商品价钱
+        if (already_knife <= ending) {
+            var total_bargain = present_price - floor_price; //现价 减 底价 = 应砍总价
+            //设置最低砍价 = （应砍总价 - 已砍总价）/ （总刀数 - 已砍刀数
+            var minPrice = (total_bargain - already_bargain) / (theSum_knife - already_knife);
+            //设置最高砍价 = 最低砍价 * 2
+            var maxPrice = minPrice * 2;
+            //本次应砍价= 0-1的随机数 * (最低砍价 - 最高砍价)+最高砍价 并且保留两位数
+            var thisBargain = (Math.random() * (minPrice - maxPrice) + maxPrice).toFixed(2);
+            console.log(thisBargain);
+            //此时商品价钱 - 本次应砍价
+            console.log(endingPrice - thisBargain);
+        } else {//达到设置的总刀数
+            if (endingPrice == floor_price) {
+                layer.open("已经砍到上限，不可在砍价");
+            } else {
+                var price = endingPrice - 0.01;//此时商品价钱 - 0.01
+                console.log(price);
+            }
+        }
+    }
+    dataFn(floor_price, present_price, theSum_knife, already_bargain, already_knife, ending);
+</script>
+
+</html>
